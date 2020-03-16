@@ -54,7 +54,9 @@ ROOT_URLCONF = 'nursery24.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates/adminpage'),
+        os.path.join(BASE_DIR,'templates/consumer'),
+        os.path.join(BASE_DIR,'templates/provider')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
