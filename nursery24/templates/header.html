@@ -8,23 +8,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <style>
-            .card {display:inline-block;}
-            .card-img-top{
-                width: 100%;
-                height: 15vw;
-                object-fit: cover;
-            }
-            .d-block {
-                height: 20vw;
-                object-fit: cover;
-            }
-        </style>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        .card {
+            display: inline-block;
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 15vw;
+            object-fit: cover;
+        }
+
+        .d-block {
+            height: 20vw;
+            object-fit: cover;
+        }
+    </style>
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#85EF50">
         <a class="navbar-brand" href="#"><img src="{% static 'images/logo.png'%}" width="100"
                 style="margin-left:10"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -33,8 +38,8 @@
         </button>
 
         <form class="form-inline my-2 my-lg-0" style="margin-left: 100px;">
-            <input class="form-control mr-sm-2" size="100" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <input class="form-control mr-sm-2" size="80" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
         </form>
 
         <button type="button" class="btn btn-primary ml-auto" style="margin-right: 10px;">Login</button>
