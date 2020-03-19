@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'consumer.apps.ConsumerConfig',
+    'courier.apps.CourierConfig',
+    'provider.apps.ProviderConfig',
+    'administrator.apps.AdministratorConfig'
 ]
 
 MIDDLEWARE = [
@@ -54,9 +58,10 @@ ROOT_URLCONF = 'nursery24.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates/adminpage'),
+        'DIRS': [os.path.join(BASE_DIR,'templates/administrator'),
         os.path.join(BASE_DIR,'templates/consumer'),
         os.path.join(BASE_DIR,'templates/provider'),
+        os.path.join(BASE_DIR,'templates/courier'),
         os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -78,8 +83,11 @@ WSGI_APPLICATION = 'nursery24.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'nursery24',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST':'localhost'
     }
 }
 
