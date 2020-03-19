@@ -32,3 +32,9 @@ class ItemInOrder(models.Model):
     provider=models.OneToOneField(Provider,on_delete=models.CASCADE)
     quantity=models.IntegerField()
     total_price=models.IntegerField()
+
+class Review(models.Model):
+    comment=models.CharField(max_length=250,null=True)
+    rating=models.FloatField()
+    consumer=models.OneToOneField(Consumer,on_delete=models.CASCADE)
+    item=models.ForeignKey(Item,on_delete=models.CASCADE,null=True)
