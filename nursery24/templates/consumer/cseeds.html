@@ -1,159 +1,195 @@
-{% extends 'header.html'%}
 {%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seeds</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        .card {
+            display: inline-block;
+        }
 
-{% block content %}
-<ul class="nav nav-pills nav-fill bg-light">
-    <li class="nav-item">
-        <a class="nav-link" href="home">Home</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="plants">Plants</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" href="seeds">Seeds</a>
-    </li>
+        .card-img-top {
+            width: 100%;
+            height: 15vw;
+            object-fit: cover;
+        }
 
-    <li class="nav-item">
-        <a class="nav-link" href="soilandfertilizers">Soil and Fertilizers</a>
-    </li>
+        .d-block {
+            height: 20vw;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <header-file></header-file>
 
-    <li class="nav-item">
-        <a class="nav-link" href="decor">Decor</a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link" href="accessories">Accessories</a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link" href="cart">Cart</a>
-    </li>
-</ul>
-
-<div class="d-flex justify-content-center ml-3 mt-3">
-    <div class="card mr-4" style="width: 20rem;">
-        <img class="card-img-top" src="{% static 'images/card1.jpg'%}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Vertical Nursery</h5>
-            <p class="card-text">Rs. 500</p>
+    <ul class="nav nav-pills nav-fill bg-light">
+        <li class="nav-item">
+            <a class="nav-link" href="home">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="plants">Plants</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="seeds">Seeds</a>
+        </li>
+    
+        <li class="nav-item">
+            <a class="nav-link" href="soilandfertilizers">Soil and Fertilizers</a>
+        </li>
+    
+        <li class="nav-item">
+            <a class="nav-link" href="decor">Decor</a>
+        </li>
+    
+        <li class="nav-item">
+            <a class="nav-link" href="accessories">Accessories</a>
+        </li>
+    
+        <li class="nav-item">
+            <a class="nav-link" href="cart">Cart</a>
+        </li>
+    </ul>
+    
+    <div class="d-flex justify-content-center ml-3 mt-3">
+        <div class="card mr-4" style="width: 20rem;">
+            <img class="card-img-top" src="{% static 'images/card1.jpg'%}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Vertical Nursery</h5>
+                <p class="card-text">Rs. 500</p>
+            </div>
+            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-secondary">+</button>
+                <button type="button" class="btn btn-outline-secondary">0</button>
+                <button type="button" class="btn btn-outline-secondary">-</button>
+            </div>
         </div>
-        <div class="btn-group float-right" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-outline-secondary">+</button>
-            <button type="button" class="btn btn-outline-secondary">0</button>
-            <button type="button" class="btn btn-outline-secondary">-</button>
+        <div class="card mr-4" style="width: 20rem;">
+            <img class="card-img-top" src="{% static 'images/card2.jpg'%}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Plants Decor</h5>
+                <p class="card-text">Rs. 250</p>
+            </div>
+            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-secondary">+</button>
+                <button type="button" class="btn btn-outline-secondary">0</button>
+                <button type="button" class="btn btn-outline-secondary">-</button>
+            </div>
         </div>
-    </div>
-    <div class="card mr-4" style="width: 20rem;">
-        <img class="card-img-top" src="{% static 'images/card2.jpg'%}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Plants Decor</h5>
-            <p class="card-text">Rs. 250</p>
+        <div class="card mr-4" style="width: 20rem;">
+            <img class="card-img-top" src="{% static 'images/card3.jpg'%}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Hanging Plants</h5>
+                <p class="card-text">Rs. 300</p>
+            </div>
+            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-secondary">+</button>
+                <button type="button" class="btn btn-outline-secondary">0</button>
+                <button type="button" class="btn btn-outline-secondary">-</button>
+            </div>
         </div>
-        <div class="btn-group float-right" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-outline-secondary">+</button>
-            <button type="button" class="btn btn-outline-secondary">0</button>
-            <button type="button" class="btn btn-outline-secondary">-</button>
+        <div class="card mr-4" style="width: 20rem;">
+            <img class="card-img-top" src="{% static 'images/card4.jpg'%}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Water Plants</h5>
+                <p class="card-text">Rs. 350</p>
+            </div>
+            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-secondary">+</button>
+                <button type="button" class="btn btn-outline-secondary">0</button>
+                <button type="button" class="btn btn-outline-secondary">-</button>
+            </div>
         </div>
-    </div>
-    <div class="card mr-4" style="width: 20rem;">
-        <img class="card-img-top" src="{% static 'images/card3.jpg'%}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Hanging Plants</h5>
-            <p class="card-text">Rs. 300</p>
-        </div>
-        <div class="btn-group float-right" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-outline-secondary">+</button>
-            <button type="button" class="btn btn-outline-secondary">0</button>
-            <button type="button" class="btn btn-outline-secondary">-</button>
-        </div>
-    </div>
-    <div class="card mr-4" style="width: 20rem;">
-        <img class="card-img-top" src="{% static 'images/card4.jpg'%}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Water Plants</h5>
-            <p class="card-text">Rs. 350</p>
-        </div>
-        <div class="btn-group float-right" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-outline-secondary">+</button>
-            <button type="button" class="btn btn-outline-secondary">0</button>
-            <button type="button" class="btn btn-outline-secondary">-</button>
-        </div>
-    </div>
-    <div class="card mr-4" style="width: 20rem;">
-        <img class="card-img-top" src="{% static 'images/card5.jpg'%}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Pebbles</h5>
-            <p class="card-text">Rs. 250</p>
-        </div>
-        <div class="btn-group float-right" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-outline-secondary">+</button>
-            <button type="button" class="btn btn-outline-secondary">0</button>
-            <button type="button" class="btn btn-outline-secondary">-</button>
-        </div>
-    </div>
-</div>
-
-<div class="d-flex justify-content-center ml-3 mt-3">
-    <div class="card mr-4" style="width: 20rem;">
-        <img class="card-img-top" src="{% static 'images/card1.jpg'%}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Vertical Nursery</h5>
-            <p class="card-text">Rs. 500</p>
-        </div>
-        <div class="btn-group float-right" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-outline-secondary">+</button>
-            <button type="button" class="btn btn-outline-secondary">0</button>
-            <button type="button" class="btn btn-outline-secondary">-</button>
-        </div>
-    </div>
-    <div class="card mr-4" style="width: 20rem;">
-        <img class="card-img-top" src="{% static 'images/card2.jpg'%}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Plants Decor</h5>
-            <p class="card-text">Rs. 250</p>
-        </div>
-        <div class="btn-group float-right" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-outline-secondary">+</button>
-            <button type="button" class="btn btn-outline-secondary">0</button>
-            <button type="button" class="btn btn-outline-secondary">-</button>
+        <div class="card mr-4" style="width: 20rem;">
+            <img class="card-img-top" src="{% static 'images/card5.jpg'%}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Pebbles</h5>
+                <p class="card-text">Rs. 250</p>
+            </div>
+            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-secondary">+</button>
+                <button type="button" class="btn btn-outline-secondary">0</button>
+                <button type="button" class="btn btn-outline-secondary">-</button>
+            </div>
         </div>
     </div>
-    <div class="card mr-4" style="width: 20rem;">
-        <img class="card-img-top" src="{% static 'images/card3.jpg'%}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Hanging Plants</h5>
-            <p class="card-text">Rs. 300</p>
+    
+    <div class="d-flex justify-content-center ml-3 mt-3 mb-3">
+        <div class="card mr-4" style="width: 20rem;">
+            <img class="card-img-top" src="{% static 'images/card1.jpg'%}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Vertical Nursery</h5>
+                <p class="card-text">Rs. 500</p>
+            </div>
+            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-secondary">+</button>
+                <button type="button" class="btn btn-outline-secondary">0</button>
+                <button type="button" class="btn btn-outline-secondary">-</button>
+            </div>
         </div>
-        <div class="btn-group float-right" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-outline-secondary">+</button>
-            <button type="button" class="btn btn-outline-secondary">0</button>
-            <button type="button" class="btn btn-outline-secondary">-</button>
+        <div class="card mr-4" style="width: 20rem;">
+            <img class="card-img-top" src="{% static 'images/card2.jpg'%}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Plants Decor</h5>
+                <p class="card-text">Rs. 250</p>
+            </div>
+            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-secondary">+</button>
+                <button type="button" class="btn btn-outline-secondary">0</button>
+                <button type="button" class="btn btn-outline-secondary">-</button>
+            </div>
+        </div>
+        <div class="card mr-4" style="width: 20rem;">
+            <img class="card-img-top" src="{% static 'images/card3.jpg'%}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Hanging Plants</h5>
+                <p class="card-text">Rs. 300</p>
+            </div>
+            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-secondary">+</button>
+                <button type="button" class="btn btn-outline-secondary">0</button>
+                <button type="button" class="btn btn-outline-secondary">-</button>
+            </div>
+        </div>
+        <div class="card mr-4" style="width: 20rem;">
+            <img class="card-img-top" src="{% static 'images/card4.jpg'%}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Water Plants</h5>
+                <p class="card-text">Rs. 350</p>
+            </div>
+            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-secondary">+</button>
+                <button type="button" class="btn btn-outline-secondary">0</button>
+                <button type="button" class="btn btn-outline-secondary">-</button>
+            </div>
+        </div>
+        <div class="card mr-4" style="width: 20rem;">
+            <img class="card-img-top" src="{% static 'images/card5.jpg'%}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Pebbles</h5>
+                <p class="card-text">Rs. 250</p>
+            </div>
+            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-secondary">+</button>
+                <button type="button" class="btn btn-outline-secondary">0</button>
+                <button type="button" class="btn btn-outline-secondary">-</button>
+            </div>
         </div>
     </div>
-    <div class="card mr-4" style="width: 20rem;">
-        <img class="card-img-top" src="{% static 'images/card4.jpg'%}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Water Plants</h5>
-            <p class="card-text">Rs. 350</p>
-        </div>
-        <div class="btn-group float-right" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-outline-secondary">+</button>
-            <button type="button" class="btn btn-outline-secondary">0</button>
-            <button type="button" class="btn btn-outline-secondary">-</button>
-        </div>
-    </div>
-    <div class="card mr-4" style="width: 20rem;">
-        <img class="card-img-top" src="{% static 'images/card5.jpg'%}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Pebbles</h5>
-            <p class="card-text">Rs. 250</p>
-        </div>
-        <div class="btn-group float-right" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-outline-secondary">+</button>
-            <button type="button" class="btn btn-outline-secondary">0</button>
-            <button type="button" class="btn btn-outline-secondary">-</button>
-        </div>
-    </div>
-</div>
-
-{%endblock%}
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script src="{% static 'js/header.js'%}"></script>
+</body>
+</html>

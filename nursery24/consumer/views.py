@@ -18,3 +18,6 @@ def decor(request):
     
 def accessories(request):
     return render(request,'caccessories.html')
+
+def sample(request):
+    return render(request,'sample.html')

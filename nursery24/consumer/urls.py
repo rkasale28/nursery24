@@ -7,5 +7,6 @@ urlpatterns=[
     path('seeds',views.seeds,name="seeds"),
     path('soilandfertilizers',views.soil,name="soil"),
     path('decor',views.decor,name="decor"),
-    path('accessories',views.accessories,name="accessories")
+    path('accessories',views.accessories,name="accessories"),
+    path('sample',views.sample,name="Sample")
 ]
