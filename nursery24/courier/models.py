@@ -8,5 +8,5 @@ class Courier(models.Model):
     user_type=models.CharField(max_length=10,null=True)
 
 class Address(models.Model):
-    addr=models.CharField(max_length=100,null=True)
+    addr=models.TextField(max_length=100,null=True)
     courier=models.ForeignKey(Courier,on_delete=models.CASCADE)

@@ -9,10 +9,10 @@ class Provider(models.Model):
     user_type=models.CharField(max_length=10,null=True)
 
 class Address(models.Model):
-    addr=models.CharField(max_length=100,null=True)
+    addr=models.TextField(max_length=100,null=True)
     provider=models.ForeignKey(Provider,on_delete=models.CASCADE)
 
-class Item(models.Model):
+class Product(models.Model):
     CATEGORY_CHOICES=[
         ('P','Plants'),
         ('S','Seeds'),

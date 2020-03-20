@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from courier.models import Courier
-from provider.models import Provider,Item
+from provider.models import Provider,Product
 
 # Create your models here.
 class Consumer(models.Model):
@@ -10,7 +10,7 @@ class Consumer(models.Model):
     user_type=models.CharField(max_length=10,null=True)
 
 class Address(models.Model):
-    addr=models.CharField(max_length=100,null=True)
+    addr=models.TextField(max_length=100,null=True)
     consumer=models.ForeignKey(Consumer,on_delete=models.CASCADE)
 
 class Order(models.Model):
@@ -26,8 +26,8 @@ class Order(models.Model):
     consumer=models.ForeignKey(Consumer,on_delete=models.CASCADE)
     last_tracked_by=models.OneToOneField(Courier,on_delete=models.CASCADE)
 
-class ItemInOrder(models.Model):
-    item=models.OneToOneField(Item,on_delete=models.CASCADE)
+class ProductInOrder(models.Model):
+    product=models.OneToOneField(Product,on_delete=models.CASCADE)
     order=models.ForeignKey(Order,on_delete=models.CASCADE)
     provider=models.OneToOneField(Provider,on_delete=models.CASCADE)
     quantity=models.IntegerField()
@@ -37,4 +37,4 @@ class Review(models.Model):
     comment=models.CharField(max_length=250,null=True)
     rating=models.FloatField()
     consumer=models.OneToOneField(Consumer,on_delete=models.CASCADE)
-    item=models.ForeignKey(Item,on_delete=models.CASCADE,null=True)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE,null=True)
