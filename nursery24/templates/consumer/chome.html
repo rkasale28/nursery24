@@ -29,8 +29,12 @@
 </head>
 
 <body>
-    <header-file></header-file>
-
+    {% if not user.is_authenticated%}
+    <header-bar></header-bar>
+    {% else %}
+    <authenticated-header></authenticated-header>
+    {% endif %}
+    
     <ul class="nav nav-pills nav-fill bg-light">
         <li class="nav-item">
             <a class="nav-link active" href="home">Home</a>
@@ -290,6 +294,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
     <script src="{% static 'js/header.js'%}"></script>
+    <script src="{% static 'js/header_authenticated.js'%}"></script>
 </body>
 
 </html>

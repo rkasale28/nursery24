@@ -1,0 +1,91 @@
+.register {
+	background: #FFFFFF;
+	margin-top: 3%;
+}
+
+.register-right {
+	background: #EFF1FF;
+	height:450px;
+}
+
+.container{
+   max-width: 1200px;
+}
+
+.register-left img {
+	height: 90%;
+	margin-left:-15px;
+	margin-top: 20px;
+}
+
+
+.register .register-form {
+	padding: 10%;
+	margin-top: 10%;
+}
+
+.btnRegister {
+	border: none;
+	width: 50%;
+	height: 51px;
+	float: center;
+	margin: auto;
+	margin-bottom: 30px;
+	margin-top: 10px;
+	border-radius: 1.5rem;
+	padding: 2%;
+	background: #0062cc;
+	color: #fff;
+	font-weight: 600;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	vertical-align: middle;
+	justify-content: center;
+}
+
+.register .nav-tabs {
+	margin-top: 3%;
+	border: none;
+	background: #0062cc;
+	border-radius: 1.5rem;
+	width: 28%;
+	float: right;
+}
+
+.register .nav-tabs .nav-link {
+	padding: 2%;
+	height: 34px;
+	font-weight: 600;
+	color: #fff;
+	border-top-right-radius: 1.5rem;
+	border-bottom-right-radius: 1.5rem;
+}
+
+.register .nav-tabs .nav-link:hover {
+	border: none;
+}
+
+.register .nav-tabs .nav-link.active {
+	width: 100px;
+	color: #0062cc;
+	border: 2px solid #0062cc;
+	border-top-left-radius: 1.5rem;
+	border-bottom-left-radius: 1.5rem;
+}
+
+.register-heading {
+	text-align: center;
+	margin-top: 8%;
+	margin-bottom: -15%;
+	color: #495057;
+}
+
+.wrapper {
+	background-position: right center;
+	min-height: 100vh;
+	background-size: cover;
+	background-repeat: no-repeat;
+	display: flex;
+	align-items: center;
+}
