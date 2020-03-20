@@ -18,9 +18,11 @@ def signup_submit(request):
             pwd=request.POST["pwd"]
             phone=request.POST["phone"]
             user=User.objects.create_user(first_name=fname,last_name=lname,email=email,username=uname,password=pwd)    
-            consumer=Consumer(user=user,phone_number=phone,user_type='Consumer')
+            consumer=Consumer(user=user,phone_number=phone)
             consumer.save()
-            return HttpResponse ("Info added to database<br>"+fname+"<br>"+lname+"<br>"+email+"<br>"+uname+"<br>"+pwd+"<br>"+phone)
+            user=auth.authenticate(username=uname,password=pwd)
+            auth.login(request,user)
+            return render(request,'chome.html')
     except IntegrityError as e:
         return HttpResponse ('Username already exists')
 
@@ -45,7 +47,7 @@ def logout(request):
     return render (request,"chome.html")
 
 def myprofile(request):
-    return HttpResponse('My Profile')
+    return render(request,'cprofile.html')
     
 def home(request):
     return render(request,'chome.html')
