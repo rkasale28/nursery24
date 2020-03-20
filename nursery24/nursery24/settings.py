@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'consumer.apps.ConsumerConfig',
     'courier.apps.CourierConfig',
     'provider.apps.ProviderConfig',
-    'administrator.apps.AdministratorConfig'
 ]
 
 MIDDLEWARE = [
@@ -58,8 +57,7 @@ ROOT_URLCONF = 'nursery24.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates/administrator'),
-        os.path.join(BASE_DIR,'templates/consumer'),
+        'DIRS': [os.path.join(BASE_DIR,'templates/consumer'),
         os.path.join(BASE_DIR,'templates/provider'),
         os.path.join(BASE_DIR,'templates/courier'),
         os.path.join(BASE_DIR,'templates')],
