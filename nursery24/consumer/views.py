@@ -56,7 +56,8 @@ def myprofile(request):
     return render(request,'cprofile.html')
     
 def home(request):
-    return render(request,'chome.html')
+    newly_added=Product.objects.all().order_by('-date_added')[:5]
+    return render(request,'chome.html',{'newly_added':newly_added})
 
 def plants(request):
     unique_price=Price.objects.all().filter(product__category='P').order_by('product__name','price').distinct('product__name')

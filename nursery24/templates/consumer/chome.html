@@ -154,70 +154,28 @@
         </div>
     </div>
     <hr>
-    <h5 class="text-center" style="margin-bottom:15px;">New Arrivals</h5>
-    <div class="d-flex justify-content-center ml-3 mt-3">
-        <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card1.jpg'%}" alt="Card image cap">
+    <!--<h5 class="text-center" style="margin-bottom:15px;">New Arrivals</h5>
+    <div class="d-flex justify-content-start ml-3 mt-3">
+        {% for i in newly_added %}
+        <div class="card mr-3" style="width: 255px;">
+            <img class="card-img-top" src="{{i.image.url}}">
+
             <div class="card-body">
-                <h5 class="card-title">Vertical Nursery</h5>
-                <p class="card-text">Rs. 500</p>
+                <h5 class="card-title">{{i.name}}</h5>
+                <h6 class="card-subtitle text-muted">Rs. {{i.price}}</h6>
+
             </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
+
+            <div class="btn-group mr-1 mb-1 float-right" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-success">+</button>
+                <button type="button" class="btn btn-outline-secondary disabled">0</button>
+                <button type="button" class="btn btn-success">-</button>
             </div>
         </div>
-        <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card2.jpg'%}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Plants Decor</h5>
-                <p class="card-text">Rs. 250</p>
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-            </div>
-        </div>
-        <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card3.jpg'%}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Hanging Plants</h5>
-                <p class="card-text">Rs. 300</p>
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-            </div>
-        </div>
-        <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card4.jpg'%}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Water Plants</h5>
-                <p class="card-text">Rs. 350</p>
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-            </div>
-        </div>
-        <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card5.jpg'%}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Pebbles</h5>
-                <p class="card-text">Rs. 250</p>
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-            </div>
-        </div>
+
+        {% endfor %}
     </div>
-    
+
     <hr>
     <h5 class="text-center" style="margin-bottom:15px;">Top Rated</h5>
     <div class="d-flex justify-content-center ml-3 mt-3">

@@ -54,21 +54,24 @@
             <a class="nav-link" href="removebranch">Remove Branch</a>
         </li>
     </ul>
-    <div class="d-flex justify-content-left ml-3 mt-3">
+    <div class="d-flex justify-content-start ml-3 mt-3">
         {% for i in user.provider.price_set.all%}
-        <div class="card mr-4" style="width: 20rem">
+        <div class="card mr-3" style="width: 255px">
             <img class="card-img-top" src="{{i.product.image.url}}">
             <div class="card-body">
                 <h5 class="card-title">{{i.product.name}}</h5>
-                <p class="card-text">Rs. {{i.price}}</p>
-
-                <form action="removeitemsubmit" method="post">
-                    {% csrf_token %}
-                    <input name="id" type="hidden" value="{{i.product.id}}">
-                    <input name="proid" type="hidden" value="{{user.provider.id}}">
-                    <input type="submit" class="btn-danger" value="Delete">
-                </form>
+                <p class="card-subtitle text-muted">Rs. {{i.price}}</p>
             </div>
+            <div class="sticky-bottom float-right mr-1 mb-1">
+            <form action="removeitemsubmit" method="post">
+                {% csrf_token %}
+                <input name="id" type="hidden" value="{{i.product.id}}">
+                <input name="proid" type="hidden" value="{{user.provider.id}}">
+                <button type="submit" class="btn btn-danger ml-1">Delete</button>
+                
+            </form>
+            </div>
+
         </div>
         {% if forloop.counter|divisibleby:5 %}
     </div>
