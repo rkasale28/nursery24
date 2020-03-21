@@ -4,7 +4,7 @@ from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
 from .models import Consumer,Product
 from django.core.exceptions import ObjectDoesNotExist
-
+from provider.models import Price
 # Create your views here.
 def signup(request):
     return render(request,'csignup.html')
@@ -59,20 +59,28 @@ def home(request):
     return render(request,'chome.html')
 
 def plants(request):
-    return render(request,'cplants.html')
+    unique_price=Price.objects.all().filter(product__category='P').order_by('product__name','price').distinct('product__name')
+    return render(request,'cplants.html',{'unique_price':unique_price})
 
 def seeds(request):
-    return render(request,'cseeds.html')
+    unique_price=Price.objects.all().filter(product__category='S').order_by('product__name','price').distinct('product__name')
+    return render(request,'cseeds.html',{'unique_price':unique_price})
     
 def soil(request):
-    return render(request,'csoil.html')
+    unique_price=Price.objects.all().filter(product__category='F').order_by('product__name','price').distinct('product__name')
+    return render(request,'csoil.html',{'unique_price':unique_price})
     
 def decor(request):
-    products=Product.objects.all().filter(category='D').order_by('name','date_added').distinct('name')
-    return render(request,'cdecor.html',{'products':products})
+    unique_price=Price.objects.all().filter(product__category='D').order_by('product__name','price').distinct('product__name')
+    return render(request,'cdecor.html',{'unique_price':unique_price})
     
 def accessories(request):
-    return render(request,'caccessories.html')
+    unique_price=Price.objects.all().filter(product__category='A').order_by('product__name','price').distinct('product__name')
+    return render(request,'caccessories.html',{'unique_price':unique_price})
 
-def sample(request):
-    return render(request,'sample.html')
+def compareprices(request):
+    if (request.method=='POST'):
+        productid=request.POST['id']
+        product=Product.objects.get(pk=productid)
+        prices=product.price_set.all().order_by('price')
+        return render(request,'compareprice.html',{'prices':prices})

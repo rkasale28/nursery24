@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Price</title>
+</head>
+<body>
+    {%for i in prices%}
+        {{i.price}}
+        {{i.provider.shop_name}}
+        {{i.provider.address_set.all.0.addr}}<br>
+    {%endfor%}
+</body>
+</html>
