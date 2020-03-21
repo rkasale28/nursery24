@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
 from .models import Address,Provider,Product
-from .forms import AddressForm,ProductForm
+from .forms import AddressForm,ProductForm,PriceForm
 from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
@@ -61,8 +61,9 @@ def home(request):
     return render(request,'phome.html')
 
 def additem(request):
-    form=ProductForm()
-    return render(request,'padditem.html',{'form':form})
+    productform=ProductForm()
+    priceform=PriceForm()
+    return render(request,'padditem.html',{'productform':productform,'priceform':priceform})
 
 def additemsubmit(request):
     if request.method=='POST':
@@ -71,16 +72,15 @@ def additemsubmit(request):
         image=request.FILES['image']
         category=request.POST['category']
         price=request.POST['price']
-            
         provider=Provider.objects.get(pk=provider_id)
         try:
-            check_product=Product.objects.get(name=name,price=price)
+            check_product=Product.objects.get(name=name)
         except ObjectDoesNotExist as d:
-            product=Product(image=image,name=name,price=price,category=category)
+            product=Product(image=image,name=name,category=category)
             product.save()
-            product.providers.add(provider)
+            product.providers.add(provider,through_defaults={'price':price})
         else:
-            check_product.providers.add(provider)
+            check_product.providers.add(provider,through_defaults={'price':price})
         return render(request,'phome.html')
 
 def removeitem(request):
@@ -93,7 +93,7 @@ def removeitemsubmit(request):
         product=Product.objects.get(pk=product_id)
         provider=Provider.objects.get(pk=provider_id)
         provider.product_set.remove(product)
-        return render(request,'premoveitem.html')
+        return render(request,'phome.html')
 
 def addbranch(request):
     form=AddressForm()

@@ -1,5 +1,5 @@
 from django import forms
-from provider.models import Address,Product
+from provider.models import Address,Product,Price
 
 class AddressForm(forms.ModelForm):
     class Meta:
@@ -9,4 +9,9 @@ class AddressForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model=Product
-        fields=['name','image','price','category']
+        fields=['name','image','category']
+
+class PriceForm(forms.ModelForm):
+    class Meta:
+        model=Price
+        fields=['price']

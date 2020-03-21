@@ -55,16 +55,16 @@
         </li>
     </ul>
     <div class="d-flex justify-content-left ml-3 mt-3">
-        {% for i in user.provider.product_set.all%}
+        {% for i in user.provider.price_set.all%}
         <div class="card mr-4" style="width: 20rem">
-            <img class="card-img-top" src="{{i.image.url}}">
+            <img class="card-img-top" src="{{i.product.image.url}}">
             <div class="card-body">
-                <h5 class="card-title">{{i.name}}</h5>
+                <h5 class="card-title">{{i.product.name}}</h5>
                 <p class="card-text">Rs. {{i.price}}</p>
 
                 <form action="removeitemsubmit" method="post">
                     {% csrf_token %}
-                    <input name="id" type="hidden" value="{{i.id}}">
+                    <input name="id" type="hidden" value="{{i.product.id}}">
                     <input name="proid" type="hidden" value="{{user.provider.id}}">
                     <input type="submit" class="btn-danger" value="Delete">
                 </form>

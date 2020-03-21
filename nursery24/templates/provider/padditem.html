@@ -40,7 +40,8 @@
 
     <form method = "post" enctype="multipart/form-data" action="additemsubmit"> 
         {% csrf_token %} 
-        {{ form.as_p }} 
+        {{ productform.as_p }} 
+        {{ priceform.as_p}}
         <input type="hidden" name="provider" value="{{user.provider.id}}">
         <button type="submit">Submit</button> 
     </form> 

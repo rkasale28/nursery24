@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
-from .models import Consumer
+from .models import Consumer,Product
 from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
@@ -68,7 +68,8 @@ def soil(request):
     return render(request,'csoil.html')
     
 def decor(request):
-    return render(request,'cdecor.html')
+    products=Product.objects.all().filter(category='D').order_by('name','date_added').distinct('name')
+    return render(request,'cdecor.html',{'products':products})
     
 def accessories(request):
     return render(request,'caccessories.html')
