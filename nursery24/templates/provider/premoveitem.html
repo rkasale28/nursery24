@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome</title>
+    <title>Remove Item</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -21,6 +21,7 @@
             object-fit: cover;
         }
 
+
         .d-block {
             height: 20vw;
             object-fit: cover;
@@ -34,26 +35,50 @@
     {% else %}
     <authenticated-header></authenticated-header>
     {% endif %}
-    
+
     <ul class="nav nav-pills nav-fill bg-light">
         <li class="nav-item">
-            <a class="nav-link active" href="home">Pending Orders</a>
+            <a class="nav-link" href="home">Pending Orders</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="additem">Add Item</a>
-        </li>       
+        </li>
         <li class="nav-item">
-            <a class="nav-link" href="removeitem">Remove Item</a>
+            <a class="nav-link active" href="removeitem">Remove Item</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="addbranch">Add Branch</a>
         </li>
-        
+
         <li class="nav-item">
             <a class="nav-link" href="removebranch">Remove Branch</a>
         </li>
     </ul>
+    <div class="d-flex justify-content-left ml-3 mt-3">
+        {% for i in user.provider.product_set.all%}
+        <div class="card mr-4" style="width: 20rem">
+            <img class="card-img-top" src="{{i.image.url}}">
+            <div class="card-body">
+                <h5 class="card-title">{{i.name}}</h5>
+                <p class="card-text">Rs. {{i.price}}</p>
 
+                <form action="removeitemsubmit" method="post">
+                    {% csrf_token %}
+                    <input name="id" type="hidden" value="{{i.id}}">
+                    <input name="proid" type="hidden" value="{{user.provider.id}}">
+                    <input type="submit" class="btn-danger" value="Delete">
+                </form>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:5 %}
+    </div>
+    <div class="d-flex justify-content-left ml-3 mt-3">
+
+        {%endif%}
+
+        {% endfor%}
+    </div>
+    <div class="mb-3"></div>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>

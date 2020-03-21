@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
 from .models import Consumer
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 def signup(request):
@@ -35,8 +36,13 @@ def login_submit(request):
         pwd=request.POST["pwd"]
         user=auth.authenticate(username=uname,password=pwd)
         if user is not None:
-            auth.login(request,user)
-            return render(request,'chome.html')
+            try:
+                consumer=Consumer.objects.get(user=user)
+            except ObjectDoesNotExist as d:
+                return HttpResponse('User does not exist')
+            else:
+                auth.login(request,user)
+                return render(request,'chome.html')
         else:
             return HttpResponse('Invalid Credentials')
     else:

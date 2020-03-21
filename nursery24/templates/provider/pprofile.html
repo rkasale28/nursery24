@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+    <b>Full Name: </b>{{user.first_name}} {{user.last_name}}<br>
+    <b>Email: </b>{{user.email}}<br>
+    <b>User Name: </b>{{user.username}}<br>
+    <b>Phone No.: </b>{{user.provider.phone_number}}<br>
+    <b>Shop Name: </b>{{user.provider.shop_name}}<br>
+    <!--<b>Address: </b>{{user.provider.address_set.all.0.addr}}<br>-->
+    <b>Addresses: </b><br>
+    {% for i in user.provider.address_set.all%}
+    {{i.addr}}<br>
+    {% endfor %}
+    <script src="{% static 'js/header.js'%}"></script>
+    <script src="{% static 'js/header_authenticated.js'%}"></script>
+</body>
+</html>
