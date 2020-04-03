@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
@@ -28,7 +28,7 @@ def signup_submit(request):
             address.save()
             user=auth.authenticate(username=uname,password=pwd)
             auth.login(request,user)
-            return render(request,'phome.html')
+            return redirect('../provider/home')
     except IntegrityError as e:
         return HttpResponse ('Username already exists')
 
@@ -47,7 +47,7 @@ def login_submit(request):
                 return HttpResponse('User does not exist')
             else:
                 auth.login(request,user)
-                return render(request,'phome.html')
+                return redirect('../provider/home')
         else:
             return HttpResponse('Invalid Credentials')
     else:
@@ -55,7 +55,7 @@ def login_submit(request):
 
 def logout(request):
     auth.logout(request)
-    return render (request,"plogin.html")
+    return redirect ('../provider/login')
 
 def home(request):
     return render(request,'phome.html')
