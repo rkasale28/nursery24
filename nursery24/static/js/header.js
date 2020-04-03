@@ -3,7 +3,7 @@ template.innerHTML=`
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <nav class="navbar navbar-expand-lg navbar-light d-flex" style="background-color:#85EF50">
+    <nav class="navbar navbar-expand-lg navbar-light d-flex bg-warning">
         <a class="navbar-brand" href="#">
         <img src='../static/images/logo.png' width="100"
                 style="margin-left:10"></a>

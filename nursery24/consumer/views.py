@@ -80,8 +80,8 @@ def accessories(request):
     return render(request,'caccessories.html',{'unique_price':unique_price})
 
 def compareprices(request):
-    if (request.method=='POST'):
-        productid=request.POST['id']
+    if (request.method=='GET'):
+        productid=request.GET['id']
         product=Product.objects.get(pk=productid)
         prices=product.price_set.all().order_by('price')
         return render(request,'compareprice.html',{'prices':prices})

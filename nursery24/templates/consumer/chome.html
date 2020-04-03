@@ -158,29 +158,11 @@
     <div class="d-flex justify-content-start ml-3 mt-3">
         {% for i in newly_added %}
         <div class="card mr-3" style="width: 255px;">
-            <img class="card-img-top" src="{{i.image.url}}">
-
-            <div class="card-body">
-                <h5 class="card-title">{{i.name}}</h5>
-                <h6 class="card-subtitle text-muted">Rs. {{i.price_set.all.0.price}}</h6>
-            </div>
-
-            <div class="btn-group mr-1 mb-1 float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-success">+</button>
-                <button type="button" class="btn btn-outline-secondary disabled">0</button>
-                <button type="button" class="btn btn-success">-</button>
-            </div>
-
             {%if i.price_set.all.values_list|length > 1%}
-            <div class="sticky-bottom">
-                <form action="compareprices" method="post">
-                    {% csrf_token %}
-                <input type="hidden" name="id" value="{{i.product.id}}">    
-                <button type="submit" class="btn btn-primary ml-1">Compare Price</button>
-                </form>
-            </div>
+            <compare-price-item-card name={{i.name}} price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}></compare-price-item-card>
+            {% else %}
+            <item-card name={{i.name}} price={{i.price_set.all.0.price}} image={{i.image.url}}></item-card>
             {% endif %}
-
         </div>
 
         {% endfor %}
@@ -263,6 +245,8 @@
         crossorigin="anonymous"></script>
     <script src="{% static 'js/header.js'%}"></script>
     <script src="{% static 'js/header_authenticated.js'%}"></script>
+    <script src="{% static 'js/item_card.js'%}"></script>
+    <script src="{% static 'js/compare_price_item_card.js'%}"></script>
 </body>
 
 </html>
