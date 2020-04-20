@@ -8,8 +8,8 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
         <img src='../static/images/logo.png' width="100"
                 style="margin-left:10"></a>
 
-        <form class="form-inline my-2 my-lg-0" style="margin-left: 100px;">
-            <input class="form-control mr-sm-2" size="80" type="search" placeholder="Search" aria-label="Search">
+        <form  class="form-inline my-2 my-lg-0" action = "search" style="margin-left: 100px;">
+            <input class="form-control mr-sm-2" size="80" type="search" placeholder="Search" aria-label="Search" name ="search">
             <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         
