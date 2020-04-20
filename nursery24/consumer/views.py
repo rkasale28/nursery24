@@ -85,3 +85,8 @@ def compareprices(request):
         product=Product.objects.get(pk=productid)
         prices=product.price_set.all().order_by('price')
         return render(request,'compareprice.html',{'prices':prices})
+
+def search(request):
+    key = request.GET['search']
+    prods = Product.objects.all().filter(name__icontains=key) 
+    return render(request,'csearch.html',{'products':prods})

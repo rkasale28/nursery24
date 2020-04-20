@@ -14,5 +14,6 @@ urlpatterns=[
     path('soilandfertilizers',views.soil,name="soil"),
     path('decor',views.decor,name="decor"),
     path('accessories',views.accessories,name="accessories"),
-    path('compareprices',views.compareprices,name="compareprices")
+    path('compareprices',views.compareprices,name="compareprices"),
+    path('search',views.search,name="search"),
 ]

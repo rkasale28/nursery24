@@ -17,4 +17,5 @@ urlpatterns=[
     path('removebranch',views.removebranch,name="removebranch"),
     path('removebranchsubmit',views.removebranchsubmit,name="removebranchsubmit"),
     path('myprofile',views.myprofile,name="myprofile"),
+    
 ]

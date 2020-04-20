@@ -1,0 +1,8 @@
+{% for product in products %}
+<h2>{{product.name}}</h2>
+<p>{{product.category}}</p>
+<p>{{product.rating}}</p>
+
+{% empty %}
+<h2>Nothing to show</h2>
+{% endfor %}
