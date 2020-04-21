@@ -52,15 +52,27 @@ class ItemCard extends HTMLElement{
         this.shadowRoot.querySelector('#price').innerText=this.getAttribute('price')
         this.shadowRoot.querySelector('#image').src=this.getAttribute('image')
         //this.innerHTML=`${this.getAttribute('name')}`
+        let decodedCookie = decodeURIComponent(document.cookie).split(';');
+                let productString = decodedCookie.find(item => item.includes("product="));
+                //console.log(productString); success
+                let productStringSplit = productString.split('=');
+                let product = JSON.parse(productStringSplit[1]);
+                
+                if(product.find(item=> item.name == this.getAttribute('name'))){
+                    this.shadowRoot.querySelector("#result").innerHTML = product.find(item=> item.name == this.getAttribute('name')).price;
+                }
+        
     }
 
     connectedCallback(){
+
+        
         let name = this.shadowRoot.querySelector('h5').innerHTML;
         let price = this.shadowRoot.querySelector('#price').innerHTML;
-
+        
         //increments product in cookie
         this.shadowRoot.querySelector("#inc").addEventListener('click',()=>{
-            let result = this.shadowRoot.querySelector("#result");
+            
             let decodedCookie = decodeURIComponent(document.cookie).split(';');
         
             //console.log(price,name,decodedCookie);
