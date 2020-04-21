@@ -62,7 +62,19 @@ class ItemCard extends HTMLElement{
             let decodedCookie = decodeURIComponent(document.cookie).split(';');
         
             console.log(price,name,decodedCookie);
-            //console.log(decodedCookie.find(item => item.name == name))
+            if(!decodedCookie.find(item => item.includes("product="))){
+                let product = [{name: name, quantity: 1,price: price}]
+                console.log(product);
+                document.cookie = `product=` + JSON.stringify(product);
+                console.log(document.cookie);
+            }
+            else{
+                let productString = decodedCookie.find(item => item.includes("product="));
+                console.log(productString);
+                let productStringSplit = productString.split('=');
+                let product = JSON.parse(productStringSplit[1]);
+                console.log(product);
+            }
             
             result.innerHTML = price;
         });
