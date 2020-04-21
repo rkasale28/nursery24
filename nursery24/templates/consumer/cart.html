@@ -68,7 +68,7 @@
 </body>
 
 <script>
-
+    let reRender = () => {
     let cartItems = document.querySelector('#cartItems');
     let decodedCookie = decodeURIComponent(document.cookie).split(';');
     if(decodedCookie.find(item => item.includes("product="))){
@@ -78,14 +78,21 @@
         let productStringSplit = productString.split('=');
         let product = JSON.parse(productStringSplit[1]);
 
-        product.forEach(item=> console.log(item))
+        
+        product.find(item => item.quantity == 0) ? cartItems.innerHTML = `` :
+            cartItems.innerHTML = product.map(item=> `<item-card name=${item.name} price=${item.price} image=${item.img}></item-card>`)
+        
+        //cartItems.appendChild(child);
     }
     else{
         let heading3 = document.createElement('h3');
         let textnode = document.createTextNode('Your cart is empty 👶');
         heading3.appendChild(textnode);
-        
         cartItems.appendChild(heading3);
     }
+}
+
+setInterval(reRender,1000);
+
 </script>
 </html>
