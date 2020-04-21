@@ -55,12 +55,16 @@ class ItemCard extends HTMLElement{
     }
 
     connectedCallback(){
-        let name = this.shadowRoot.querySelector('h5');
-        let price = this.shadowRoot.querySelector('#price');
+        let name = this.shadowRoot.querySelector('h5').innerHTML;
+        let price = this.shadowRoot.querySelector('#price').innerHTML;
         this.shadowRoot.querySelector("#inc").addEventListener('click',()=>{
             let result = this.shadowRoot.querySelector("#result");
-            console.log(price,name);
-            result.innerHTML = price.innerHTML;
+            let decodedCookie = decodeURIComponent(document.cookie).split(';');
+        
+            console.log(price,name,decodedCookie);
+            //console.log(decodedCookie.find(item => item.name == name))
+            
+            result.innerHTML = price;
         });
     }
 
