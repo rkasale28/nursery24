@@ -69,7 +69,7 @@ class ItemCard extends HTMLElement{
                 //console.log(product);
                 document.cookie = 'product=' + JSON.stringify(product);
                 //console.log(document.cookie);
-                result.innerHTML = price;
+                this.shadowRoot.querySelector("#result").innerHTML = price;
                 console.log(product);
             }
             else{
@@ -80,7 +80,7 @@ class ItemCard extends HTMLElement{
                 //console.log(product); success
                 if(!product.find(item=> item.name == name)){
                     let newProduct = {name: name,quantity: 1, perPrice: price, price: price};
-                    result.innerHTML = price;
+                    this.shadowRoot.querySelector("#result").innerHTML = price;
                     product = [...product,newProduct];
                     console.log(product);
                     document.cookie = 'product=' + JSON.stringify(product);
@@ -89,7 +89,7 @@ class ItemCard extends HTMLElement{
                 {let thisProduct = product.pop(item => item.name == name);
                 thisProduct.quantity += 1;
                 thisProduct.price = thisProduct.perPrice * thisProduct.quantity;
-                result.innerHTML = thisProduct.price;
+                this.shadowRoot.querySelector("#result").innerHTML = thisProduct.price;
                 product = [...product,thisProduct];
                 console.log(product);
                 document.cookie = 'product=' + JSON.stringify(product);  }
