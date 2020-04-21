@@ -106,16 +106,24 @@ class ItemCard extends HTMLElement{
                 let productStringSplit = productString.split('=');
                 let product = JSON.parse(productStringSplit[1]);
                 let thisProduct = product.pop(item => item.name == name);
+                console.log('thisProduct',thisProduct)
                 thisProduct.quantity -= 1;
+                console.log('thisProduct.quantity',thisProduct.quantity)
+
                 thisProduct.price = thisProduct.perPrice * thisProduct.quantity;
-                result = thisProduct.price;
+                console.log('thisProduct.price',thisProduct.price)
+
+                this.shadowRoot.querySelector('#result').innerHTML = thisProduct.price;
+                
+                // console.log('result',result)
+
                 if(thisProduct.quantity != 0)
                     {product = [...product,thisProduct];
                     console.log(product);
                      }
                 document.cookie = 'product=' + JSON.stringify(product);
                 }
-            })
+            });
         });
     }
 
