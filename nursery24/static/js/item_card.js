@@ -57,6 +57,8 @@ class ItemCard extends HTMLElement{
     connectedCallback(){
         let name = this.shadowRoot.querySelector('h5').innerHTML;
         let price = this.shadowRoot.querySelector('#price').innerHTML;
+
+        //increments product in cookie
         this.shadowRoot.querySelector("#inc").addEventListener('click',()=>{
             let result = this.shadowRoot.querySelector("#result");
             let decodedCookie = decodeURIComponent(document.cookie).split(';');
@@ -93,7 +95,27 @@ class ItemCard extends HTMLElement{
                 document.cookie = 'product=' + JSON.stringify(product);  }
             }
             
-            
+            //decrements product in cookie
+            this.shadowRoot.querySelector("#dec").addEventListener('click',()=>{
+                let result = this.shadowRoot.querySelector('#result').innerHTML;
+                console.log(result);
+                if(result != 0){
+                let decodedCookie = decodeURIComponent(document.cookie).split(';');
+                let productString = decodedCookie.find(item => item.includes("product="));
+                //console.log(productString); success
+                let productStringSplit = productString.split('=');
+                let product = JSON.parse(productStringSplit[1]);
+                let thisProduct = product.pop(item => item.name == name);
+                thisProduct.quantity -= 1;
+                thisProduct.price = thisProduct.perPrice * thisProduct.quantity;
+                result = thisProduct.price;
+                if(thisProduct.quantity != 0)
+                    {product = [...product,thisProduct];
+                    console.log(product);
+                     }
+                document.cookie = 'product=' + JSON.stringify(product);
+                }
+            })
         });
     }
 
