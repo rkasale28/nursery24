@@ -61,22 +61,31 @@ class ItemCard extends HTMLElement{
             let result = this.shadowRoot.querySelector("#result");
             let decodedCookie = decodeURIComponent(document.cookie).split(';');
         
-            console.log(price,name,decodedCookie);
+            //console.log(price,name,decodedCookie);
             if(!decodedCookie.find(item => item.includes("product="))){
-                let product = [{name: name, quantity: 1,price: price}]
+                let product = [{name: name, quantity: 1,perPrice: price,price: price}]
+                //console.log(product);
+                document.cookie = 'product=' + JSON.stringify(product);
+                //console.log(document.cookie);
+                result.innerHTML = price;
                 console.log(product);
-                document.cookie = `product=` + JSON.stringify(product);
-                console.log(document.cookie);
             }
             else{
                 let productString = decodedCookie.find(item => item.includes("product="));
-                console.log(productString);
+                //console.log(productString); success
                 let productStringSplit = productString.split('=');
                 let product = JSON.parse(productStringSplit[1]);
+                //console.log(product); success
+                let thisProduct = product.pop(item => item.name == name);
+                thisProduct.quantity += 1;
+                thisProduct.price = thisProduct.perPrice * thisProduct.quantity;
+                result.innerHTML = thisProduct.price;
+                product = [...product,thisProduct];
                 console.log(product);
+                document.cookie = 'product=' + JSON.stringify(product);  
             }
             
-            result.innerHTML = price;
+            
         });
     }
 
