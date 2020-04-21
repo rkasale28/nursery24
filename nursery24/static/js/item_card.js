@@ -53,6 +53,7 @@ class ItemCard extends HTMLElement{
         this.shadowRoot.querySelector('#image').src=this.getAttribute('image')
         //this.innerHTML=`${this.getAttribute('name')}`
         let decodedCookie = decodeURIComponent(document.cookie).split(';');
+        if(decodedCookie.find(item => item.includes("product="))){
                 let productString = decodedCookie.find(item => item.includes("product="));
                 //console.log(productString); success
                 let productStringSplit = productString.split('=');
@@ -61,7 +62,7 @@ class ItemCard extends HTMLElement{
                 if(product.find(item=> item.name == this.getAttribute('name'))){
                     this.shadowRoot.querySelector("#result").innerHTML = product.find(item=> item.name == this.getAttribute('name')).price;
                 }
-        
+            }
     }
 
     connectedCallback(){
@@ -69,7 +70,7 @@ class ItemCard extends HTMLElement{
         
         let name = this.shadowRoot.querySelector('h5').innerHTML;
         let price = this.shadowRoot.querySelector('#price').innerHTML;
-        
+        let img = this.shadowRoot.querySelector('#image').src;
         //increments product in cookie
         this.shadowRoot.querySelector("#inc").addEventListener('click',()=>{
             
@@ -77,7 +78,7 @@ class ItemCard extends HTMLElement{
         
             //console.log(price,name,decodedCookie);
             if(!decodedCookie.find(item => item.includes("product="))){
-                let product = [{name: name, quantity: 1,perPrice: price,price: price}]
+                let product = [{name: name, quantity: 1,perPrice: price,price: price,img: img}]
                 //console.log(product);
                 document.cookie = 'product=' + JSON.stringify(product);
                 //console.log(document.cookie);
@@ -91,7 +92,7 @@ class ItemCard extends HTMLElement{
                 let product = JSON.parse(productStringSplit[1]);
                 //console.log(product); success
                 if(!product.find(item=> item.name == name)){
-                    let newProduct = {name: name,quantity: 1, perPrice: price, price: price};
+                    let newProduct = {name: name,quantity: 1, perPrice: price, price: price, img: img};
                     this.shadowRoot.querySelector("#result").innerHTML = price;
                     product = [...product,newProduct];
                     console.log(product);
