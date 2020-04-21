@@ -35,9 +35,9 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
     <div class="btn-toolbar ml-1 mb-2" role="toolbar" aria-label="Toolbar with button groups">
         
         <div class="btn-group ml-auto mr-2" role="group" aria-label="First group">
-            <button type="button" class="btn btn-success">+</button>
-            <button type="button" class="btn btn-outline-secondary disabled">0</button>
-            <button type="button" class="btn btn-success">-</button>
+            <button type="button" class="btn btn-success" id = "inc">+</button>
+            <button type="button" class="btn btn-outline-secondary disabled" id = "result">0</button>
+            <button type="button" class="btn btn-success" id = "dec">-</button>
         </div>
     </div>
             
@@ -52,6 +52,16 @@ class ItemCard extends HTMLElement{
         this.shadowRoot.querySelector('#price').innerText=this.getAttribute('price')
         this.shadowRoot.querySelector('#image').src=this.getAttribute('image')
         //this.innerHTML=`${this.getAttribute('name')}`
+    }
+
+    connectedCallback(){
+        let name = this.shadowRoot.querySelector('h5');
+        let price = this.shadowRoot.querySelector('#price');
+        this.shadowRoot.querySelector("#inc").addEventListener('click',()=>{
+            let result = this.shadowRoot.querySelector("#result");
+            console.log(price,name);
+            result.innerHTML = price.innerHTML;
+        });
     }
 
 }
