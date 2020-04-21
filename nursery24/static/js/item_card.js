@@ -76,13 +76,21 @@ class ItemCard extends HTMLElement{
                 let productStringSplit = productString.split('=');
                 let product = JSON.parse(productStringSplit[1]);
                 //console.log(product); success
-                let thisProduct = product.pop(item => item.name == name);
+                if(!product.find(item=> item.name == name)){
+                    let newProduct = {name: name,quantity: 1, perPrice: price, price: price};
+                    result.innerHTML = price;
+                    product = [...product,newProduct];
+                    console.log(product);
+                    document.cookie = 'product=' + JSON.stringify(product);
+                }
+                else
+                {let thisProduct = product.pop(item => item.name == name);
                 thisProduct.quantity += 1;
                 thisProduct.price = thisProduct.perPrice * thisProduct.quantity;
                 result.innerHTML = thisProduct.price;
                 product = [...product,thisProduct];
                 console.log(product);
-                document.cookie = 'product=' + JSON.stringify(product);  
+                document.cookie = 'product=' + JSON.stringify(product);  }
             }
             
             
