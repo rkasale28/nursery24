@@ -67,26 +67,27 @@
 </body>
 
 <script>
-    let rerender = () => {
-        let cartItems = document.querySelector('#cartItems');
-    let decodedCookie = decodeURIComponent(document.cookie).split(';');
-    let productString = decodedCookie.find(item => item.includes("product="));
-    let productStringSplit = productString.split('=');
-    let product = JSON.parse(productStringSplit[1]);
-    if(product != []){
+    // let rerender = () => {
+    //     let cartItems = document.querySelector('#cartItems');
+    // let decodedCookie = decodeURIComponent(document.cookie).split(';');
+    // let productString = decodedCookie.find(item => item.includes("product="));
+    // let productStringSplit = productString.split('=');
+    // let product = JSON.parse(productStringSplit[1]);
+    // if(product != []){
 
-        product.find(item => item.quantity == 0) ? cartItems.innerHTML = `` :
-        cartItems.innerHTML = product.map(item=> `<cart-card name=${item.name} price=${item.perPrice} image=${item.img}></cart-card>`)
+    //     product.find(item => item.quantity == 0) ? cartItems.innerHTML = `` :
+    //     cartItems.innerHTML = product.map(item=> `<cart-card name=${item.name} price=${item.perPrice} image=${item.img}></cart-card>`)
         
-        //cartItems.appendChild(child);
-    }
-    else{
-        let heading3 = document.createElement('h3');
-        let textnode = document.createTextNode('Your cart is empty 👶');
-        heading3.appendChild(textnode);
-        cartItems.appendChild(heading3);
-    }
-    }
+    //     //cartItems.appendChild(child);
+    // }
+    // else{
+    //     let heading3 = document.createElement('h3');
+    //     let textnode = document.createTextNode('Your cart is empty 👶');
+    //     heading3.appendChild(textnode);
+    //     cartItems.appendChild(heading3);
+    // }
+    // }
+
     let cartItems = document.querySelector('#cartItems');
     let decodedCookie = decodeURIComponent(document.cookie).split(';');
     let productString = decodedCookie.find(item => item.includes("product="));
@@ -106,6 +107,6 @@
         cartItems.appendChild(heading3);
     }
 
-    setInterval(rerender,300);
+    //setInterval(rerender,300);
 </script>
 </html>
