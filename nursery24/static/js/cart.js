@@ -131,6 +131,7 @@ class CartCard extends HTMLElement{
                             product = [...product,thisProduct];
                         }
                         else{
+                            document.cookie = 'product=' + JSON.stringify(product);
                             disconnect();
                         }
                         document.cookie = 'product=' + JSON.stringify(product);
@@ -143,7 +144,8 @@ class CartCard extends HTMLElement{
     }
 
     disconnectedCallback() {
-        console.log('disconnected from the DOM');
+       // rerender();
+       console.log('disconnected ...');
     }
 
 }
