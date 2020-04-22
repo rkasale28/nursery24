@@ -99,7 +99,9 @@ class ItemCard extends HTMLElement{
                     document.cookie = 'product=' + JSON.stringify(product);
                 }
                 else
-                {let thisProduct = product.pop(item => item.name == name);
+                {
+                let thisProduct = product.find(item => item.name == name);
+                product = product.filter(item=> item.name !=name);
                 thisProduct.quantity += 1;
                 thisProduct.price = thisProduct.perPrice * thisProduct.quantity;
                 this.shadowRoot.querySelector("#result").innerHTML = thisProduct.price;
@@ -108,54 +110,33 @@ class ItemCard extends HTMLElement{
                 document.cookie = 'product=' + JSON.stringify(product);  
                 }
             }
-            
+        });
             //decrements product in cookie
             this.shadowRoot.querySelector("#dec").addEventListener('click', async ()=>{
-               let decodedCookie = await decodeURIComponent(document.cookie).split(';');
-                //console.log(decodedCookie.find(item=> item.includes("product=")))
-               if(decodedCookie.find(item=> item.includes("product="))){
-                   let productString = decodedCookie.find(item => item.includes("product="));
-                  // console.log(productString);
-                   let productStringSplit = productString.split('=');
+                let decodedCookie = decodeURIComponent(document.cookie).split(';');
+                if(decodedCookie.find(item => item.includes("product="))){
+                let productString = decodedCookie.find(item => item.includes("product="));
+                let productStringSplit = productString.split('=');
                 let product = JSON.parse(productStringSplit[1]);
-                if(product.find(item=> item.name == name)){
-                    let thisProduct = product.find(item=> item.name==name);
-
-                    product = product.filter(item=> item.name != name);
-                    document.cookie = 'product=' + JSON.stringify(product);
-                    console.log('product',product)
-                    console.log('thisProduct',thisProduct)
-                thisProduct.quantity -= 1;
-                console.log('thisProduct.quantity',thisProduct.quantity)
-
-                thisProduct.price = thisProduct.perPrice * thisProduct.quantity;
-                console.log('thisProduct.price',thisProduct.price)
-                console.log('thisProduct',thisProduct)
-                this.shadowRoot.querySelector('#result').innerHTML = thisProduct.price;
-                if(thisProduct.quantity!= 0){
-                    product = [...product,thisProduct];
-                    console.log(product);
-                }  
-                document.cookie = 'product=' + JSON.stringify(product);
-                }
-                
+                if(product != []){
+                    if(product.find(item=> item.name == name)){
+                        if(product.find(item=> item.name == name).quantity != 0){
+                            
+                        let thisProduct = product.find(item=> item.name == name);
+                        product = product.filter(item=> item.name != name);
+                        thisProduct.quantity -= 1;
+                        thisProduct.price = thisProduct.perPrice * thisProduct.quantity;
+                        this.shadowRoot.querySelector('#result').innerHTML = thisProduct.price;
+                        if(thisProduct.quantity!= 0){
+                            product = [...product,thisProduct];
+                        }
+                        document.cookie = 'product=' + JSON.stringify(product);
+                        }
                     }
-                // let result = this.shadowRoot.querySelector('#result').innerHTML;
-                // console.log(result);
-                // if(result != 0){
-                // let decodedCookie = decodeURIComponent(document.cookie).split(';');
-                
-                // console.log(productString); success
-                
-                
-                
-                // console.log('result',result)
-
-                
-               
-                //}
+                }
+                }
             });
-        });
+        
     }
 
 }
