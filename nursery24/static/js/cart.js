@@ -131,12 +131,7 @@ class CartCard extends HTMLElement{
                         let thisProduct = product.find(item=> item.name == name);
                         product = product.filter(item=> item.name != name);
                         thisProduct.quantity -= 1;
-                        if(thisProduct.quantity == 0)
-                        {
-                            document.cookie = 'product=' + JSON.stringify(product);
-                            window.location.href = "cart"
-                            disconnect();
-                        }
+                        
                         thisProduct.price = thisProduct.perPrice * thisProduct.quantity;
                         this.shadowRoot.querySelector('#result').innerHTML = thisProduct.price;
                         this.shadowRoot.querySelector("#quantity").innerHTML = thisProduct.quantity;
@@ -145,7 +140,8 @@ class CartCard extends HTMLElement{
                         }
                         else{
                             document.cookie = 'product=' + JSON.stringify(product);
-                            
+                            document.cookie = 'product=' + JSON.stringify(product);
+                            window.location.href = "cart"
                             disconnect();
                         }
                         document.cookie = 'product=' + JSON.stringify(product);
