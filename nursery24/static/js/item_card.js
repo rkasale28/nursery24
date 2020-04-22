@@ -105,12 +105,13 @@ class ItemCard extends HTMLElement{
                 this.shadowRoot.querySelector("#result").innerHTML = thisProduct.price;
                 product = [...product,thisProduct];
                 console.log(product);
-                document.cookie = 'product=' + JSON.stringify(product);  }
+                document.cookie = 'product=' + JSON.stringify(product);  
+                }
             }
             
             //decrements product in cookie
-            this.shadowRoot.querySelector("#dec").addEventListener('click',()=>{
-                let decodedCookie = decodeURIComponent(document.cookie).split(';');
+            this.shadowRoot.querySelector("#dec").addEventListener('click', async ()=>{
+               let decodedCookie = await decodeURIComponent(document.cookie).split(';');
                 //console.log(decodedCookie.find(item=> item.includes("product=")))
                if(decodedCookie.find(item=> item.includes("product="))){
                    let productString = decodedCookie.find(item => item.includes("product="));
@@ -121,6 +122,7 @@ class ItemCard extends HTMLElement{
                     let thisProduct = product.find(item=> item.name==name);
 
                     product = product.filter(item=> item.name != name);
+                    document.cookie = 'product=' + JSON.stringify(product);
                     console.log('product',product)
                     console.log('thisProduct',thisProduct)
                 thisProduct.quantity -= 1;
@@ -128,7 +130,7 @@ class ItemCard extends HTMLElement{
 
                 thisProduct.price = thisProduct.perPrice * thisProduct.quantity;
                 console.log('thisProduct.price',thisProduct.price)
-
+                console.log('thisProduct',thisProduct)
                 this.shadowRoot.querySelector('#result').innerHTML = thisProduct.price;
                 if(thisProduct.quantity!= 0){
                     product = [...product,thisProduct];
