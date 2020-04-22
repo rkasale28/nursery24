@@ -76,7 +76,7 @@
     if(product != []){
 
         product.find(item => item.quantity == 0) ? cartItems.innerHTML = `` :
-        cartItems.innerHTML = product.map(item=> `<cart-card name=${item.name} price=${item.price} image=${item.img}></cart-card>`)
+        cartItems.innerHTML = product.map(item=> `<cart-card name=${item.name} price=${item.perPrice} image=${item.img}></cart-card>`)
         
         //cartItems.appendChild(child);
     }
@@ -95,7 +95,7 @@
     if(product != []){
 
         product.find(item => item.quantity == 0) ? cartItems.innerHTML = `` :
-        cartItems.innerHTML = product.map(item=> `<cart-card name=${item.name} price=${item.perPrice} image=${item.img}></cart-card>`)
+        cartItems.innerHTML = product.map(item=> `<cart-card name=${item.name} price=${item.perPrice} quantity=${item.quantity} image=${item.img}></cart-card>`)
         
         //cartItems.appendChild(child);
     }
@@ -106,6 +106,6 @@
         cartItems.appendChild(heading3);
     }
 
-    //setInterval(rerender,300);
+    setInterval(rerender,300);
 </script>
 </html>
