@@ -68,19 +68,16 @@
 </body>
 
 <script>
-    let reRender = () => {
+    
     let cartItems = document.querySelector('#cartItems');
     let decodedCookie = decodeURIComponent(document.cookie).split(';');
-    if(decodedCookie.find(item => item.includes("product="))){
+    let productString = decodedCookie.find(item => item.includes("product="));
+    let productStringSplit = productString.split('=');
+    let product = JSON.parse(productStringSplit[1]);
+    if(product != []){
 
-        //extracting data object(product) from the cookie
-        let productString = decodedCookie.find(item => item.includes("product="));
-        let productStringSplit = productString.split('=');
-        let product = JSON.parse(productStringSplit[1]);
-
-        
         product.find(item => item.quantity == 0) ? cartItems.innerHTML = `` :
-            cartItems.innerHTML = product.map(item=> `<item-card name=${item.name} price=${item.price} image=${item.img}></item-card>`)
+        cartItems.innerHTML = product.map(item=> `<item-card name=${item.name} price=${item.price} image=${item.img}></item-card>`)
         
         //cartItems.appendChild(child);
     }
@@ -90,9 +87,9 @@
         heading3.appendChild(textnode);
         cartItems.appendChild(heading3);
     }
-}
 
-setInterval(reRender,1000);
+
+
 
 </script>
 </html>

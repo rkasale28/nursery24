@@ -90,7 +90,7 @@ class ItemCard extends HTMLElement{
                 //console.log(productString); success
                 let productStringSplit = productString.split('=');
                 let product = JSON.parse(productStringSplit[1]);
-                //console.log(product); success
+                console.log(product);// success
                 if(!product.find(item=> item.name == name)){
                     let newProduct = {name: name,quantity: 1, perPrice: price, price: price, img: img};
                     this.shadowRoot.querySelector("#result").innerHTML = price;
@@ -110,13 +110,12 @@ class ItemCard extends HTMLElement{
             
             //decrements product in cookie
             this.shadowRoot.querySelector("#dec").addEventListener('click',()=>{
-                let result = this.shadowRoot.querySelector('#result').innerHTML;
-                console.log(result);
-                if(result != 0){
                 let decodedCookie = decodeURIComponent(document.cookie).split(';');
-                let productString = decodedCookie.find(item => item.includes("product="));
-                //console.log(productString); success
-                let productStringSplit = productString.split('=');
+                console.log(decodedCookie.find(item=> item.includes("product=")))
+               if(decodedCookie.find(item=> item.includes("product="))){
+                   let productString = decodedCookie.filter(item => item.includes("product="));
+                   console.log(productString);
+                   let productStringSplit = productString.split('=');
                 let product = JSON.parse(productStringSplit[1]);
                 let thisProduct = product.pop(item => item.name == name);
                 console.log('thisProduct',thisProduct)
@@ -128,13 +127,24 @@ class ItemCard extends HTMLElement{
 
                 this.shadowRoot.querySelector('#result').innerHTML = thisProduct.price;
                 
-                // console.log('result',result)
-
-                if(thisProduct.quantity != 0)
-                    {product = [...product,thisProduct];
+                    product = [...product,thisProduct];
                     console.log(product);
-                     }
+                     
                 document.cookie = 'product=' + JSON.stringify(product);
+                    }
+                let result = this.shadowRoot.querySelector('#result').innerHTML;
+                console.log(result);
+                if(result != 0){
+                let decodedCookie = decodeURIComponent(document.cookie).split(';');
+                
+                console.log(productString); success
+                
+                
+                
+                console.log('result',result)
+
+                
+               
                 }
             });
         });
