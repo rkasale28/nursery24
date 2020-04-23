@@ -14,10 +14,7 @@
 
     <title>Compare Price</title>
 </head>
-<style>
-
-
-</style>
+<style></style>
 <body>
 
     {% if not user.is_authenticated%}
@@ -25,9 +22,10 @@
     {% else %}
     <authenticated-header></authenticated-header>
     {% endif %}
-    <div class="table_info   ">
+    
+    <div class="table_info">
         <table class="table table-hover  table-striped">
-            <thead class = "table table-dark">
+            <thead class = "thead-dark">
                 <tr>
                     <th >Provider</th>
                     <th >Price</th>
@@ -52,10 +50,13 @@
                         </div>
                     </div>
                 </td>
-                <br>
                 
             </tbody>
             {%endfor%}                
         </table>
+
+        <script src="{% static 'js/header.js'%}"></script>
+        <script src="{% static 'js/header_authenticated.js'%}"></script>
+    
 </body>
 </html>
