@@ -61,6 +61,7 @@ class ComparePriceItemCard extends HTMLElement{
         btn.onclick= (event) =>{
             location.href='/consumer/compareprices?id='+this.getAttribute('id')
         }
+<<<<<<< HEAD
         //this.innerHTML=`${this.getAttribute('name')}`
         let decodedCookie = decodeURIComponent(document.cookie).split(';');
         if(decodedCookie.find(item => item.includes("product="))){
@@ -79,6 +80,8 @@ class ComparePriceItemCard extends HTMLElement{
                 }
             }
         }
+=======
+>>>>>>> dac1bff93a94d4dd613a35c48e963bba1da0645b
     }
 
 

@@ -57,9 +57,6 @@ class ProviderItemCard extends HTMLElement{
         this.shadowRoot.querySelector('input[name="csrfmiddlewaretoken"]').value=this.getAttribute('token')
         this.shadowRoot.querySelector('input[name="id"]').value=this.getAttribute('id')
         this.shadowRoot.querySelector('input[name="proid"]').value=this.getAttribute('proid')
-        
-        //this.innerHTML=`${this.getAttribute('name')}`
-
     }
 
 }
