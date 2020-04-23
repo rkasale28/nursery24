@@ -38,9 +38,13 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
         </div>
 
         <div class="btn-group mr-2" role="group" aria-label="First group">
-            <button type="button" class="btn btn-success">+</button>
+            <button type="button" class="btn btn-success" onclick = (event) =>{
+                location.href='/consumer/compareprices?id='+this.getAttribute('id')
+            }>+</button>
             <button type="button" class="btn btn-outline-secondary disabled">0</button>
-            <button type="button" class="btn btn-success">-</button>
+            <button type="button" class="btn btn-success" onclick = (event) =>{
+                location.href='/consumer/compareprices?id='+this.getAttribute('id')
+            }>-</button>
         </div>
     </div>
 </div>`
