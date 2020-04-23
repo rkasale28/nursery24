@@ -109,7 +109,7 @@ def addbranchsubmit(request):
         provider=Provider.objects.get(pk=provider_id)
         address=Address(addr=addr,provider=provider)
         address.save()
-        return render(request,'phome.html')
+        return redirect('../provider/removebranch')
 
 def removebranch(request):
     return render(request,'premovebranch.html')
@@ -118,4 +118,4 @@ def removebranchsubmit(request):
     if request.method=='POST':
         address_id=request.POST['id']
         Address.objects.get(pk=address_id).delete()
-        return render(request,'phome.html') 
+        return redirect('../provider/removebranch')

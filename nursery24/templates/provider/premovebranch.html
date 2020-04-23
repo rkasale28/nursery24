@@ -25,6 +25,11 @@
             height: 20vw;
             object-fit: cover;
         }
+
+        a:hover {
+            text-decoration: none;
+            color: black;
+        }
     </style>
 </head>
 
@@ -34,7 +39,7 @@
     {% else %}
     <authenticated-header></authenticated-header>
     {% endif %}
-    
+
     <ul class="nav nav-pills nav-fill bg-light">
         <li class="nav-item">
             <a class="nav-link" href="home">Pending Orders</a>
@@ -46,27 +51,68 @@
             <a class="nav-link" href="removeitem">Remove Item</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="addbranch">Add Branch</a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link active" href="removebranch">Remove Branch</a>
+            <a class="nav-link active" href="removebranch">Branch</a>
         </li>
     </ul>
     {% if user.provider.address_set.all.values_list|length > 1 %}
-    <b>Addresses: </b><br>    
-    {% for i in user.provider.address_set.all%}
-    <form action="removebranchsubmit" method="post">
-    {% csrf_token %}
-    {{i.addr}} &nbsp;&nbsp;&nbsp;&nbsp;
-    <input name="id" type="hidden" value="{{i.id}}">
-    <input type="submit" class="btn-danger" value="Delete">
-    </form>
-    {% endfor %}
+    <div class="d-flex justify-content-start ml-3 mt-3">
+        {% for i in user.provider.address_set.all%}
+        <div class="card mr-3" style="width: 255px;height:255px">
+            <div class="card-body d-flex flex-column">
+                <p class="card-text">{{i.addr}}</p>
+
+                <form action="removebranchsubmit" method="post" class="ml-auto" style="margin-top:150px">
+                {% csrf_token %}
+                <input name="id" type="hidden" value="{{i.id}}">
+                <input type="submit" class=" btn btn-danger" value="Delete">
+                </form>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:5 %}
+    </div>
+    <div class="d-flex justify-content-left ml-3 mt-3">
+        {%endif%}
+
+        {% endfor%}
+        <a href="addbranch">
+            <div class="d-flex justify-content-start">
+                <div class="card mr-3 bg-light" style="width: 255px;height:255px;border: 5px dashed black">
+                    <div class="card-title">
+                        <p class="card-text text-center" style="font-size: 100px;margin-top:40px;">+</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
     {% else %}
-    <h3>Can&apos;t Delete</h3>
+
+    <div class="d-flex justify-content-start ml-3 mt-3">
+        {% for i in user.provider.address_set.all%}
+        <div class="card mr-3" style="width: 255px;height:255px">
+            <div class="card-body d-flex flex-column">
+                <p class="card-text">{{i.addr}}</p>
+
+                <form action="removebranchsubmit" method="post" class="ml-auto"  style="margin-top:150px">
+                    {% csrf_token %}
+                    <input name="id" type="hidden" value="{{i.id}}">
+                    <input type="submit" class=" btn btn-danger" value="Delete" disabled>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        <a href="addbranch">
+            <div class="d-flex justify-content-start">
+                <div class="card mr-3 bg-light" style="width: 255px;height:255px;border: 5px dashed black">
+                    <div class="card-title">
+                        <p class="card-text text-center" style="font-size: 100px;margin-top:40px;">+</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
     {% endif%}
-    
+
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
