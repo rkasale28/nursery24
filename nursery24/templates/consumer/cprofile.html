@@ -8,7 +8,115 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+body{
+   background-color: #f3f3f3;
+}
+
+.wrapper{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 450px;
+  display: flex;
+  box-shadow: 0 1px 20px 0 rgba(69,90,100,.08);
+}
+
+.wrapper .left{
+  width: 35%;
+  background: linear-gradient(to right,#01a9ac,#01dbdf);
+  padding: 30px 25px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  text-align: center;
+  color: #fff;
+}
+
+.wrapper .left img{
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.wrapper .left h4{
+  margin-bottom: 10px;
+}
+
+.wrapper .left p{
+  font-size: 12px;
+}
+
+.wrapper .right{
+  width: 65%;
+  background: #fff;
+  padding: 30px 25px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.wrapper .right .info{
+  margin-bottom: 25px;
+}
+
+.wrapper .right .info h3{
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #353c4e;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+}
+
+.wrapper .right .info_data{
+  
+  justify-content: space-between;
+}
+
+.wrapper .right .info_data .data{
+  width: 45%;
+}
+
+.wrapper .right .info_data .data h4{
+    color: #353c4e;
+    margin-bottom: 5px;
+}
+
+.wrapper .right .info_data .data p{
+  font-size: 13px;
+  margin-bottom: 10px;
+  color: #919aa3;
+}
+
+.wrapper .social_media ul{
+  display: flex;
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
 <body>
     {% if not user.is_authenticated%}
     <header-bar></header-bar>
@@ -16,10 +124,38 @@
     <authenticated-header></authenticated-header>
     {% endif %}
     
-    <b>Full Name: </b>{{user.first_name}} {{user.last_name}}<br>
-    <b>Email: </b>{{user.email}}<br>
-    <b>User Name: </b>{{user.username}}<br>
-    <b>Phone No.: </b>{{user.consumer.phone_number}}
+    <div class ="wrapper">
+        
+        <div class="left">
+            <image class="d-block w-80 mx-auto" src="{%static 'images/profile.png'%}"    width="100">
+                <h4>Full Name </h4>{{user.first_name}} {{user.last_name}}<br>            
+        </div> 
+
+            <div class="right">
+                <div class="info">
+                    <h3>User profile</h3> 
+                    <div class="info_data">
+                        <div class="data"> 
+                            <h4>Email </h4>{{user.email}}<br>
+                        </div>
+
+                        <div class="data">
+                            <h4>User Name </h4>{{user.username}}<br>
+                        </div>
+
+                        <div class="data">
+                            <h4>Phone No. </h4>{{user.consumer.phone_number}}
+                        </div>
+
+                    </div>
+
+                </div>
+               
+            </div>
+
+        </div>
+                        
+    
 
     <script src="{% static 'js/header.js'%}"></script>
     <script src="{% static 'js/header_authenticated.js'%}"></script>

@@ -53,7 +53,7 @@ def logout(request):
     return redirect('../consumer/home')
 
 def myprofile(request):
-    return render(request,'cprofile.html')
+    return render(request,'consumer/cprofile.html')
     
 def home(request):
     newly_added=Product.objects.all().order_by('-date_added')[:5]
