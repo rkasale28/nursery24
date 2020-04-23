@@ -2,10 +2,11 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
-from .models import Consumer,Product
+from .models import Consumer,Product,Address
 from django.core.exceptions import ObjectDoesNotExist
 from provider.models import Price
 from http import cookies
+from .forms import AddressForm
 
 import os
 # Create your views here.
@@ -60,7 +61,29 @@ def logout(request):
     return redirect('../consumer/home')
 
 def myprofile(request):
-    return render(request,'consumer/cprofile.html')
+    return render(request,'cprofile.html')
+
+def addresses(request):
+    return render(request,'caddress.html')
+
+def addaddress(request):
+    form=AddressForm()
+    return render(request,'caddaddress.html',{'form':form})
+
+def addaddresssubmit(request):
+    if request.method=='POST':
+        consumer_id=request.POST['consumer']
+        addr=request.POST['addr']
+        consumer=Consumer.objects.get(pk=consumer_id)
+        address=Address(addr=addr,consumer=consumer)
+        address.save()
+        return redirect('../consumer/addresses')
+
+def deleteaddresssubmit(request):
+    if request.method=='POST':
+        address_id=request.POST['id']
+        Address.objects.get(pk=address_id).delete()
+        return redirect('../consumer/addresses') 
     
 def home(request):
     newly_added=Product.objects.all().order_by('-date_added')[:5]
