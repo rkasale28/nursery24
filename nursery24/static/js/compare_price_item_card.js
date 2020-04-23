@@ -61,27 +61,6 @@ class ComparePriceItemCard extends HTMLElement{
         btn.onclick= (event) =>{
             location.href='/consumer/compareprices?id='+this.getAttribute('id')
         }
-<<<<<<< HEAD
-        //this.innerHTML=`${this.getAttribute('name')}`
-        let decodedCookie = decodeURIComponent(document.cookie).split(';');
-        if(decodedCookie.find(item => item.includes("product="))){
-            let productString = decodedCookie.find(item => item.includes("product="));
-            //console.log(productString); success
-            let productStringSplit = productString.split('=');
-            let product = JSON.parse(productStringSplit[1]);
-            
-            if(product.find(item=> item.name == this.getAttribute('name'))){
-                if(!product.providers){
-                    this.shadowRoot.querySelector("#result").innerHTML = product.find(item=> item.name == this.getAttribute('name')).quantity;
-                }
-                else{
-                    thisProduct = product.find(item=> item.name == name)
-                    this.shadowRoot.querySelector("#result").innerHTML = thisProduct.providers.reduce((subtotal,item)=>{return item.quantity + subtotal},0);
-                }
-            }
-        }
-=======
->>>>>>> dac1bff93a94d4dd613a35c48e963bba1da0645b
     }
 
 
