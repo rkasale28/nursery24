@@ -1,15 +1,61 @@
+{%load static%}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
     <title>Compare Price</title>
 </head>
+<style>
+
+
+</style>
 <body>
-    {%for i in prices%}
-        {{i.price}}
-        {{i.provider.shop_name}}
-        {{i.provider.address_set.all.0.addr}}<br>
-    {%endfor%}
+
+    {% if not user.is_authenticated%}
+    <header-bar></header-bar>
+    {% else %}
+    <authenticated-header></authenticated-header>
+    {% endif %}
+    <div class="table_info   ">
+        <table class="table table-hover  table-striped">
+            <thead class = "table table-dark">
+                <tr>
+                    <th >Provider</th>
+                    <th >Price</th>
+                    <th >Address</th>
+                    <th ></th>
+                </tr>
+            </thead>
+            {%for i in prices%}
+            <tbody>
+                
+                
+                <td class = "ml-3">{{i.provider.shop_name}}</td>
+                <td>{{i.price}}</td>
+                <td>{{i.provider.address_set.all.0.addr}}</td>
+                <td class = "float-left  ">
+                    <div  class="btn-toolbar ml-1 mb-2" role="toolbar" aria-label="Toolbar with button groups">
+        
+                        <div class="btn-group ml-auto mr-2" role="group" aria-label="First group">
+                            <button type="button" class="btn btn-success" id = "inc">+</button>
+                            <button type="button" class="btn btn-outline-secondary disabled" id = "result">0</button>
+                            <button type="button" class="btn btn-success" id = "dec">-</button>
+                        </div>
+                    </div>
+                </td>
+                <br>
+                
+            </tbody>
+            {%endfor%}                
+        </table>
 </body>
 </html>
