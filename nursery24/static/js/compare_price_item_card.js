@@ -59,7 +59,6 @@ class ComparePriceItemCard extends HTMLElement{
         btn.onclick= (event) =>{
             location.href='/consumer/compareprices?id='+this.getAttribute('id')
         }
-        //this.innerHTML=`${this.getAttribute('name')}`
     }
 
 }
