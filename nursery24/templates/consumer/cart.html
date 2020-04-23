@@ -1,0 +1,112 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        .card {
+            display: inline-block;
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 15vw;
+            object-fit: cover;
+        }
+
+        .d-block {
+            height: 20vw;
+            object-fit: cover;
+        }
+    </style>
+    <script src="{% static 'js/cart.js'%}"></script>
+</head>
+<body>
+   
+    <ul class="nav nav-pills nav-fill bg-light">
+        <li class="nav-item">
+            <a class="nav-link " href="home">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="plants">Plants</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="seeds">Seeds</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="soilandfertilizers">Soil and Fertilizers</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="decor">Decor</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="accessories">Accessories</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link active" href="cart">Cart</a>
+        </li>
+    </ul>
+
+    <div id = "cartItems">
+        Your cart is empty 👶
+    </div>
+    {% if not user.is_authenticated%}
+    <h3>Please Signup/Login to Checkout</h3>
+    {% else %}
+    <button>Proceed to Checkout</button>
+    {% endif %}
+</body>
+
+<script>
+    // let rerender = () => {
+    //     let cartItems = document.querySelector('#cartItems');
+    // let decodedCookie = decodeURIComponent(document.cookie).split(';');
+    // let productString = decodedCookie.find(item => item.includes("product="));
+    // let productStringSplit = productString.split('=');
+    // let product = JSON.parse(productStringSplit[1]);
+    // if(product != []){
+
+    //     product.find(item => item.quantity == 0) ? cartItems.innerHTML = `` :
+    //     cartItems.innerHTML = product.map(item=> `<cart-card name=${item.name} price=${item.perPrice} image=${item.img}></cart-card>`)
+        
+    //     //cartItems.appendChild(child);
+    // }
+    // else{
+    //     let heading3 = document.createElement('h3');
+    //     let textnode = document.createTextNode('Your cart is empty 👶');
+    //     heading3.appendChild(textnode);
+    //     cartItems.appendChild(heading3);
+    // }
+    // }
+
+    let cartItems = document.querySelector('#cartItems');
+    let decodedCookie = decodeURIComponent(document.cookie).split(';');
+    let productString = decodedCookie.find(item => item.includes("product="));
+    let productStringSplit = productString.split('=');
+    let product = JSON.parse(productStringSplit[1]);
+    if(product != []){
+
+        product.find(item => item.quantity == 0) ? cartItems.innerHTML = `` :
+        cartItems.innerHTML = product.map(item=> `<cart-card name=${item.name} price=${item.perPrice} quantity=${item.quantity} image=${item.img}></cart-card>`)
+        
+        //cartItems.appendChild(child);
+    }
+    else{
+        let heading3 = document.createElement('h3');
+        let textnode = document.createTextNode('Your cart is empty 👶');
+        heading3.appendChild(textnode);
+        cartItems.appendChild(heading3);
+    }
+
+    //setInterval(rerender,300);
+</script>
+</html>

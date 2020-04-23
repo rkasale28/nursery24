@@ -5,6 +5,9 @@ from django.contrib.auth.models import User,auth
 from .models import Consumer,Product
 from django.core.exceptions import ObjectDoesNotExist
 from provider.models import Price
+from http import cookies
+
+import os
 # Create your views here.
 def signup(request):
     return render(request,'csignup.html')
@@ -42,6 +45,9 @@ def login_submit(request):
                 return HttpResponse('User does not exist')
             else:
                 auth.login(request,user)
+                U = cookies.SimpleCookie()
+                U['username'] = user
+                
                 return redirect('../consumer/home')
         else:
             return HttpResponse('Invalid Credentials')
@@ -50,6 +56,7 @@ def login_submit(request):
 
 def logout(request):
     auth.logout(request)
+    
     return redirect('../consumer/home')
 
 def myprofile(request):
@@ -90,3 +97,8 @@ def search(request):
     key = request.GET['search']
     prods = Product.objects.all().filter(name__icontains=key) 
     return render(request,'csearch.html',{'products':prods})
+
+def cart(request):
+    #key = request.GET['cart']
+   # U = cookies.SimpleCookie(os.environ["HTTP_COOKIE"])
+    return render(request,'cart.html')
