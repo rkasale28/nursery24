@@ -181,7 +181,7 @@ def confirmorder(request):
                 n = nom.geocode("%s" % a.addr,timeout = None )
                 provideraddr = (n.latitude,n.longitude)
                 dist = (geodesic(provideraddr,customeraddr).km)    
-                if(dist<100):
+                if(dist<50):
                     available.append(p.id)  
                     break
         if(len(available) != 0):
@@ -189,7 +189,9 @@ def confirmorder(request):
                 pro = Price.objects.filter(product_id = product.id).filter(provider_id = x)
                 for y in pro:
                     prices.append(y.price)
-                    finalprices.append(min(prices))
+            finalprices.append(min(prices))
+        else:
+            finalprices.append(0)
     data['prices'] = finalprices
     data['finalprices'] = []
     total = 0
