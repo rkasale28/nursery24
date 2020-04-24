@@ -175,15 +175,20 @@
         {% for i in newly_added %}
         <div class="card mr-3" style="width: 255px;">
             {%if i.price_set.all.values_list|length > 1%}
+            <script>console.log(`{{i}}`)
+                </script>
             <compare-price-item-card name={{i.name}} price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}></compare-price-item-card>
             {% else %}
-            <item-card name={{i.name}} price={{i.price_set.all.0.price}} image={{i.image.url}}></item-card>
+            <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}}></item-card>
             {% endif %}
         </div>
-
         {% endfor %}
     </div>
-
+<div>
+    {% for i in newly_added %}
+        <div>{{i.name}}</div>
+    {% endfor %}
+</div>
     <hr>
     <h5 class="text-center" style="margin-bottom:15px;">Top Rated</h5>
     <div class="d-flex justify-content-center ml-3 mt-3">

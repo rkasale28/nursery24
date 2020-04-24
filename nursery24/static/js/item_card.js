@@ -47,7 +47,7 @@ class ItemCard extends HTMLElement{
         super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(template2.content.cloneNode(true))
-        this.shadowRoot.querySelector('h5').innerText=this.getAttribute('name')
+        this.shadowRoot.querySelector('h5').innerText= `${this.getAttribute('name')}`
         this.shadowRoot.querySelector('#price').innerText=this.getAttribute('price')
         this.shadowRoot.querySelector('#image').src=this.getAttribute('image')
         this.innerHTML=`${this.getAttribute('name')}`

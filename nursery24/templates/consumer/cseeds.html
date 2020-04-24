@@ -50,9 +50,9 @@
         {% for i in unique_price %}
         <div class="card mr-3" style="width: 255px;">
             {%if i.product.price_set.all.values_list|length > 1%}
-            <compare-price-item-card name={{i.product.name}} price={{i.price}} image={{i.product.image.url}} id={{i.product.id}}></compare-price-item-card>
+            <compare-price-item-card name="{{i.product.name}}" price={{i.price}} image={{i.product.image.url}} id={{i.product.id}}></compare-price-item-card>
             {% else %}
-            <item-card name={{i.product.name}} price={{i.price}} image={{i.product.image.url}}></item-card>
+            <item-card name="{{i.product.name}}" price={{i.price}} image={{i.product.image.url}}></item-card>
             {% endif %}
         </div>
 
