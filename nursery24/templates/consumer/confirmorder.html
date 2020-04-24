@@ -1,0 +1,10 @@
+<html>
+<body>
+{% load custom_tags %}
+{% for i in length %}
+<h3>Name = {{ names|index:i }} </h3>
+<h3>Quantity = {{ qty|index:i }} </h3>
+<h3>Price = {{ finalprices|index:i }} </h3> <br>
+{% endfor %}
+</body>
+</html>

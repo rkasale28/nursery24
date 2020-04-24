@@ -16,5 +16,7 @@ urlpatterns=[
     path('accessories',views.accessories,name="accessories"),
     path('compareprices',views.compareprices,name="compareprices"),
     path('search',views.search,name="search"),
-    path('cart',views.cart,name="cart")
+    path('cart',views.cart,name="cart"),
+    path('checkout',views.checkout,name="checkout"),
+    path('confirmorder',views.confirmorder,name="confirmorder")
 ]

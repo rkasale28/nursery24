@@ -80,8 +80,7 @@ class CartCard extends HTMLElement{
         this.shadowRoot.querySelector("#inc").addEventListener('click',()=>{
             
             let decodedCookie = decodeURIComponent(document.cookie).split(';');
-        
-            //console.log(price,name,decodedCookie);
+            console.log(decodedCookie);
             if(!decodedCookie.find(item => item.includes("product="))){
                 let product = [{name: name, quantity: 1,perPrice: price,price: price,img: img}]
                 //console.log(product);
