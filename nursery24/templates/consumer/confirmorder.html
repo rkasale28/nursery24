@@ -4,7 +4,9 @@
 {% for i in length %}
 <h3>Name = {{ names|index:i }} </h3>
 <h3>Quantity = {{ qty|index:i }} </h3>
-<h3>Price = {{ finalprices|index:i }} </h3> <br>
+<h3>Price = {{ prices|index:i }} </h3> 
+<h3>Final Price = {{ finalprices|index:i }}</h3> <br>
 {% endfor %}
+<h3>Total = {{ total }}</h3>
 </body>
 </html>
