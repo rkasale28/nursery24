@@ -20,7 +20,7 @@ class Product(models.Model):
         ('A','Accessories')
     ]
     image=models.ImageField(upload_to='pics/')
-    name=models.CharField(max_length=20,blank=False)
+    name=models.CharField(max_length=100,blank=False)
     category=models.CharField(max_length=1,choices=CATEGORY_CHOICES)
     rating=models.FloatField(default=0.0)
     date_added=models.DateTimeField(auto_now_add=True)

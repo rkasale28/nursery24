@@ -30,8 +30,6 @@ class HeaderAuthenticated extends HTMLElement{
         super();
         this.attachShadow({mode: 'open'})
         this.shadowRoot.appendChild(template1.content.cloneNode(true))
-        // this.shadowRoot.querySelector('h3').innerText=this.getAttribute('name')
-        //this.innerHTML=`${this.getAttribute('name')}`
     }
 
 }

@@ -38,9 +38,9 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
         </div>
 
         <div class="btn-group mr-2" role="group" aria-label="First group">
-            <button type="button" class="btn btn-success">+</button>
-            <button type="button" class="btn btn-outline-secondary disabled">0</button>
-            <button type="button" class="btn btn-success">-</button>
+            <button type="button" class="btn btn-success" id = "inc">+</button>
+            <button type="button" class="btn btn-outline-secondary disabled" id = "result">0</button>
+            <button type="button" class="btn btn-success" id = "dec">-</button>
         </div>
     </div>
 </div>`
@@ -53,15 +53,146 @@ class ComparePriceItemCard extends HTMLElement{
         this.shadowRoot.querySelector('h5').innerText=this.getAttribute('name')
         this.shadowRoot.querySelector('#price').innerText=this.getAttribute('price')
         this.shadowRoot.querySelector('#image').src=this.getAttribute('image')
-
+        // this.shadowRoot.querySelector('#direct').addEventListener('click',()=>{
+        //     location.href='/consumer/compareprices?id='+this.getAttribute('id')
+        // })
+        
         var btn=this.shadowRoot.querySelector('#compare')
 
         btn.onclick= (event) =>{
             location.href='/consumer/compareprices?id='+this.getAttribute('id')
         }
         //this.innerHTML=`${this.getAttribute('name')}`
+        let decodedCookie = decodeURIComponent(document.cookie).split(';');
+        if(decodedCookie.find(item => item.includes("product="))){
+            let productString = decodedCookie.find(item => item.includes("product="));
+            //console.log(productString); success
+            let productStringSplit = productString.split('=');
+            let product = JSON.parse(productStringSplit[1]);
+            
+            if(product.find(item=> item.id)){
+                if(!product.providers){
+                    this.shadowRoot.querySelector("#result").innerHTML = product.find(item=> item.name == this.getAttribute('name')).quantity;
+                }
+                else{
+                    thisProduct = product.find(item=> item.name == this.getAttribute('name'))
+                    this.shadowRoot.querySelector("#result").innerHTML = thisProduct.providers.reduce((subtotal,item)=>{return item.quantity + subtotal},0);
+                }
+            }
+            else{
+                newField = {name: this.getAttribute('name'),id: this.getAttribute('id'),perPrice: this.getAttribute('price'),price: this.getAttribute('price'),quantity: 0,img: this.getAttribute('image')};
+                product = [...product,newField];
+                this.shadowRoot.querySelector('#result').innerHTML = newField.quantity;
+                document.cookie = 'product=' + JSON.stringify(product);
+            }
+        }
+        else{
+            let product = [ {name: this.getAttribute('name'),id: this.getAttribute('id'),perPrice: this.getAttribute('price'),price: this.getAttribute('price'),quantity: 0,img: this.getAttribute('image')}];
+                
+                document.cookie = 'product=' + JSON.stringify(product);
+                //console.log(document.cookie);
+                this.shadowRoot.querySelector("#result").innerHTML = product[0].quantity;
+        }
+        
     }
 
+
+    connectedCallback(){
+
+        let name = this.shadowRoot.querySelector('h5').innerHTML;
+        let price = this.shadowRoot.querySelector('#price').innerHTML;
+        let img = this.shadowRoot.querySelector('#image').src;
+    
+        //increments product in cookie
+        this.shadowRoot.querySelector("#inc").addEventListener('click',()=>{
+            
+            let decodedCookie = decodeURIComponent(document.cookie).split(';');
+            let productString = decodedCookie.find(item => item.includes("product="));
+                //console.log(productString); success
+                let productStringSplit = productString.split('=');
+                let product = JSON.parse(productStringSplit[1]);
+            //console.log(price,name,decodedCookie);
+            
+            
+                
+               // console.log(product);// success
+               
+                
+                
+                    let thisProduct = product.find(item => item.name == name);
+                    product = product.filter(item=> item.name !=name);
+                    if(!(thisProduct.providers)){
+                                 
+                        thisProduct.quantity += 1;
+                        thisProduct.price = thisProduct.perPrice * thisProduct.quantity;
+                        this.shadowRoot.querySelector("#result").innerHTML = thisProduct.quantity;
+                        
+                    }
+                    else{
+                        let ye = thisProduct.providers.find(item=> item.perPrice == price);
+                        thisProduct.providers = thisProduct.providers.filter(item=> item.perPrice != price)
+                        ye.quantity += 1;
+                        ye.price = ye.perPrice * ye.quantity;
+                        this.shadowRoot.querySelector("#result").innerHTML = thisProduct.providers.reduce((subtotal,item)=>{return item.quantity + subtotal},0);
+                        thisProduct.providers = [...thisProduct.providers,ye];
+                    }
+                    product = [...product,thisProduct];
+                    console.log(product);
+                    document.cookie = 'product=' + JSON.stringify(product);  
+                
+                
+            
+        });
+            //decrements product in cookie
+            this.shadowRoot.querySelector("#dec").addEventListener('click', async ()=>{
+                let decodedCookie = decodeURIComponent(document.cookie).split(';');
+                if(decodedCookie.find(item => item.includes("product="))){
+                let productString = decodedCookie.find(item => item.includes("product="));
+                let productStringSplit = productString.split('=');
+                let product = JSON.parse(productStringSplit[1]);
+                if(product != []){
+                    if(product.find(item=> item.name == name)){
+                        
+                        if(!product.providers){
+                            if(product.find(item=> item.name == name).quantity != 0){
+                                let thisProduct = product.find(item=> item.name == name);
+                        product = product.filter(item=> item.name != name);
+                        thisProduct.quantity -= 1;
+                        thisProduct.price = thisProduct.perPrice * thisProduct.quantity;
+                        this.shadowRoot.querySelector('#result').innerHTML = thisProduct.quantity;
+                        if(thisProduct.quantity!= 0){
+                            product = [...product,thisProduct];
+                        }
+                        document.cookie = 'product=' + JSON.stringify(product);
+                            }
+                        }
+                        
+                        else{
+                            if(thisProduct.providers.find(item=>item.perPrice == price)){
+                                let ye = thisProduct.providers.find(item=>item.perPrice==price);
+                                thisProduct.providers = thisProduct.providers.filter(item=>item.perPrice != price);
+                                ye.quantity -= 1;
+                                if(ye.quantity != 0){
+                                    ye.price = ye.quantity * ye.perPrice;
+                                    thisProduct.providers = [...thisProduct.providers,ye];
+                                }
+                                this.shadowRoot.querySelector('result').innerHTML = thisProduct.providers.reduce((subtotal,item)=>{return item.quantity + subtotal},0);
+                                product = [...product,thisProduct];
+                                document.cookie = 'product=' + JSON.stringify(product);
+                            }else{
+                                location.href='/consumer/compareprices?id='+this.getAttribute('id');
+                            }
+                        }
+                        
+                        
+                        
+
+                    }
+                }
+                }
+            });
+    }
+    
 }
 
 window.customElements.define('compare-price-item-card',ComparePriceItemCard)

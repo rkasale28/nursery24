@@ -93,7 +93,7 @@
     </div>
     <h5 class="text-center" style="margin-top: 10px;margin-bottom:15px;">Trending</h5>
     <div class="d-flex justify-content-center ml-3 mt-3">
-        <div class="card mr-4" style="width: 20rem;">
+        <!-- <div class="card mr-4" style="width: 20rem;">
             <img class="card-img-top" src="{% static 'images/card1.jpg'%}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">Vertical Nursery</h5>
@@ -104,8 +104,11 @@
                 <button type="button" class="btn btn-outline-secondary">0</button>
                 <button type="button" class="btn btn-outline-secondary">-</button>
             </div>
-        </div>
+        </div> -->
         <div class="card mr-4" style="width: 20rem;">
+            <item-card name = 'Vertical Nursery' price = '500' image="{%static 'images/card1.jpg'%}" ></item-card>
+        </div>
+        <!-- <div class="card mr-4" style="width: 20rem;">
             <img class="card-img-top" src="{% static 'images/card2.jpg'%}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">Plants Decor</h5>
@@ -116,8 +119,11 @@
                 <button type="button" class="btn btn-outline-secondary">0</button>
                 <button type="button" class="btn btn-outline-secondary">-</button>
             </div>
-        </div>
+        </div> -->
         <div class="card mr-4" style="width: 20rem;">
+            <item-card name = 'Plants Decor' price = '250' image="{%static 'images/card2.jpg'%}" ></item-card>
+        </div>
+        <!-- <div class="card mr-4" style="width: 20rem;">
             <img class="card-img-top" src="{% static 'images/card3.jpg'%}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">Hanging Plants</h5>
@@ -128,8 +134,11 @@
                 <button type="button" class="btn btn-outline-secondary">0</button>
                 <button type="button" class="btn btn-outline-secondary">-</button>
             </div>
-        </div>
+        </div> -->
         <div class="card mr-4" style="width: 20rem;">
+            <item-card name = 'Hanging Plants' price = '300' image="{%static 'images/card3.jpg'%}" ></item-card>
+        </div>
+        <!-- <div class="card mr-4" style="width: 20rem;">
             <img class="card-img-top" src="{% static 'images/card4.jpg'%}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">Water Plants</h5>
@@ -140,8 +149,11 @@
                 <button type="button" class="btn btn-outline-secondary">0</button>
                 <button type="button" class="btn btn-outline-secondary">-</button>
             </div>
-        </div>
+        </div> -->
         <div class="card mr-4" style="width: 20rem;">
+            <item-card name = 'Water Plants' price = '350' image="{%static 'images/card4.jpg'%}" ></item-card>
+        </div>
+        <!-- <div class="card mr-4" style="width: 20rem;">
             <img class="card-img-top" src="{% static 'images/card5.jpg'%}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">Pebbles</h5>
@@ -152,6 +164,9 @@
                 <button type="button" class="btn btn-outline-secondary">0</button>
                 <button type="button" class="btn btn-outline-secondary">-</button>
             </div>
+        </div> -->
+        <div class="card mr-4" style="width: 20rem;">
+            <item-card name = 'Pebbles' price = '250' image="{%static 'images/card5.jpg'%}" ></item-card>
         </div>
     </div>
     <hr>
@@ -160,19 +175,24 @@
         {% for i in newly_added %}
         <div class="card mr-3" style="width: 255px;">
             {%if i.price_set.all.values_list|length > 1%}
+            <script>console.log(`{{i}}`)
+                </script>
             <compare-price-item-card name={{i.name}} price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}></compare-price-item-card>
             {% else %}
-            <item-card name={{i.name}} price={{i.price_set.all.0.price}} image={{i.image.url}}></item-card>
+            <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}}></item-card>
             {% endif %}
         </div>
-
         {% endfor %}
     </div>
-
+<div>
+    {% for i in newly_added %}
+        <div>{{i.name}}</div>
+    {% endfor %}
+</div>
     <hr>
     <h5 class="text-center" style="margin-bottom:15px;">Top Rated</h5>
     <div class="d-flex justify-content-center ml-3 mt-3">
-        <div class="card mr-4" style="width: 20rem;">
+         <!-- <div class="card mr-4" style="width: 20rem;">
             <img class="card-img-top" src="{% static 'images/card1.jpg'%}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">Vertical Nursery</h5>
@@ -183,8 +203,11 @@
                 <button type="button" class="btn btn-outline-secondary">0</button>
                 <button type="button" class="btn btn-outline-secondary">-</button>
             </div>
-        </div>
+        </div> -->
         <div class="card mr-4" style="width: 20rem;">
+            <item-card name = 'Vertical Nursery' price = '500' image="{%static 'images/card1.jpg'%}" ></item-card>
+        </div>
+        <!-- <div class="card mr-4" style="width: 20rem;">
             <img class="card-img-top" src="{% static 'images/card2.jpg'%}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">Plants Decor</h5>
@@ -195,8 +218,11 @@
                 <button type="button" class="btn btn-outline-secondary">0</button>
                 <button type="button" class="btn btn-outline-secondary">-</button>
             </div>
-        </div>
+        </div> -->
         <div class="card mr-4" style="width: 20rem;">
+            <item-card name = 'Plants Decor' price = '250' image="{%static 'images/card2.jpg'%}" ></item-card>
+        </div>
+        <!-- <div class="card mr-4" style="width: 20rem;">
             <img class="card-img-top" src="{% static 'images/card3.jpg'%}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">Hanging Plants</h5>
@@ -207,8 +233,11 @@
                 <button type="button" class="btn btn-outline-secondary">0</button>
                 <button type="button" class="btn btn-outline-secondary">-</button>
             </div>
-        </div>
+        </div> -->
         <div class="card mr-4" style="width: 20rem;">
+            <item-card name = 'Hanging Plants' price = '300' image="{%static 'images/card3.jpg'%}" ></item-card>
+        </div>
+        <!-- <div class="card mr-4" style="width: 20rem;">
             <img class="card-img-top" src="{% static 'images/card4.jpg'%}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">Water Plants</h5>
@@ -219,8 +248,11 @@
                 <button type="button" class="btn btn-outline-secondary">0</button>
                 <button type="button" class="btn btn-outline-secondary">-</button>
             </div>
-        </div>
+        </div> -->
         <div class="card mr-4" style="width: 20rem;">
+            <item-card name = 'Water Plants' price = '350' image="{%static 'images/card4.jpg'%}" ></item-card>
+        </div>
+        <!-- <div class="card mr-4" style="width: 20rem;">
             <img class="card-img-top" src="{% static 'images/card5.jpg'%}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">Pebbles</h5>
@@ -231,6 +263,9 @@
                 <button type="button" class="btn btn-outline-secondary">0</button>
                 <button type="button" class="btn btn-outline-secondary">-</button>
             </div>
+        </div> -->
+        <div class="card mr-4" style="width: 20rem;">
+            <item-card name = 'Pebbles' price = '250' image="{%static 'images/card5.jpg'%}" ></item-card>
         </div>
     </div>
     <hr>

@@ -1,5 +1,5 @@
-const template2=document.createElement('template')
-template2.innerHTML=`
+const template6=document.createElement('template')
+template6.innerHTML=`
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -49,7 +49,7 @@ class CartCard extends HTMLElement{
     constructor(){
         super();
         this.attachShadow({mode: 'open'})
-        this.shadowRoot.appendChild(template2.content.cloneNode(true))
+        this.shadowRoot.appendChild(template6.content.cloneNode(true))
         this.shadowRoot.querySelector('h5').innerText=this.getAttribute('name')
         this.shadowRoot.querySelector('#price').innerText=this.getAttribute('price')
         this.shadowRoot.querySelector('#quantity').innerHTML = this.getAttribute('quantity')

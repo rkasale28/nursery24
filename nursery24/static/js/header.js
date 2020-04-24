@@ -18,10 +18,13 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
             <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         
-        <form class="ml-auto mr-3">
-            <button formaction="login" class="btn btn-primary">Login</button>
+        <form class="ml-auto">
+            <button formaction="signup" class="btn btn-primary">Sign Up</button>
         </form>
-        
+
+        <form class="ml-auto mr-3">
+            <button formaction="login" class="btn btn-primary">Log In</button>
+        </form>
     </nav>`
         
 class Header extends HTMLElement{
@@ -29,8 +32,6 @@ class Header extends HTMLElement{
         super();
         this.attachShadow({mode: 'open'})
         this.shadowRoot.appendChild(template.content.cloneNode(true))
-        // this.shadowRoot.querySelector('h3').innerText=this.getAttribute('name')
-        //this.innerHTML=`${this.getAttribute('name')}`
     }
 
 }

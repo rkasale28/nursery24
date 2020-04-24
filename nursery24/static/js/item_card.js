@@ -45,12 +45,12 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
 class ItemCard extends HTMLElement{
     constructor(){
         super();
-        this.attachShadow({mode: 'open'})
+        this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(template2.content.cloneNode(true))
-        this.shadowRoot.querySelector('h5').innerText=this.getAttribute('name')
+        this.shadowRoot.querySelector('h5').innerText= `${this.getAttribute('name')}`
         this.shadowRoot.querySelector('#price').innerText=this.getAttribute('price')
         this.shadowRoot.querySelector('#image').src=this.getAttribute('image')
-        //this.innerHTML=`${this.getAttribute('name')}`
+        this.innerHTML=`${this.getAttribute('name')}`
         let decodedCookie = decodeURIComponent(document.cookie).split(';');
         if(decodedCookie.find(item => item.includes("product="))){
                 let productString = decodedCookie.find(item => item.includes("product="));

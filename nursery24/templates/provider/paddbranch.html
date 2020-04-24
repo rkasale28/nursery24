@@ -19,25 +19,6 @@
     <authenticated-header></authenticated-header>
     {% endif %}
     
-    <ul class="nav nav-pills nav-fill bg-light">
-        <li class="nav-item">
-            <a class="nav-link" href="home">Pending Orders</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="additem">Add Item</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="removeitem">Remove Item</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="addbranch">Add Branch</a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link" href="removebranch">Remove Branch</a>
-        </li>
-    </ul>
-
     <form action="addbranchsubmit" method="POST">
         {% csrf_token %}
         {{form.as_p}}

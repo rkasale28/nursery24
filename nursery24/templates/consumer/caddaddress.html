@@ -6,41 +6,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Item</title>
+    <title>Add Address</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 
 <body>
-    {% if not user.is_authenticated%}
-    <header-bar></header-bar>
-    {% else %}
-    <authenticated-header></authenticated-header>
-    {% endif %}
     
-    <ul class="nav nav-pills nav-fill bg-light">
-        <li class="nav-item">
-            <a class="nav-link" href="home">Pending Orders</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="additem">Add Item</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="removeitem">Remove Item</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="removebranch">Branch</a>
-        </li>
-    </ul>
+  <header-profile></header-profile>    
 
-    <form method = "post" enctype="multipart/form-data" action="additemsubmit"> 
-        {% csrf_token %} 
-        {{ productform.as_p }} 
-        {{ priceform.as_p}}
-        <input type="hidden" name="provider" value="{{user.provider.id}}">
-        <button type="submit">Submit</button> 
-    </form> 
+    <form action="addaddresssubmit" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="hidden" name="consumer" value="{{user.consumer.id}}">
+        <button type="submit">Submit</button>
+    </form>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
@@ -51,8 +32,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-    <script src="{% static 'js/header.js'%}"></script>
-    <script src="{% static 'js/header_authenticated.js'%}"></script>
+        
+  <script src="{% static 'js/header_profile.js'%}"></script>
 </body>
 
 </html>

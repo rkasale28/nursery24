@@ -7,7 +7,6 @@ urlpatterns=[
     path('login',views.login,name="login"),
     path('login_submit',views.login_submit,name="login_submit"),
     path('logout',views.logout,name="logout"),
-    path('myprofile',views.myprofile,name="myprofile"),
     path('home',views.home,name="home"),
     path('plants',views.plants,name="plants"),
     path('seeds',views.seeds,name="seeds"),
@@ -17,6 +16,14 @@ urlpatterns=[
     path('compareprices',views.compareprices,name="compareprices"),
     path('search',views.search,name="search"),
     path('cart',views.cart,name="cart"),
+<<<<<<< HEAD
     path('checkout',views.checkout,name="checkout"),
     path('confirmorder',views.confirmorder,name="confirmorder")
+=======
+    path('myprofile',views.myprofile,name="myprofile"),
+    path('addresses',views.addresses,name="addresses"),
+    path('addaddress',views.addaddress,name="addaddress"),
+    path('addaddresssubmit',views.addaddresssubmit,name="addaddresssubmit"),
+    path('deleteaddresssubmit',views.deleteaddresssubmit,name="deleteaddresssubmit")
+>>>>>>> ee38b51f18c95096d7940ab0101976b8be57ddfa
 ]
