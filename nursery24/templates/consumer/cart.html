@@ -96,7 +96,7 @@
     if(product.length != 0){
 
         product.find(item => item.quantity == 0) ? cartItems.innerHTML = `` :
-        cartItems.innerHTML = product.map(item=> `<cart-card name=${item.name} price=${item.perPrice} quantity=${item.quantity} image=${item.img}></cart-card>`)
+        cartItems.innerHTML = product.map(item=> `<cart-card name="${item.name}" price=${item.perPrice} quantity=${item.quantity} image=${item.img}></cart-card>`)
         
         //cartItems.appendChild(child);
     }
