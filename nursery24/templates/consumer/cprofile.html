@@ -30,7 +30,7 @@
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 450px;
+    width: 650px;
     display: flex;
     box-shadow: 0 1px 20px 0 rgba(69, 90, 100, .08);
   }
@@ -47,6 +47,7 @@
   .wrapper .left img {
     border-radius: 5px;
     margin-bottom: 10px;
+    object-fit: cover;
   }
 
   .wrapper .left h4 {
@@ -122,12 +123,10 @@
 
   <br><br><br><br><br>
 
-
-
   <div class="wrapper shadow-lg mb-5 bg-white rounded">
 
     <div class="left bg-warning">
-      <img class="d-block w-80 mx-auto" src="{%static 'images/profile.png'%}" width="100">
+      <img class="d-block w-80 mx-auto" src="{{user.consumer.profile_pic.url}}" width="100">
       <h4 class="font-weight-bold">Name </h4>{{user.first_name}} {{user.last_name}}<br>
     </div>
 
@@ -153,7 +152,7 @@
       <div class="btn">
         <form class="ml-auto">
           <button formaction="edit" class="btn btn-warning">Edit</button>
-         </form>
+        </form>
       </div>
     </div>
 

@@ -15,4 +15,4 @@ class UserForm(forms.ModelForm):
 class ConsumerForm(forms.ModelForm):
     class Meta:
         model=Consumer
-        fields=['phone_number']
+        fields=['phone_number','profile_pic']

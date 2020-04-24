@@ -82,8 +82,10 @@ def editsubmit(request):
         request.user.email=email
         request.user.save()
         phone_number=request.POST['phone_number']
+        profile_pic=request.FILES['profile_pic']
         consumer=Consumer.objects.get(user=request.user)
         consumer.phone_number=phone_number
+        consumer.profile_pic=profile_pic
         consumer.save()        
     return render(request,'cprofile.html')
 

@@ -3,10 +3,10 @@ from django.contrib.auth.models import User
 from courier.models import Courier
 from provider.models import Provider,Product
 
-# Create your models here.
 class Consumer(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
     phone_number=models.CharField(max_length=10,blank=False)
+    profile_pic=models.ImageField(upload_to='dps/',default='dps/profile.png')
 
 class Address(models.Model):
     addr=models.TextField(max_length=100,null=True)
