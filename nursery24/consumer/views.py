@@ -6,7 +6,7 @@ from .models import Consumer,Product,Address
 from django.core.exceptions import ObjectDoesNotExist
 from provider.models import Price
 from http import cookies
-from .forms import AddressForm
+from .forms import AddressForm,UserForm,ConsumerForm
 
 import os
 # Create your views here.
@@ -61,6 +61,30 @@ def logout(request):
     return redirect('../consumer/home')
 
 def myprofile(request):
+    return render(request,'cprofile.html')
+
+def edit(request):
+    userform=UserForm()
+    userform.fields['first_name'].initial=request.user.first_name
+    userform.fields['last_name'].initial=request.user.last_name
+    userform.fields['email'].initial=request.user.email
+    consumerform=ConsumerForm()
+    consumerform.fields['phone_number'].initial=Consumer.objects.get(user=request.user).phone_number
+    return render(request,'ceditprofile.html',{'userform':userform,'consumerform':consumerform})
+
+def editsubmit(request):
+    if request.method=='POST':
+        first_name=request.POST['first_name']
+        last_name=request.POST['last_name']
+        email=request.POST['email']
+        request.user.first_name=first_name
+        request.user.last_name=last_name
+        request.user.email=email
+        request.user.save()
+        phone_number=request.POST['phone_number']
+        consumer=Consumer.objects.get(user=request.user)
+        consumer.phone_number=phone_number
+        consumer.save()        
     return render(request,'cprofile.html')
 
 def addresses(request):
