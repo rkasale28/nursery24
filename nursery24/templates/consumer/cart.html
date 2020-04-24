@@ -57,7 +57,11 @@
     </ul>
 
     <div id = "cartItems">
+<<<<<<< HEAD
+        
+=======
     
+>>>>>>> e83e79c1e3b3bb3c6db72f52a9571526cd781568
     </div>
     {% if user.is_authenticated %}
     <button id="check">Proceed to Checkout</button>   
@@ -87,25 +91,39 @@
     //     cartItems.appendChild(heading3);
     // }
     // }
+<<<<<<< HEAD
    
+=======
+
+    let empty = ()=> {
+        
+        cartItems.innerHTML = "<h3>Your cart is empty 👶</h3>"
+        console.log('Your cart is empty 👶');
+    }
+
+    let checkCart = () => {
+            
+>>>>>>> 9628d6c764e0a4cfe8bc7ab1a5681150880d3356
     let cartItems = document.querySelector('#cartItems');
     let decodedCookie = decodeURIComponent(document.cookie).split(';');
+    
+    if(decodedCookie.find(item => item.includes("product="))){
+        
     let productString = decodedCookie.find(item => item.includes("product="));
     let productStringSplit = productString.split('=');
     let product = JSON.parse(productStringSplit[1]);
-    if(product.length != 0){
+    (product != []) ?
 
-        product.find(item => item.quantity == 0) ? cartItems.innerHTML = `` :
-        cartItems.innerHTML = product.map(item=> `<cart-card name=${item.name} price=${item.perPrice} quantity=${item.quantity} image=${item.img}></cart-card>`)
         
-        //cartItems.appendChild(child);
+        cartItems.innerHTML = product.map(item=> `<cart-card name="${item.name}" price=${item.perPrice} quantity=${item.quantity} image=${item.img}></cart-card>`)
+        :
+        cartItems.innerHTML = "<h3>Your cart is empty 👶</h3>"
+      
     }
     else{
-        let heading3 = document.createElement('h3');
-        let textnode = document.createTextNode('Your cart is empty 👶');
-        heading3.appendChild(textnode);
-        cartItems.appendChild(heading3);
+        empty();
     }
+<<<<<<< HEAD
     window.onload=function(){
         var check = document.getElementById("check");
         var log  = document.getElementById("orderlogin");
@@ -130,6 +148,14 @@
     function handler2() {
     window.location.href = "orderlogin";
     }
+=======
+    }
+
+    checkCart();
+
+    
+    // setTimeout(checkCart(),300);
+>>>>>>> 9628d6c764e0a4cfe8bc7ab1a5681150880d3356
 </script>
 
 </html>
