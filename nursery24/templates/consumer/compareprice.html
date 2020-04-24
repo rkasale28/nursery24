@@ -34,7 +34,7 @@
                 </tr>
             </thead>
             {%for i in prices%}
-            <!-- <tbody>
+            <tbody>
                 
                 
                 <td class = "ml-3" id = 'provider'>{{i.provider.shop_name}}</td>
@@ -51,8 +51,8 @@
                     </div>
                 </td>
                
-            </tbody> -->
-            <accross-row  provider = {{i.provider.shop_name}} price = {{i.price}} addr = {{i.provider.address_set.all.0.addr}}></accross-row>
+            </tbody>
+            <!-- <accross-row  provider = {{i.provider.shop_name}} price = {{i.price}} addr = {{i.provider.address_set.all.0.addr}}></accross-row> -->
 
             {%endfor%}                
         </table>
@@ -60,10 +60,10 @@
         <script src="{% static 'js/header.js'%}"></script>
         <script src="{% static 'js/header_authenticated.js'%}"></script>
         <script>
-            // document.querySelectorAll('#inc').addEventListener('click',()=> {
-            //     document.querySelector('#result').innerHTML = '1';
-            // })
-            // console.log(provider);
+            
+
+
+            
         </script>
 </body>
 </html>
