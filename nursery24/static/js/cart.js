@@ -38,11 +38,12 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
             <button type="button" class="btn btn-success" id = "inc">+</button>
             <button type="button" class="btn btn-outline-secondary disabled" id = "quantity">0</button>
             <button type="button" class="btn btn-success" id = "dec">-</button>
+            
         </div>
-        <div>        <h6 class="card-subtitle text-muted">Total = Rs. <span id='result'> </span></h6>
-        <div>
+        
     </div>
-         
+    <div>        <h6 class="card-subtitle text-muted">Total = Rs. <span id='result'> </span></h6>
+    <div>
 </div>`
         
 class CartCard extends HTMLElement{
@@ -65,7 +66,6 @@ class CartCard extends HTMLElement{
                 if(product.find(item=> item.name == this.getAttribute('name'))){
                     this.shadowRoot.querySelector("#result").innerHTML = product.find(item=> item.name == this.getAttribute('name')).price;
                     this.shadowRoot.querySelector("#quantity").innerHTML = product.find(item=> item.name == this.getAttribute('name')).quantity;
-  
                 }
             }
     }
@@ -120,15 +120,15 @@ class CartCard extends HTMLElement{
             }
         });
             //decrements product in cookie
-            this.shadowRoot.querySelector("#dec").addEventListener('click', async ()=>{
+            this.shadowRoot.querySelector("#dec").addEventListener('click',  ()=>{
                 let decodedCookie = decodeURIComponent(document.cookie).split(';');
-                if(decodedCookie.find(item => item.includes("product="))){
+               
                 let productString = decodedCookie.find(item => item.includes("product="));
                 let productStringSplit = productString.split('=');
                 let product = JSON.parse(productStringSplit[1]);
-                if(product != []){
+                
                     if(product.find(item=> item.name == name)){
-                        if(product.find(item=> item.name == name).quantity != 0){
+                      
                             
                         let thisProduct = product.find(item=> item.name == name);
                         product = product.filter(item=> item.name != name);
@@ -147,10 +147,10 @@ class CartCard extends HTMLElement{
                             disconnect();
                         }
                         document.cookie = 'product=' + JSON.stringify(product);
-                        }
+                        
                     }
-                }
-                }
+                
+                
             });
         
     }

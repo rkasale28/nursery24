@@ -114,7 +114,7 @@ class ItemCard extends HTMLElement{
             }
         });
             //decrements product in cookie
-            this.shadowRoot.querySelector("#dec").addEventListener('click', async ()=>{
+            this.shadowRoot.querySelector("#dec").addEventListener('click', ()=>{
                 let decodedCookie = decodeURIComponent(document.cookie).split(';');
                 if(decodedCookie.find(item => item.includes("product="))){
                 let productString = decodedCookie.find(item => item.includes("product="));

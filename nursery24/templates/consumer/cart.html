@@ -57,7 +57,7 @@
     </ul>
 
     <div id = "cartItems">
-        Your cart is empty 👶
+        
     </div>
     {% if not user.is_authenticated%}
     <h3>Please Signup/Login to Checkout</h3>
@@ -88,25 +88,38 @@
     // }
     // }
 
+    let empty = ()=> {
+        
+        cartItems.innerHTML = "<h3>Your cart is empty 👶</h3>"
+        console.log('Your cart is empty 👶');
+    }
+
+    let checkCart = () => {
+            
     let cartItems = document.querySelector('#cartItems');
     let decodedCookie = decodeURIComponent(document.cookie).split(';');
+    
+    if(decodedCookie.find(item => item.includes("product="))){
+        
     let productString = decodedCookie.find(item => item.includes("product="));
     let productStringSplit = productString.split('=');
     let product = JSON.parse(productStringSplit[1]);
-    if(product != []){
+    (product != []) ?
 
-        product.find(item => item.quantity == 0) ? cartItems.innerHTML = `` :
-        cartItems.innerHTML = product.map(item=> `<cart-card name=${item.name} price=${item.perPrice} quantity=${item.quantity} image=${item.img}></cart-card>`)
         
-        //cartItems.appendChild(child);
+        cartItems.innerHTML = product.map(item=> `<cart-card name="${item.name}" price=${item.perPrice} quantity=${item.quantity} image=${item.img}></cart-card>`)
+        :
+        cartItems.innerHTML = "<h3>Your cart is empty 👶</h3>"
+      
     }
     else{
-        let heading3 = document.createElement('h3');
-        let textnode = document.createTextNode('Your cart is empty 👶');
-        heading3.appendChild(textnode);
-        cartItems.appendChild(heading3);
+        empty();
+    }
     }
 
-    //setInterval(rerender,300);
+    checkCart();
+
+    
+    // setTimeout(checkCart(),300);
 </script>
 </html>
