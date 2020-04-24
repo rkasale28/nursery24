@@ -34,29 +34,36 @@
                 </tr>
             </thead>
             {%for i in prices%}
-            <tbody>
+            <!-- <tbody>
                 
                 
-                <td class = "ml-3">{{i.provider.shop_name}}</td>
-                <td>{{i.price}}</td>
-                <td>{{i.provider.address_set.all.0.addr}}</td>
+                <td class = "ml-3" id = 'provider'>{{i.provider.shop_name}}</td>
+                <td id = 'price'>{{i.price}}</td>
+                <td id = 'addr'>{{i.provider.address_set.all.0.addr}}</td>
                 <td class = "float-left  ">
                     <div  class="btn-toolbar ml-1 mb-2" role="toolbar" aria-label="Toolbar with button groups">
         
                         <div class="btn-group ml-auto mr-2" role="group" aria-label="First group">
-                            <button type="button" class="btn btn-success" id = "inc">+</button>
+                            <button type="button" class="btn btn-success" id = `${i.provider.shop_name}`>+</button>
                             <button type="button" class="btn btn-outline-secondary disabled" id = "result">0</button>
                             <button type="button" class="btn btn-success" id = "dec">-</button>
                         </div>
                     </div>
                 </td>
-                
-            </tbody>
+               
+            </tbody> -->
+            <accross-row  provider = {{i.provider.shop_name}} price = {{i.price}} addr = {{i.provider.address_set.all.0.addr}}></accross-row>
+
             {%endfor%}                
         </table>
 
         <script src="{% static 'js/header.js'%}"></script>
         <script src="{% static 'js/header_authenticated.js'%}"></script>
-    
+        <script>
+            // document.querySelectorAll('#inc').addEventListener('click',()=> {
+            //     document.querySelector('#result').innerHTML = '1';
+            // })
+            // console.log(provider);
+        </script>
 </body>
 </html>

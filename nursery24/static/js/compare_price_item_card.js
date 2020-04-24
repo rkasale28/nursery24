@@ -56,6 +56,7 @@ class ComparePriceItemCard extends HTMLElement{
         // this.shadowRoot.querySelector('#direct').addEventListener('click',()=>{
         //     location.href='/consumer/compareprices?id='+this.getAttribute('id')
         // })
+        
         var btn=this.shadowRoot.querySelector('#compare')
 
         btn.onclick= (event) =>{
@@ -69,16 +70,30 @@ class ComparePriceItemCard extends HTMLElement{
             let productStringSplit = productString.split('=');
             let product = JSON.parse(productStringSplit[1]);
             
-            if(product.find(item=> item.name == this.getAttribute('name'))){
+            if(product.find(item=> item.id)){
                 if(!product.providers){
                     this.shadowRoot.querySelector("#result").innerHTML = product.find(item=> item.name == this.getAttribute('name')).quantity;
                 }
                 else{
-                    thisProduct = product.find(item=> item.name == name)
+                    thisProduct = product.find(item=> item.name == this.getAttribute('name'))
                     this.shadowRoot.querySelector("#result").innerHTML = thisProduct.providers.reduce((subtotal,item)=>{return item.quantity + subtotal},0);
                 }
             }
+            else{
+                newField = {name: this.getAttribute('name'),id: this.getAttribute('id'),perPrice: this.getAttribute('price'),price: this.getAttribute('price'),quantity: 0,img: this.getAttribute('image')};
+                product = [...product,newField];
+                this.shadowRoot.querySelector('#result').innerHTML = newField.quantity;
+                document.cookie = 'product=' + JSON.stringify(product);
+            }
         }
+        else{
+            let product = [ {name: this.getAttribute('name'),id: this.getAttribute('id'),perPrice: this.getAttribute('price'),price: this.getAttribute('price'),quantity: 0,img: this.getAttribute('image')}];
+                
+                document.cookie = 'product=' + JSON.stringify(product);
+                //console.log(document.cookie);
+                this.shadowRoot.querySelector("#result").innerHTML = product[0].quantity;
+        }
+        
     }
 
 
@@ -87,37 +102,23 @@ class ComparePriceItemCard extends HTMLElement{
         let name = this.shadowRoot.querySelector('h5').innerHTML;
         let price = this.shadowRoot.querySelector('#price').innerHTML;
         let img = this.shadowRoot.querySelector('#image').src;
+    
         //increments product in cookie
         this.shadowRoot.querySelector("#inc").addEventListener('click',()=>{
             
             let decodedCookie = decodeURIComponent(document.cookie).split(';');
-        
-            //console.log(price,name,decodedCookie);
-            if(!decodedCookie.find(item => item.includes("product="))){
-                let product = [{name: name, quantity: 1,perPrice: price,price: price,img: img}]
-                //console.log(product);
-                document.cookie = 'product=' + JSON.stringify(product);
-                //console.log(document.cookie);
-                this.shadowRoot.querySelector("#result").innerHTML = product[0].quantity;
-                
-                console.log(product);
-            }
-            else{
-                let productString = decodedCookie.find(item => item.includes("product="));
+            let productString = decodedCookie.find(item => item.includes("product="));
                 //console.log(productString); success
                 let productStringSplit = productString.split('=');
                 let product = JSON.parse(productStringSplit[1]);
+            //console.log(price,name,decodedCookie);
+            
+            
+                
                // console.log(product);// success
-                if(!product.find(item=> item.name == name)){
-                    let newProduct = {name: name,quantity: 1, perPrice: price, price: price, img: img};
-                    this.shadowRoot.querySelector("#result").innerHTML = newProduct.quantity;
-
-                    product = [...product,newProduct];
-                    console.log(product);
-                    document.cookie = 'product=' + JSON.stringify(product);
-                }
-                else
-                {
+               
+                
+                
                     let thisProduct = product.find(item => item.name == name);
                     product = product.filter(item=> item.name !=name);
                     if(!(thisProduct.providers)){
@@ -139,8 +140,8 @@ class ComparePriceItemCard extends HTMLElement{
                     console.log(product);
                     document.cookie = 'product=' + JSON.stringify(product);  
                 
-                }
-            }
+                
+            
         });
             //decrements product in cookie
             this.shadowRoot.querySelector("#dec").addEventListener('click', async ()=>{
