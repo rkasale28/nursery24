@@ -1,0 +1,19 @@
+<html>
+<body>
+{% load custom_tags %}
+{% for i in length %}
+<h2>Name = {{ names|index:i }} </h2>
+<h2>Quantity = {{ qty|index:i }} </h2> <br>
+{% endfor %}
+<h2>Select one address or enter a new one</h2>
+
+<form action = 'confirmorder' method = 'POST'  >
+{% csrf_token %}
+{% for add in addr %}
+<h3>{{ add }}</h3>
+<input type = 'hidden' value = {{add}} name = 'address'> 
+<input type = 'submit'>
+{% endfor %}
+</form>
+</body>
+</html>

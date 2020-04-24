@@ -57,13 +57,41 @@
     </ul>
 
     <div id = "cartItems">
+<<<<<<< HEAD
         
+=======
+    
+>>>>>>> e83e79c1e3b3bb3c6db72f52a9571526cd781568
     </div>
     {% if not user.is_authenticated%}
     <h3>Please Signup/Login to Checkout</h3>
     {% else %}
-    <button>Proceed to Checkout</button>
+    <button id="check">Proceed to Checkout</button>
     {% endif %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js">
+      
+        /*$(document).ready(function(){
+            $('#checkout').click(function(){
+                names = []
+                qty = []
+                var x;
+                for ( x=0;x<product.length; x++){
+                    names.push(product[x].name);
+                    qty.push(product[x].quantity);
+                }
+                var data = {'names': names,'qty' : qty};
+                $.ajax({
+                    url: "checkout",
+                    data : { 'data': data},
+                    success : function(json) {
+                        console.log("requested access complete");
+                    }
+                })
+            });
+        
+       
+        })
+    */</script>
 </body>
 
 <script>
@@ -122,4 +150,5 @@
     
     // setTimeout(checkCart(),300);
 </script>
+
 </html>
