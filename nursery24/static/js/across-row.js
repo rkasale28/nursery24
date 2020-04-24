@@ -1,13 +1,14 @@
+<<<<<<< HEAD:nursery24/static/js/t.js
 const template7=document.createElement('template')
 template7.innerHTML=`
+=======
+const temp=document.createElement('tbody')
+temp.innerHTML =`
+>>>>>>> dbd1cbee480425b54e29fb64490d54490a21ddf4:nursery24/static/js/across-row.js
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-
-    <tbody>
-                
-                
     <td class = "ml-3"><span id = 'provider'></span></td>
     <td><span id = 'price'></span></td>
     <td><span id = 'addr'></span></td>
@@ -21,16 +22,19 @@ template7.innerHTML=`
             </div>
         </div>
     </td>
-    <br>
     
-</tbody>`
+`
 
-class Row extends HTMLElement{
+class AcrossRow extends HTMLElement{
 
     constructor(){
         super();
         this.attachShadow({mode: 'open'});
+<<<<<<< HEAD:nursery24/static/js/t.js
         this.shadowRoot.appendChild(template7.content.cloneNode(true));
+=======
+        this.shadowRoot.appendChild(temp.content.cloneNode(true));
+>>>>>>> dbd1cbee480425b54e29fb64490d54490a21ddf4:nursery24/static/js/across-row.js
         this.shadowRoot.querySelector('#provider').innerHTML = this.getAttribute('provider');
         
         this.shadowRoot.querySelector('#price').innerHTML = this.getAttribute('price');
@@ -40,7 +44,7 @@ class Row extends HTMLElement{
 
 
 }
-window.customElements.define('across-row',Row);
+window.customElements.define('across-tr',AcrossRow);
 
 
 {/* <script defer>
