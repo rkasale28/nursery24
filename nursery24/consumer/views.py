@@ -2,6 +2,17 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
+from .models import Consumer,Product,Provider
+from .models import Address as Consumer_Address
+from provider.models import Address as Provider_Address
+from django.core.exceptions import ObjectDoesNotExist
+from provider.models import Price
+from http import cookies
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
+import geopy
+from geopy.geocoders import Nominatim
+from geopy.distance import geodesic 
+from geopy.exc import GeocoderTimedOut
 from .models import Consumer,Product,Address
 from django.core.exceptions import ObjectDoesNotExist
 from provider.models import Price
@@ -101,14 +112,14 @@ def addaddresssubmit(request):
         consumer_id=request.POST['consumer']
         addr=request.POST['addr']
         consumer=Consumer.objects.get(pk=consumer_id)
-        address=Address(addr=addr,consumer=consumer)
+        address=Consumer_Address(addr=addr,consumer=consumer)
         address.save()
         return redirect('../consumer/addresses')
 
 def deleteaddresssubmit(request):
     if request.method=='POST':
         address_id=request.POST['id']
-        Address.objects.get(pk=address_id).delete()
+        Consumer_Address.objects.get(pk=address_id).delete()
         return redirect('../consumer/addresses') 
     
 def home(request):
@@ -151,3 +162,89 @@ def cart(request):
     #key = request.GET['cart']
    # U = cookies.SimpleCookie(os.environ["HTTP_COOKIE"])
     return render(request,'cart.html')
+
+def checkout(request): 
+    if request.method == "GET":
+        names = request.GET['names'].split(",")
+        qty = request.GET['qty'].split(",")
+        data = {}
+        data['names'] = names
+        data['qty'] = qty
+        data['length'] = range(len(names))
+        current_user = request.user
+        consumer = Consumer.objects.get(user_id = current_user.id)
+        add = Consumer_Address.objects.filter(consumer_id = consumer.id)
+        addr = []
+        for a in add:
+            addr.append(a.addr)
+        data['addr'] = addr
+        request.session['names'] = names
+        request.session['qty'] = qty
+    return render(request,'corderpage.html',data) 
+
+def confirmorder(request):
+    address = request.POST['address']
+    names = request.session['names']
+    qty = request.session['qty']
+    length = len(names)
+    data = {}
+    data['names'] = names
+    data['qty'] = qty
+    data['length'] = range(len(names))
+    finalprices = []
+    for i in range(len(names)):
+        product = Product.objects.get(name = names[i])
+        prov = Provider.objects.filter(price__product_id = product.id)
+        nom = Nominatim(timeout = None)
+        n = []
+        available = []
+        prices = []
+        d = nom.geocode(address,timeout = None)
+        customeraddr = (d.latitude,d.longitude)
+        for p in prov:
+            addr = Provider_Address.objects.filter(provider_id = p.id)
+            for a in addr:
+                n = nom.geocode("%s" % a.addr,timeout = None )
+                provideraddr = (n.latitude,n.longitude)
+                dist = (geodesic(provideraddr,customeraddr).km)    
+                if(dist<50):
+                    available.append(p.id)  
+                    break
+        if(len(available) != 0):
+            for x in available:
+                pro = Price.objects.filter(product_id = product.id).filter(provider_id = x)
+                for y in pro:
+                    prices.append(y.price)
+            finalprices.append(min(prices))
+        else:
+            finalprices.append(0)
+    data['prices'] = finalprices
+    data['finalprices'] = []
+    total = 0
+    for i in range(len(names)):
+        data['finalprices'].append(int(qty[i])*int(finalprices[i]))
+        total = total + int(qty[i])*int(finalprices[i])
+    data['total'] = total
+    return render(request,'confirmorder.html',data)
+def orderlogin(request):
+    return render(request,'corderlogin.html')
+def orderlogin_submit(request):
+    if request.method=='POST':
+        uname=request.POST["uname"]
+        pwd=request.POST["pwd"]
+        user=auth.authenticate(username=uname,password=pwd)
+        if user is not None:
+            try:
+                consumer=Consumer.objects.get(user=user)
+            except ObjectDoesNotExist as d:
+                return HttpResponse('User does not exist')
+            else:
+                auth.login(request,user)
+                U = cookies.SimpleCookie()
+                U['username'] = user
+                
+                return redirect('../consumer/cart')
+        else:
+            return HttpResponse('Invalid Credentials')
+    else:
+        return render(request,'login')

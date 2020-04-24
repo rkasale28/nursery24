@@ -57,12 +57,12 @@
     </ul>
 
     <div id = "cartItems">
-        Your cart is empty 👶
+    
     </div>
-    {% if not user.is_authenticated%}
-    <h3>Please Signup/Login to Checkout</h3>
+    {% if user.is_authenticated %}
+    <button id="check">Proceed to Checkout</button>   
     {% else %}
-    <button>Proceed to Checkout</button>
+    <button id= "orderlogin" >Login/Signup to continue</button>
     {% endif %}
 </body>
 
@@ -87,16 +87,16 @@
     //     cartItems.appendChild(heading3);
     // }
     // }
-
+   
     let cartItems = document.querySelector('#cartItems');
     let decodedCookie = decodeURIComponent(document.cookie).split(';');
     let productString = decodedCookie.find(item => item.includes("product="));
     let productStringSplit = productString.split('=');
     let product = JSON.parse(productStringSplit[1]);
-    if(product != []){
+    if(product.length != 0){
 
         product.find(item => item.quantity == 0) ? cartItems.innerHTML = `` :
-        cartItems.innerHTML = product.map(item=> `<cart-card name=${item.name} price=${item.perPrice} quantity=${item.quantity} image=${item.img}></cart-card>`)
+        cartItems.innerHTML = product.map(item=> `<cart-card name="${item.name}" price=${item.perPrice} quantity=${item.quantity} image=${item.img}></cart-card>`)
         
         //cartItems.appendChild(child);
     }
@@ -106,7 +106,30 @@
         heading3.appendChild(textnode);
         cartItems.appendChild(heading3);
     }
-
-    //setInterval(rerender,300);
+    window.onload=function(){
+        var check = document.getElementById("check");
+        var log  = document.getElementById("orderlogin");
+        if(check)
+        {
+        check.addEventListener("click",handler );
+        }
+        if(log){
+        log.addEventListener("click", handler2);
+        }
+    }
+    function handler() {
+        names = []
+        qty = []
+        var x;
+        for ( x=0;x<product.length; x++){
+            names.push(product[x].name);
+            qty.push(product[x].quantity);
+        }
+        window.location.href = "checkout?names=" + names + "&qty=" +qty;
+    }
+    function handler2() {
+    window.location.href = "orderlogin";
+    }
 </script>
+
 </html>

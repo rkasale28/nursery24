@@ -16,11 +16,15 @@ urlpatterns=[
     path('compareprices',views.compareprices,name="compareprices"),
     path('search',views.search,name="search"),
     path('cart',views.cart,name="cart"),
+    path('checkout',views.checkout,name="checkout"),
+    path('confirmorder',views.confirmorder,name="confirmorder"),
     path('myprofile',views.myprofile,name="myprofile"),
     path('edit',views.edit,name="edit"),
     path('editsubmit',views.editsubmit,name="editsubmit"),
     path('addresses',views.addresses,name="addresses"),
     path('addaddress',views.addaddress,name="addaddress"),
     path('addaddresssubmit',views.addaddresssubmit,name="addaddresssubmit"),
-    path('deleteaddresssubmit',views.deleteaddresssubmit,name="deleteaddresssubmit")
+    path('deleteaddresssubmit',views.deleteaddresssubmit,name="deleteaddresssubmit"),
+    path('orderlogin',views.orderlogin,name="orderlogin"),
+    path('orderlogin_submit',views.orderlogin_submit,name="orderlogin_submit"),
 ]
