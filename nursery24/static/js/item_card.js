@@ -50,7 +50,7 @@ class ItemCard extends HTMLElement{
         this.shadowRoot.querySelector('h5').innerText=this.getAttribute('name')
         this.shadowRoot.querySelector('#price').innerText=this.getAttribute('price')
         this.shadowRoot.querySelector('#image').src=this.getAttribute('image')
-        //this.innerHTML=`${this.getAttribute('name')}`
+        this.innerHTML=`${this.getAttribute('name')}`
         let decodedCookie = decodeURIComponent(document.cookie).split(';');
         if(decodedCookie.find(item => item.includes("product="))){
                 let productString = decodedCookie.find(item => item.includes("product="));

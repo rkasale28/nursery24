@@ -1,5 +1,5 @@
-const template2=document.createElement('template')
-template2.innerHTML=`
+const template7=document.createElement('template')
+template7.innerHTML=`
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -30,7 +30,7 @@ class Row extends HTMLElement{
     constructor(){
         super();
         this.attachShadow({mode: 'open'});
-        this.shadowRoot.appendChild(template2.content.cloneNode(true));
+        this.shadowRoot.appendChild(template7.content.cloneNode(true));
         this.shadowRoot.querySelector('#provider').innerHTML = this.getAttribute('provider');
         
         this.shadowRoot.querySelector('#price').innerHTML = this.getAttribute('price');
