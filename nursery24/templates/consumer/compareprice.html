@@ -44,9 +44,10 @@
                     <div  class="btn-toolbar ml-1 mb-2" role="toolbar" aria-label="Toolbar with button groups">
         
                         <div class="btn-group ml-auto mr-2" role="group" aria-label="First group">
-                            <button type="button" class="btn btn-success" id = `${i.provider.shop_name}`>+</button>
-                            <button type="button" class="btn btn-outline-secondary disabled" id = "result">0</button>
-                            <button type="button" class="btn btn-success" id = "dec">-</button>
+                            <button type="button" class="btn btn-success" id = '{{i.provider.shop_name}}|{{i.price}}|{{i.provider.address_set.all.0.addr}}|inc' onclick = inc(this)>+</button>
+                            <button type="button" class="btn btn-outline-secondary disabled" id = "result|{{i.price}}">0</button>
+                            <button type="button" class="btn btn-success" id = '{{i.provider.shop_name}}|{{i.price}}|{{i.provider.address_set.all.0.addr}}|dec' onclick = dec(this)>-</button>
+                        
                         </div>
                     </div>
                 </td>
@@ -61,7 +62,117 @@
         <script src="{% static 'js/header_authenticated.js'%}"></script>
         <script>
             
+            let getParam = () => {
+                let param = window.location.search;
+                param = param.split('=');
+                return param[1];
+            }
 
+            //onload iife
+           let rerun = () => {
+
+                
+                let decodedCookie = decodeURIComponent(document.cookie).split(';');
+                if(decodedCookie.find(item => item.includes("product="))){
+                    let productString = decodedCookie.find(item => item.includes("product="));
+              
+                let productStringSplit = productString.split('=');
+                let product = JSON.parse(productStringSplit[1]);
+                    let id = getParam();
+                    if(product.find(item=> item.id == id)){
+                        thatProduct = product.find(item=> item.id == id);
+                    
+                            thatProduct.providers.forEach(prov=> document.getElementById(`result|${prov.perPrice}`).innerHTML = prov.quantity );
+                        
+                    }
+                }
+
+            }
+            rerun();
+
+            let inc = (e) => {
+                let info = e.id.split('|');
+                console.log(info);
+                let id = getParam();
+                let decodedCookie = decodeURIComponent(document.cookie).split(';');
+            
+                let productString = decodedCookie.find(item => item.includes("product="));
+                //console.log(productString); success
+                let productStringSplit = productString.split('=');
+                let product = JSON.parse(productStringSplit[1]);
+                let thisProduct = product.find(item=> item.id = id);
+                product = product.filter(item=> item.id != id);
+
+                //mismatch
+                if(thisProduct.providers[0].perPrice != info[1]){
+                    thisProduct.providers[0].providerName = info[0];
+                    thisProduct.providers[0].quantity = 1;
+                    thisProduct.providers[0].perPrice = info[1];
+                    thisProduct.providers[0].price = info[1];
+                    document.getElementById(`result|${info[1]}`).innerHTML =  1;
+                    console.log(thisProduct);
+                    // rerun();
+                    location.reload("true");
+                }
+                else{
+
+                    thisProduct.providers[0].quantity += 1;
+                    thisProduct.providers[0].price = thisProduct.providers[0].quantity * thisProduct.providers[0].perPrice;
+                    document.getElementById(`result|${info[1]}`).innerHTML =  thisProduct.providers[0].quantity;
+                    console.log(thisProduct);
+                }
+
+                product = [...product,thisProduct];
+                document.cookie = "product=" + JSON.stringify(product);
+                console.log(product);
+
+
+            }
+
+            let dec = (e) => {
+                let info = e.id.split('|');
+                console.log(info);
+                let id = getParam();
+                let decodedCookie = decodeURIComponent(document.cookie).split(';');
+                if(decodedCookie.find(item => item.includes("product="))){
+                let productString = decodedCookie.find(item => item.includes("product="));
+                let productStringSplit = productString.split('=');
+                let product = JSON.parse(productStringSplit[1]);
+                if(product != []){
+                    if(product.find(item=> item.id == id)){
+                        let thisProduct = product.find(item=> item.id = id);
+                product = product.filter(item=> item.id != id);
+
+                if(thisProduct.providers[0].perPrice == info[1]){
+                    if(thisProduct.providers[0].quantity != 0){
+                        thisProduct.providers[0].quantity -= 1;
+                        thisProduct.providers[0].price =  thisProduct.providers[0].quantity *  thisProduct.providers[0].perPrice;
+                        document.getElementById(`result|${info[1]}`).innerHTML =  thisProduct.providers[0].quantity;
+                        console.log(thisProduct);
+                    }
+                }
+
+                product = [...product,thisProduct];
+                document.cookie = "product=" + JSON.stringify(product);
+
+
+
+                        // if(product.find(item=> item.name == name).providers[0].quantity != 0){
+                            
+                        // let thisProduct = product.find(item=> item.name == name);
+                        // product = product.filter(item=> item.name != name);
+                        // thisProduct.providers[0].quantity -= 1;
+                        // thisProduct.providers[0].price = thisProduct.providers[0].perPrice * thisProduct.providers[0].quantity;
+                        // this.shadowRoot.querySelector('#result').innerHTML = thisProduct.providers[0].quantity;
+                        // if(thisProduct.quantity!= 0){
+                        //     product = [...product,thisProduct];
+                        // }
+                        // document.cookie = 'product=' + JSON.stringify(product);
+                        // }
+                    }
+                }
+                }
+            }
 
             
         </script>
