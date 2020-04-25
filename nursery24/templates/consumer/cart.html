@@ -25,6 +25,7 @@
         }
     </style>
     <script src="{% static 'js/cart.js'%}"></script>
+    <script src="{% static 'js/cartTwo.js'%}"></script>
 </head>
 <body>
    
@@ -59,6 +60,9 @@
     <div id = "cartItems">
     
     </div>
+    <div id = "cartItemsTwo">
+    
+    </div>
     {% if user.is_authenticated %}
     <button id="check">Proceed to Checkout</button>   
     {% else %}
@@ -88,16 +92,34 @@
     // }
     // }
    
-
+        let run = () => {
+            
     let cartItems = document.querySelector('#cartItems');
+    let cartItemsTwo = document.querySelector('#cartItemsTwo');
     let decodedCookie = decodeURIComponent(document.cookie).split(';');
+    if(decodedCookie.find(item => item.includes("product="))){
+        
     let productString = decodedCookie.find(item => item.includes("product="));
     let productStringSplit = productString.split('=');
     let product = JSON.parse(productStringSplit[1]);
     if(product != []){
 
-        cartItems.innerHTML = product.map(item=> `<cart-card name="${item.name}" price=${item.perPrice} quantity=${item.quantity} image=${item.img}></cart-card>`)
+        let type1 = product.filter(item=> !item.id);
+        let type2 = product.filter(item=> item.id);
+
+        (type1) ? 
+        cartItems.innerHTML = type1.map(item=> `<cart-card name="${item.name}" price=${item.perPrice} quantity=${item.quantity} image=${item.img}></cart-card>`)
+        : '';
+
+        if(type2){
+            let toPrint = type2.filter(item=> item.providers[0].quantity != 0);
+            cartItemsTwo.innerHTML = toPrint.map(item=> `<cart-two name="${item.name}" price=${item.providers[0].perPrice}  image=${item.img} id = ${item.id}></cart-two>`)
+            
+        }
         
+        if(!(type1) && !(type2)){
+            cartItems.innerHTML = "<h3>Your cart is empty 👶</h3>"
+        }
         //cartItems.appendChild(child);
     }
     else{
@@ -107,7 +129,12 @@
         // cartItems.appendChild(heading3);
         cartItems.innerHTML = "<h3>Your cart is empty 👶</h3>"
     }
+    }
+
+}
     
+        run();
+
     window.onload=function(){
         
         var check = document.getElementById("check");
