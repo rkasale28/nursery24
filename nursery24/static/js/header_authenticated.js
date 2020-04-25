@@ -19,7 +19,7 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
         </form>
 
         <form class="ml-auto mr-3">
-            <button formaction="logout" class="btn btn-primary">Logout</button>
+            <button id = "logout" class="btn btn-primary">Logout</button>
         </form>
                         
         
@@ -31,6 +31,13 @@ class HeaderAuthenticated extends HTMLElement{
         this.attachShadow({mode: 'open'})
         this.shadowRoot.appendChild(template1.content.cloneNode(true))
     }
+    connectedCallback(){
+
+    this.shadowRoot.querySelector("#logout").addEventListener('click',()=>{
+        console.log("Button Pressed");
+        window.location.href = "logout"
+    })
+}
 
 }
 
