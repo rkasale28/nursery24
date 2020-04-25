@@ -71,27 +71,52 @@ class ComparePriceItemCard extends HTMLElement{
             let product = JSON.parse(productStringSplit[1]);
             
             if(product.find(item=> item.id)){
-                if(!product.providers){
-                    this.shadowRoot.querySelector("#result").innerHTML = product.find(item=> item.name == this.getAttribute('name')).quantity;
+                if(product.find(item=> item.id == this.getAttribute('id'))){
+                    let thisProduct = product.find(item=> item.id == this.getAttribute('id'));
+                    this.shadowRoot.querySelector('#result').innerHTML = thisProduct.providers[0].quantity;
+                    this.shadowRoot.querySelector('#price').innerHTML = thisProduct.providers[0].perPrice;
+
+                    console.log(thisProduct);
                 }
                 else{
-                    thisProduct = product.find(item=> item.name == this.getAttribute('name'))
-                    this.shadowRoot.querySelector("#result").innerHTML = thisProduct.providers.reduce((subtotal,item)=>{return item.quantity + subtotal},0);
+                    let newProduct = {name: this.getAttribute('name'), img: this.getAttribute('image'), id: this.getAttribute('id'),
+                    
+                    providers:[
+                        {
+                            providerName : 'default',
+                            quantity: 0,
+                            perPrice: this.getAttribute('price'),
+                            price: 0
+                        }
+                    ]
+                    
+                };
+                product = [...product,newProduct];
+                document.cookie = "product=" + JSON.stringify(product);
+                console.log(product);
                 }
             }
-            else{
-                newField = {name: this.getAttribute('name'),id: this.getAttribute('id'),perPrice: this.getAttribute('price'),price: this.getAttribute('price'),quantity: 0,img: this.getAttribute('image')};
-                product = [...product,newField];
-                this.shadowRoot.querySelector('#result').innerHTML = newField.quantity;
-                document.cookie = 'product=' + JSON.stringify(product);
-            }
+
+
+            
         }
         else{
-            let product = [ {name: this.getAttribute('name'),id: this.getAttribute('id'),perPrice: this.getAttribute('price'),price: this.getAttribute('price'),quantity: 0,img: this.getAttribute('image')}];
-                
+            
+                    let product = [{name: this.getAttribute('name'), img: this.getAttribute('image'), id: this.getAttribute('id'),
+                    
+                    providers:[
+                        {
+                            providerName : 'default',
+                            quantity: 0,
+                            perPrice: this.getAttribute('price'),
+                            price: 0
+                        }
+                    ]
+                    
+                }]
+         
                 document.cookie = 'product=' + JSON.stringify(product);
-                //console.log(document.cookie);
-                this.shadowRoot.querySelector("#result").innerHTML = product[0].quantity;
+                console.log(product);
         }
         
     }
@@ -101,50 +126,48 @@ class ComparePriceItemCard extends HTMLElement{
 
         let name = this.shadowRoot.querySelector('h5').innerHTML;
         let price = this.shadowRoot.querySelector('#price').innerHTML;
-        let img = this.shadowRoot.querySelector('#image').src;
-    
+        console.log(this.getAttribute('id'));
         //increments product in cookie
         this.shadowRoot.querySelector("#inc").addEventListener('click',()=>{
             
             let decodedCookie = decodeURIComponent(document.cookie).split(';');
-            let productString = decodedCookie.find(item => item.includes("product="));
+            
+                let productString = decodedCookie.find(item => item.includes("product="));
                 //console.log(productString); success
                 let productStringSplit = productString.split('=');
                 let product = JSON.parse(productStringSplit[1]);
-            //console.log(price,name,decodedCookie);
-            
-            
                 
-               // console.log(product);// success
-               
-                
-                
-                    let thisProduct = product.find(item => item.name == name);
-                    product = product.filter(item=> item.name !=name);
-                    if(!(thisProduct.providers)){
-                                 
-                        thisProduct.quantity += 1;
-                        thisProduct.price = thisProduct.perPrice * thisProduct.quantity;
-                        this.shadowRoot.querySelector("#result").innerHTML = thisProduct.quantity;
-                        
-                    }
-                    else{
-                        let ye = thisProduct.providers.find(item=> item.perPrice == price);
-                        thisProduct.providers = thisProduct.providers.filter(item=> item.perPrice != price)
-                        ye.quantity += 1;
-                        ye.price = ye.perPrice * ye.quantity;
-                        this.shadowRoot.querySelector("#result").innerHTML = thisProduct.providers.reduce((subtotal,item)=>{return item.quantity + subtotal},0);
-                        thisProduct.providers = [...thisProduct.providers,ye];
-                    }
-                    product = [...product,thisProduct];
-                    console.log(product);
-                    document.cookie = 'product=' + JSON.stringify(product);  
-                
-                
+                    let thisProduct = product.find(item=> item.name == name);
+                    product = product.filter(item=> item.name!= name);
+
+                   thisProduct.providers[0].quantity += 1;
+                   thisProduct.providers[0].price = thisProduct.providers[0].quantity * price;
+                   this.shadowRoot.querySelector('#result').innerHTML = thisProduct.providers[0].quantity;
+                   product = [...product,thisProduct];console.log(product)
+                document.cookie = "product=" + JSON.stringify(product);
+                    
             
         });
             //decrements product in cookie
-            this.shadowRoot.querySelector("#dec").addEventListener('click', async ()=>{
+            this.shadowRoot.querySelector("#dec").addEventListener('click', ()=>{
+                // let decodedCookie = decodeURIComponent(document.cookie).split(';');
+                
+                // let productString = decodedCookie.find(item => item.includes("product="));
+                // let productStringSplit = productString.split('=');
+                // let product = JSON.parse(productStringSplit[1]);
+
+                        
+                //             let thisProduct = product.find(item=> item.name == name);
+                //             if(thisProduct.providers[0].quantity != 0){
+                //                 product = product.filter(item=> item.name != name);
+                //                 thisProduct.providers[0].quantity -= 1;
+                //     thisProduct.providers[0].price = thisProduct.providers[0].quantity * thisProduct.providers[0].perPrice;
+                //     this.shadowRoot.querySelector('#result').innerHTML = thisProduct.providers[0].quantity;
+                //     product = [...product,thisProduct];console.log(product);
+                //             }
+                        
+                //             decodedCookie = "product=" + JSON.stringify(product);
+
                 let decodedCookie = decodeURIComponent(document.cookie).split(';');
                 if(decodedCookie.find(item => item.includes("product="))){
                 let productString = decodedCookie.find(item => item.includes("product="));
@@ -152,44 +175,23 @@ class ComparePriceItemCard extends HTMLElement{
                 let product = JSON.parse(productStringSplit[1]);
                 if(product != []){
                     if(product.find(item=> item.name == name)){
-                        
-                        if(!product.providers){
-                            if(product.find(item=> item.name == name).quantity != 0){
-                                let thisProduct = product.find(item=> item.name == name);
+                        if(product.find(item=> item.name == name).providers[0].quantity != 0){
+                            
+                        let thisProduct = product.find(item=> item.name == name);
                         product = product.filter(item=> item.name != name);
-                        thisProduct.quantity -= 1;
-                        thisProduct.price = thisProduct.perPrice * thisProduct.quantity;
-                        this.shadowRoot.querySelector('#result').innerHTML = thisProduct.quantity;
+                        thisProduct.providers[0].quantity -= 1;
+                        thisProduct.providers[0].price = thisProduct.providers[0].perPrice * thisProduct.providers[0].quantity;
+                        this.shadowRoot.querySelector('#result').innerHTML = thisProduct.providers[0].quantity;
                         if(thisProduct.quantity!= 0){
                             product = [...product,thisProduct];
                         }
                         document.cookie = 'product=' + JSON.stringify(product);
-                            }
                         }
-                        
-                        else{
-                            if(thisProduct.providers.find(item=>item.perPrice == price)){
-                                let ye = thisProduct.providers.find(item=>item.perPrice==price);
-                                thisProduct.providers = thisProduct.providers.filter(item=>item.perPrice != price);
-                                ye.quantity -= 1;
-                                if(ye.quantity != 0){
-                                    ye.price = ye.quantity * ye.perPrice;
-                                    thisProduct.providers = [...thisProduct.providers,ye];
-                                }
-                                this.shadowRoot.querySelector('result').innerHTML = thisProduct.providers.reduce((subtotal,item)=>{return item.quantity + subtotal},0);
-                                product = [...product,thisProduct];
-                                document.cookie = 'product=' + JSON.stringify(product);
-                            }else{
-                                location.href='/consumer/compareprices?id='+this.getAttribute('id');
-                            }
-                        }
-                        
-                        
-                        
-
                     }
                 }
                 }
+
+             
             });
     }
     
