@@ -60,7 +60,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="cart">Cart</a>
+            <a class="nav-link" href="cart">Cart<span id = 'count'></span></a>
         </li>
     </ul>
 
@@ -175,8 +175,7 @@
         {% for i in newly_added %}
         <div class="card mr-3" style="width: 255px;">
             {%if i.price_set.all.values_list|length > 1%}
-            <script>console.log(`{{i}}`)
-                </script>
+            
             <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}></compare-price-item-card>
             {% else %}
             <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}}></item-card>
@@ -265,7 +264,7 @@
         </div>
     </div>
     <hr>
-
+    <!-- <div>Count:<span id = 'count'></span></div> -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
@@ -280,8 +279,58 @@
     <script src="{% static 'js/item_card.js'%}"></script>
     <script src="{% static 'js/compare_price_item_card.js'%}"></script>
     <script>
-        let decodedCookie = decodeURIComponent(document.cookie).split(';');
         
+       
+        
+        let run = () => {
+            
+            let countDiv = document.querySelector('#count');
+            let count = 0;
+            let decodedCookie = decodeURIComponent(document.cookie).split(';');
+            if(decodedCookie.find(item => item.includes("product="))){
+                
+            let productString = decodedCookie.find(item => item.includes("product="));
+            let productStringSplit = productString.split('=');
+            let product = JSON.parse(productStringSplit[1]);
+            if(product.length != 0){
+        
+                let type1 = product.filter(item=> !item.id);
+                let type2 = product.filter(item=> item.id);
+        
+               if(type1){
+                   count += type1.reduce((sub,i)=> { return i.quantity + sub},0);
+                   console.log(count);
+               }
+        
+                if(type2){
+                    let toPrint = type2.filter(item=> item.providers[0].quantity != 0);
+                    count += toPrint.reduce((sub,i)=>{ return i.providers[0].quantity + sub},0);
+                }
+                
+                if(count){
+                    countDiv.innerHTML = ` (${count})` ;
+                }
+                //cartItems.appendChild(child);
+                console.log(count);
+            }
+            else{
+                // let heading3 = document.createElement('h3');
+                // let textnode = document.createTextNode('Your cart is empty 👶');
+                // heading3.appendChild(textnode);
+                // cartItems.appendChild(heading3);
+                countDiv.innerHTML = ``;
+            }
+            }
+            else{
+                countDiv.innerHTML = ``;
+            }
+
+        }
+            
+                run();
+               
+               setInterval(()=>run(),300);
+
     </script>
 </body>
 
