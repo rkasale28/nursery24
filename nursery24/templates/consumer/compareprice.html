@@ -217,8 +217,9 @@
                         console.log(thisProduct);
                     }
                 }
+                if(thisProduct.providers[0].quantity!= 0)
+                  product = [...product,thisProduct];
 
-                product = [...product,thisProduct];
                 document.cookie = "product=" + JSON.stringify(product);
 
 

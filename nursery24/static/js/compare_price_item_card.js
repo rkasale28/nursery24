@@ -176,9 +176,10 @@ class ComparePriceItemCard extends HTMLElement{
                         thisProduct.providers[0].quantity -= 1;
                         thisProduct.providers[0].price = thisProduct.providers[0].perPrice * thisProduct.providers[0].quantity;
                         this.shadowRoot.querySelector('#result').innerHTML = thisProduct.providers[0].quantity;
-                        if(thisProduct.quantity!= 0){
+                        if(thisProduct.providers[0].quantity!= 0){
                             product = [...product,thisProduct];
                         }
+                        console.log(product);
                         document.cookie = 'product=' + JSON.stringify(product);
                         }
                     }

@@ -63,6 +63,9 @@
     <div id = "cartItemsTwo">
     
     </div>
+    <div id = "ifEmpty">
+
+    </div>
     {% if user.is_authenticated %}
     <button id="check">Proceed to Checkout</button>   
     {% else %}
@@ -96,29 +99,30 @@
             
     let cartItems = document.querySelector('#cartItems');
     let cartItemsTwo = document.querySelector('#cartItemsTwo');
+    let ifEmpty = document.querySelector('#ifEmpty');
     let decodedCookie = decodeURIComponent(document.cookie).split(';');
     if(decodedCookie.find(item => item.includes("product="))){
         
     let productString = decodedCookie.find(item => item.includes("product="));
     let productStringSplit = productString.split('=');
     let product = JSON.parse(productStringSplit[1]);
-    if(product != []){
+    if(product.length != 0){
 
         let type1 = product.filter(item=> !item.id);
         let type2 = product.filter(item=> item.id);
 
         (type1) ? 
         cartItems.innerHTML = type1.map(item=> `<cart-card name="${item.name}" price=${item.perPrice} quantity=${item.quantity} image=${item.img}></cart-card>`)
-        : '';
+        : ifEmpty.innerHTML = ``;
 
         if(type2){
             let toPrint = type2.filter(item=> item.providers[0].quantity != 0);
             cartItemsTwo.innerHTML = toPrint.map(item=> `<cart-two name="${item.name}" price=${item.providers[0].perPrice}  image=${item.img} id = ${item.id}></cart-two>`)
-            
+            ifEmpty.innerHTML = ``;
         }
         
         if(!(type1) && !(type2)){
-            cartItems.innerHTML = "<h3>Your cart is empty 👶</h3>"
+            ifEmpty.innerHTML = "<h3>Your cart is empty 👶</h3>"
         }
         //cartItems.appendChild(child);
     }
@@ -127,13 +131,33 @@
         // let textnode = document.createTextNode('Your cart is empty 👶');
         // heading3.appendChild(textnode);
         // cartItems.appendChild(heading3);
-        cartItems.innerHTML = "<h3>Your cart is empty 👶</h3>"
+        ifEmpty.innerHTML = "<h3>Your cart is empty 👶</h3>"
     }
+    }
+    else{
+        ifEmpty.innerHTML = "<h3>Your cart is empty 👶</h3>"
     }
 
 }
     
         run();
+    // setTimeout(()=>{
+    //     let cartItems = document.querySelector('#cartItems');
+    //     let decodedCookie = decodeURIComponent(document.cookie).split(';');
+
+    //     if(!decodedCookie.find(item => item.includes("product="))){
+    //     cartItems.innerHTML = "<h3>Your cart is empty 👶</h3>"
+
+    //     if(decodedCookie.find(item => item.includes("product="))){
+    //         let productString = decodedCookie.find(item => item.includes("product="));
+    // let productStringSplit = productString.split('=');
+    // let product = JSON.parse(productStringSplit[1]);
+
+    //         if(product == []) cartItem.innerHTML = "<h3>Your cart is empty 👶</h3>"
+
+    //     }
+
+    // }},300);
 
     window.onload=function(){
         

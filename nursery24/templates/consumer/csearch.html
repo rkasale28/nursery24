@@ -67,7 +67,32 @@
         </li>
     </ul>
 
-    <div class="d-flex justify-content-start ml-3 mt-3">
+    <!-- <div class="d-flex justify-content-start ml-3 mt-3"> -->
+
+        <div class="d-flex justify-content-start ml-3 mt-3">
+            {% for i in products %}
+            <div class="card mr-3" style="width: 255px;">
+                {% if product.price_set.all.values_list|length > 1%}
+                
+                <compare-price-item-card name="{{product.name}}" price= {{product.price_set.all.0.price}} image={{product.image.url}} id={{product.id}}></compare-price-item-card>
+                {% else %}
+                <item-card name= "{{product.name}}" price={{product.price_set.all.0.price}} image={{product.image.url}}></item-card>
+                {% endif %}
+            </div>
+        </div>
+            {% if forloop.counter|divisibleby:5 %}
+
+            <div class="d-flex justify-content-start ml-3 mt-3">
+                {% endif %}
+        
+                {% empty %}
+                <img src="{%static 'images/No-results-found.jpg'%}" class="row mx-auto mt-4">
+                {% endfor %}
+            </div>
+        
+
+<!-- 
+
         {% for product in products %}
         <div class="card mr-3" style="width: 255px;">
             <img class="card-img-top" id='image' src={{product.image.url}}>
@@ -111,7 +136,7 @@
         {% empty %}
         <img src="{%static 'images/No-results-found.jpg'%}" class="row mx-auto mt-4">
         {% endfor %}
-    </div>
+    </div> -->
 
     <div class="mb-3"></div>
 
@@ -126,6 +151,9 @@
         crossorigin="anonymous"></script>
     <script src="{% static 'js/header.js'%}"></script>
     <script src="{% static 'js/header_authenticated.js'%}"></script>
+    <script src="{% static 'js/item_card.js'%}"></script>
+    <script src="{% static 'js/compare_price_item_card.js'%}"></script>
+   
 </body>
 
 </html>
