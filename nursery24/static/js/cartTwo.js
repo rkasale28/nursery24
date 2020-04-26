@@ -164,6 +164,9 @@ class CartTwo extends HTMLElement{
                 //             decodedCookie = "product=" + JSON.stringify(product);
 
                 let decodedCookie = decodeURIComponent(document.cookie).split(';');
+                let disconnect = () => {
+                    document.querySelector('cart-two').remove(); // 'disconnected from the DOM'
+                }
                 if(decodedCookie.find(item => item.includes("product="))){
                 let productString = decodedCookie.find(item => item.includes("product="));
                 let productStringSplit = productString.split('=');
@@ -179,12 +182,15 @@ class CartTwo extends HTMLElement{
                         this.shadowRoot.querySelector('#result').innerHTML = thisProduct.providers[0].quantity;
                         this.shadowRoot.querySelector('#total').innerHTML = thisProduct.providers[0].price;
 
-                        if(thisProduct.quantity!= 0){
+                        if(thisProduct.providers[0].quantity!= 0){
                             product = [...product,thisProduct];
                         }
                         else{
+                            //disconnect();
+
                             location.reload("true");
-                             
+                           disconnect();
+
                         }
                         document.cookie = 'product=' + JSON.stringify(product);
                         location.reload("true");
@@ -201,6 +207,8 @@ class CartTwo extends HTMLElement{
         // rerender();
         console.log('disconnected ...');
      }
+
+     
     
 }
 
