@@ -186,7 +186,7 @@ class CartTwo extends HTMLElement{
                              
                         }
                         document.cookie = 'product=' + JSON.stringify(product);
-
+                        location.reload('true')
                         }
                     }
                 }
