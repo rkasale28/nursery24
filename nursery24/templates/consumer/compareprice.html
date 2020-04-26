@@ -82,8 +82,8 @@
                     if(product.find(item=> item.id == id)){
                         thatProduct = product.find(item=> item.id == id);
                     
-                            thatProduct.providers.forEach(prov=> document.getElementById(`result|${prov.perPrice}`).innerHTML = prov.quantity );
-                        
+                            //thatProduct.providers.forEach(prov=> document.getElementById(`result|${prov.perPrice}`).innerHTML = prov.quantity );
+                            document.getElementById(`result|${thatProduct.providers[0].perPrice}`).innerHTML = thatProduct.providers[0].quantity;
                     }
                 }
 
@@ -96,22 +96,49 @@
                 let id = getParam();
                 let decodedCookie = decodeURIComponent(document.cookie).split(';');
             
+                if(!decodedCookie.find(item => item.includes("product="))){
+                let product = [{name: "", providers: [{providerName: info[0],quantity: 1,perPrice: info[1],price: info[1]}],img: '',id: id}];
+                //console.log(product);
+                document.cookie = 'product=' + JSON.stringify(product);
+                //console.log(document.cookie);
+                document.getElementById(`result|${info[1]}`).innerHTML = 1;
+                
+                console.log(product);
+            }
+            else{
                 let productString = decodedCookie.find(item => item.includes("product="));
                 //console.log(productString); success
                 let productStringSplit = productString.split('=');
                 let product = JSON.parse(productStringSplit[1]);
-                let thisProduct = product.find(item=> item.id = id);
-                product = product.filter(item=> item.id != id);
+               // console.log(product);// success
+                if(!product.find(item=> item.id == id)){
+                    let newProduct = {name: '', providers: [{providerName: info[0],quantity: 1,perPrice: info[1],price: info[1]}],img: '',id: id};
+                
+                    document.getElementById(`result|${info[1]}`).innerHTML = newProduct.providers[0].quantity;
 
-                //mismatch
+                    product = [...product,newProduct];
+                    console.log(product);
+                    document.cookie = 'product=' + JSON.stringify(product);
+                }
+                else
+                {
+
+
+                let thisProduct = product.find(item => item.id == id);
+                product = product.filter(item=> item.id !=id);
+               // thisProduct.providers[0].quantity += 1;
+
                 if(thisProduct.providers[0].perPrice != info[1]){
+
+                    
+
                     thisProduct.providers[0].providerName = info[0];
                     thisProduct.providers[0].quantity = 1;
                     thisProduct.providers[0].perPrice = info[1];
                     thisProduct.providers[0].price = info[1];
                     document.getElementById(`result|${info[1]}`).innerHTML =  1;
                     console.log(thisProduct);
-                    // rerun();
+                    //rerun();
                     location.reload("true");
                 }
                 else{
@@ -126,9 +153,48 @@
                 document.cookie = "product=" + JSON.stringify(product);
                 console.log(product);
 
+                // thisProduct.price = thisProduct.providers[0].perPrice * thisProduct.providers[0].quantity;
+                // this.shadowRoot.getElementById("#result").innerHTML = thisProduct.providers[0].quantity;
+                // product = [...product,thisProduct];
+                // console.log(product);
+                // document.cookie = 'product=' + JSON.stringify(product);  
+                // }
+            }        
+            
+
+                // let productString = decodedCookie.find(item => item.includes("product="));
+                // //console.log(productString); success
+                // let productStringSplit = productString.split('=');
+                // let product = JSON.parse(productStringSplit[1]);
+                // let thisProduct = product.find(item=> item.id = id);
+                // product = product.filter(item=> item.id != id);
+
+                //mismatch
+                // if(thisProduct.providers[0].perPrice != info[1]){
+                //     thisProduct.providers[0].providerName = info[0];
+                //     thisProduct.providers[0].quantity = 1;
+                //     thisProduct.providers[0].perPrice = info[1];
+                //     thisProduct.providers[0].price = info[1];
+                //     document.getElementById(`result|${info[1]}`).innerHTML =  1;
+                //     console.log(thisProduct);
+                    // rerun();
+                //     location.reload("true");
+                // }
+                // else{
+
+                //     thisProduct.providers[0].quantity += 1;
+                //     thisProduct.providers[0].price = thisProduct.providers[0].quantity * thisProduct.providers[0].perPrice;
+                //     document.getElementById(`result|${info[1]}`).innerHTML =  thisProduct.providers[0].quantity;
+                //     console.log(thisProduct);
+                // }
+
+                // product = [...product,thisProduct];
+                // document.cookie = "product=" + JSON.stringify(product);
+                // console.log(product);
+
 
             }
-
+        }
             let dec = (e) => {
                 let info = e.id.split('|');
                 console.log(info);
@@ -163,7 +229,7 @@
                         // product = product.filter(item=> item.name != name);
                         // thisProduct.providers[0].quantity -= 1;
                         // thisProduct.providers[0].price = thisProduct.providers[0].perPrice * thisProduct.providers[0].quantity;
-                        // this.shadowRoot.querySelector('#result').innerHTML = thisProduct.providers[0].quantity;
+                        // this.shadowRoot.getElementById('#result').innerHTML = thisProduct.providers[0].quantity;
                         // if(thisProduct.quantity!= 0){
                         //     product = [...product,thisProduct];
                         // }
