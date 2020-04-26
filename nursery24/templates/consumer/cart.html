@@ -148,18 +148,7 @@
         }
     }
     function handler() {
-        names = []
-        qty = []
-        var x;
-        let decodedCookie = decodeURIComponent(document.cookie).split(';');
-    let productString = decodedCookie.find(item => item.includes("product="));
-    let productStringSplit = productString.split('=');
-    let product = JSON.parse(productStringSplit[1]);
-        for ( x=0;x<product.length; x++){
-            names.push(product[x].name);
-            qty.push(product[x].quantity);
-        }
-        window.location.href = "checkout?names=" + names + "&qty=" +qty;
+        window.location.href = "checkout";
     }
     function handler2() {
     window.location.href = "orderlogin";

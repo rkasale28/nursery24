@@ -2,8 +2,9 @@
 <body>
 {% load custom_tags %}
 {% for i in length %}
-<h2>Name = {{ names|index:i }} </h2>
-<h2>Quantity = {{ qty|index:i }} </h2> <br>
+<h3>Name = {{ names|index:i }} </h3>
+<h3>Quantity = {{ qty|index:i }} </h3> 
+<h3>Total Price = {{ prices|index:i }}</h3><br>
 {% endfor %}
 <h2>Select one address or enter a new one</h2>
 

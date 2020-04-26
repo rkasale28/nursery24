@@ -4,9 +4,16 @@
 {% for i in length %}
 {% if prices|index:i != 0 %}
 <h3>Name = {{ names|index:i }} </h3>
+{% if changed|index:i == 'No' %}
 <h3>Quantity = {{ qty|index:i }} </h3>
 <h3>Price = {{ prices|index:i }} </h3> 
 <h3>Final Price = {{ finalprices|index:i }}</h3> <br>
+{% else %}
+<h3>Prices may have changed bcoz the selected provider couldnt deliver to your location</h3>
+<h3>Quantity = {{ qty|index:i }} </h3>
+<h3>Price = {{ prices|index:i }} </h3> 
+<h3>Final Price = {{ finalprices|index:i }}</h3> <br>
+{% endif %}
 {% else %}
 <h3>{{ names|index:i }} cannot be delivered at your location </h3>
 <br>

@@ -179,7 +179,7 @@ class CartTwo extends HTMLElement{
                         this.shadowRoot.querySelector('#result').innerHTML = thisProduct.providers[0].quantity;
                         this.shadowRoot.querySelector('#total').innerHTML = thisProduct.providers[0].price;
 
-                        if(thisProduct.quantity!= 0){
+                        if(thisProduct.providers[0].quantity!= 0){
                             product = [...product,thisProduct];
                         }
                         else{
