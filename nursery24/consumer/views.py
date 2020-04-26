@@ -68,6 +68,7 @@ def login_submit(request):
 
 def logout(request):
     auth.logout(request)
+    print("Reached here")
     return redirect('../consumer/home')
 
 def myprofile(request):

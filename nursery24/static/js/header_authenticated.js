@@ -34,11 +34,17 @@ class HeaderAuthenticated extends HTMLElement{
     connectedCallback(){
 
     this.shadowRoot.querySelector("#logout").addEventListener('click',()=>{
-        console.log("Button Pressed");
-        window.location.href = "logout"
+        document.cookie = 'product=; expires=Thu, 01 Jan 1970 00:00:00 UTC'
+        console.log("Button pressed");
+        window.location.href = 'logout'
+        disconnect();
+
     })
 }
 
 }
 
 window.customElements.define('authenticated-header',HeaderAuthenticated)
+let disconnect = () => {
+    document.querySelector('authenticated-header').remove(); // 'disconnected from the DOM'
+}
