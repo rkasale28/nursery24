@@ -194,18 +194,25 @@ def checkout(request):
         data['qty'] = qty
         data['length'] = range(len(names))
         data['provnames'] = provnames
-        data['prices'] = prices
-        current_user = request.user
-        consumer = Consumer.objects.get(user_id = current_user.id)
-        add = Consumer_Address.objects.filter(consumer_id = consumer.id)
-        addr = []
-        for a in add:
-            addr.append(a.addr)
-        data['addr'] = addr
+        data['prices'] = prices      
+        
         request.session['names'] = names
         request.session['qty'] = qty
         request.session['provider'] = provnames
     return render(request,'corderpage.html',data) 
+
+def selectaddress(request):
+    current_user = request.user
+    consumer = Consumer.objects.get(user_id = current_user.id)
+    add = Consumer_Address.objects.filter(consumer_id = consumer.id)
+    addr = []
+    data = {}
+    for a in add:
+        addr.append(a.addr)
+    data['addr'] = addr
+    print(data['addr'])
+    return render(request,'cselectaddress.html',data) 
+
 
 def confirmorder(request):
     address = request.POST['address']
@@ -219,6 +226,7 @@ def confirmorder(request):
     data['provnames'] = provnames
     finalprices = []
     pri = []
+    changed = []
     for i in range(len(names)):
         product = Product.objects.get(name = names[i])
         prov = Provider.objects.filter(price__product_id = product.id)
@@ -227,8 +235,7 @@ def confirmorder(request):
         available = []
         prices = []
         d = nom.geocode(address,timeout = None)
-        ps = []
-        changed = []
+        ps = []      
         customeraddr = (d.latitude,d.longitude)
         if provnames[i] == 'Single':
                 prov1 = Provider.objects.get(price__product_id = product.id)
@@ -276,6 +283,7 @@ def confirmorder(request):
             finalprices.append(min(prices))
         else:
             finalprices.append(0)
+            changed.append('Yes')
     data['prices'] = finalprices
     data['finalprices'] = []
     total = 0

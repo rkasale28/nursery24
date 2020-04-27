@@ -6,24 +6,8 @@
 <h3>Quantity = {{ qty|index:i }} </h3> 
 <h3>Total Price = {{ prices|index:i }}</h3><br>
 {% endfor %}
-<h2>Select one address or enter a new one</h2>
-
-<form action = 'confirmorder' method = 'POST'  >
-{% csrf_token %}
-{% for add in addr %}
-<h3>{{ add }}</h3>
-<input type = 'hidden' value = {{add}} name = 'address'> 
-<input type = 'submit'>
-{% endfor %}
-<br>
-</form>
-<form action = 'confirmorder' method = 'POST'  >
-{% csrf_token %}
-<h3>Enter delivery address:
-<input type = 'text' name = 'address'> 
-<br>
-<input type = 'submit'>
-</h3>
+<form action = "selectaddress">
+    <input type = submit>
 </form>
 </body>
 </html>

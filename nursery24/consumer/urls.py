@@ -27,4 +27,5 @@ urlpatterns=[
     path('deleteaddresssubmit',views.deleteaddresssubmit,name="deleteaddresssubmit"),
     path('orderlogin',views.orderlogin,name="orderlogin"),
     path('orderlogin_submit',views.orderlogin_submit,name="orderlogin_submit"),
+    path('selectaddress',views.selectaddress,name="selectaddress"),
 ]
