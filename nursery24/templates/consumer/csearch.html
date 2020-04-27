@@ -67,76 +67,24 @@
         </li>
     </ul>
 
-    <!-- <div class="d-flex justify-content-start ml-3 mt-3"> -->
-
-        <div class="d-flex justify-content-start ml-3 mt-3">
-            {% for i in products %}
-            <div class="card mr-3" style="width: 255px;">
-                {% if product.price_set.all.values_list|length > 1%}
-                
-                <compare-price-item-card name="{{product.name}}" price= {{product.price_set.all.0.price}} image={{product.image.url}} id={{product.id}}></compare-price-item-card>
-                {% else %}
-                <item-card name= "{{product.name}}" price={{product.price_set.all.0.price}} image={{product.image.url}}></item-card>
-                {% endif %}
-            </div>
-        </div>
-            {% if forloop.counter|divisibleby:5 %}
-
-            <div class="d-flex justify-content-start ml-3 mt-3">
-                {% endif %}
-        
-                {% empty %}
-                <img src="{%static 'images/No-results-found.jpg'%}" class="row mx-auto mt-4">
-                {% endfor %}
-            </div>
-        
-
-<!-- 
-
+    <div class="d-flex justify-content-start ml-3 mt-3">
         {% for product in products %}
         <div class="card mr-3" style="width: 255px;">
-            <img class="card-img-top" id='image' src={{product.image.url}}>
-
-            <div class="card-body">
-                <h5 class="card-title">{{product.name}}</span></h5>
-                <h6 class="card-subtitle text-muted">Rs.
-                    {{product.price_set.all.values|dictsort:"price"|first|get_item:"price" }}</span></h6>
-
-            </div>
-
-            {% if product.price_set.all.values_list|length > 1%}
-            <div class="btn-toolbar ml-1 mb-2" role="toolbar" aria-label="Toolbar with button groups">
-
-                <div class="btn-group ml-auto mr-2" role="group" aria-label="First group">
-                    <button type="button" class="btn btn-success">+</button>
-                    <button type="button" class="btn btn-outline-secondary disabled">0</button>
-                    <button type="button" class="btn btn-success">-</button>
-                </div>
-            </div>
+            {%if product.price_set.all.values_list|length > 1%}
+            <compare-price-item-card name="{{product.name}}" price="{{product.price_set.all.values|dictsort:'price'|first|get_item:'price'}}" image={{product.image.url}} id={{product.id}}></compare-price-item-card>
             {% else %}
-            <div class="btn-toolbar ml-1 mb-2" role="toolbar" aria-label="Toolbar with button groups">
-
-                <div class="btn-group mr-2" role="group" aria-label="Second group">
-                    <button type="button" id="compare" class="btn btn-primary">Compare Price</button>
-                </div>
-
-                <div class="btn-group mr-2" role="group" aria-label="First group">
-                    <button type="button" class="btn btn-success">+</button>
-                    <button type="button" class="btn btn-outline-secondary disabled">0</button>
-                    <button type="button" class="btn btn-success">-</button>
-                </div>
-            </div>
+            <item-card name="{{product.name}}" price="{{product.price_set.all.values|dictsort:'price'|first|get_item:'price'}}" image={{product.image.url}}></item-card>
             {% endif %}
         </div>
+
         {% if forloop.counter|divisibleby:5 %}
     </div>
     <div class="d-flex justify-content-start ml-3 mt-3">
         {% endif %}
-
         {% empty %}
         <img src="{%static 'images/No-results-found.jpg'%}" class="row mx-auto mt-4">
         {% endfor %}
-    </div> -->
+    </div>
 
     <div class="mb-3"></div>
 

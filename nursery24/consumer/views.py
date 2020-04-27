@@ -156,7 +156,7 @@ def compareprices(request):
 
 def search(request):
     key = request.GET['search']
-    prods = Product.objects.all().filter(name__icontains=key) 
+    prods = Product.objects.all().filter(name__icontains=key).order_by('name') 
     return render(request,'csearch.html',{'products':prods})
 
 def cart(request):
