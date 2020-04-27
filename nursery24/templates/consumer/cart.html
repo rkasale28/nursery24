@@ -123,6 +123,11 @@
         
         if(!(type1) && !(type2)){
             ifEmpty.innerHTML = "<h3>Your cart is empty 👶</h3>"
+            var check = document.getElementById("check");
+            if(check)
+            {
+                check.disabled = true
+            }
         }
         //cartItems.appendChild(child);
     }
@@ -132,10 +137,20 @@
         // heading3.appendChild(textnode);
         // cartItems.appendChild(heading3);
         ifEmpty.innerHTML = "<h3>Your cart is empty 👶</h3>"
+        var check = document.getElementById("check");
+        if(check)
+        {
+            check.disabled = true
+        }
     }
     }
     else{
         ifEmpty.innerHTML = "<h3>Your cart is empty 👶</h3>"
+        var check = document.getElementById("check");
+        if(check)
+        {
+            check.disabled = true
+        }
     }
 
 }
