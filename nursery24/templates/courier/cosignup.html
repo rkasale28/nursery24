@@ -1,0 +1,80 @@
+{% load static %}
+<html>
+
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/SignUpPage.css'%}">
+    <style>
+        body {
+            background-image: url("{%static 'images/bg-form1.jpg' %}");
+            background-size: cover;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 500px;
+            height: 500px;
+            border-radius: 10px;
+        }
+    </style>
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <div class="container register bg-white my-auto">
+            <div class="d-flex justify-content-center">
+                <div class="tab-content" id="myTabContent">
+                    <h3 class="register-heading">Sign Up </h3>
+
+                    <form class="d-flex justify-content-center row register-form" action="signup_submit" method="POST">
+                        {% csrf_token %}
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Service Name" value="" name="sname"
+                                    tabindex="1" />
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Address" value="" name="address"
+                                    tabindex="2"/>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="email" class="form-control" placeholder="Email Id" value="" name="mail"
+                                    tabindex="3" />
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-8">
+                            
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Phone No." value="" name="phone"
+                                    tabindex="4" maxlength="10" minlength="10"/>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="User Name" value="" name="uname"
+                                    tabindex="5" />
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" placeholder="Password" value="" name="pwd"
+                                    tabindex="6" />
+                            </div>
+
+                        </div>
+
+                        <input type="submit" class="btnRegister" value="Register" tabindex="6" />
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
