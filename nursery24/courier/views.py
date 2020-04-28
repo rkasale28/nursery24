@@ -3,6 +3,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
 from .models import Courier,Address
+from http import cookies
 
 # Create your views here.
 def home(request):
@@ -53,9 +54,12 @@ def login_submit(request):
         else:
             return HttpResponse('Invalid Credentials')
     else:
-        return render(request,'login')
+        return render(request,'cologin.html')
 
 def logout(request):
     auth.logout(request)
     print("Reached here")
-    return redirect('../courier/home')
+    return redirect('../courier/login')
+
+def myprofile(request):
+    return render(request,'coprofile.html')
