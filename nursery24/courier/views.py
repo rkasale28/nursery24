@@ -7,7 +7,6 @@ from http import cookies
 from .forms import UserForm,AddressForm,CourierForm
 from django.core.exceptions import ObjectDoesNotExist
 
-
 # Create your views here.
 def home(request):
     return render(request,'cohome.html')
