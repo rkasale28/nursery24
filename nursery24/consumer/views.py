@@ -124,7 +124,7 @@ def deleteaddresssubmit(request):
         return redirect('../consumer/addresses') 
     
 def home(request):
-    newly_added=Product.objects.all().order_by('-date_added')[:5]
+    newly_added=Product.objects.all().distinct().order_by('-date_added')[:5]
     return render(request,'chome.html',{'newly_added':newly_added})
 
 def plants(request):
