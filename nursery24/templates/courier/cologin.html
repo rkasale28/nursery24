@@ -1,0 +1,86 @@
+{% load static %}
+<html>
+
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/SignUpPage.css'%}">
+    <style>
+        body {
+            background-image: url("{%static 'images/bg-form1.jpg' %}");
+            background-size: cover;
+            overflow: hidden;
+        }
+
+        .container2 {
+            width: 500px;
+            height: 300px;
+            border-radius: 10px;
+        }
+
+        .container1 {
+            width: 500px;
+            height: 110px;
+            border-radius: 10px;
+        }
+
+        .register-form {
+            height: 220px;
+        }
+
+    </style>
+    <title>Login</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="d-flex justify-content-center">
+                <div class="container2 register bg-white">
+                    <div class="d-flex justify-content-center">
+                        <div class="tab-content" id="myTabContent">
+                            <h3 class="register-heading">Login</h3>
+
+                            <form class="d-flex justify-content-center row register-form" action="login_submit"
+                                method="POST">
+                                {% csrf_token %}
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="User Name" value=""
+                                            name="uname" tabindex="1" />
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="Password" value=""
+                                            name="pwd" tabindex="2" />
+                                    </div>
+                                </div>
+
+                                <input type="submit" class="btnRegister" value="Login" tabindex="3" />
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+                <div class="container1 register bg-white">
+                    <div class="d-flex justify-content-center">
+                        <div class="tab-content" id="myTabContent">
+
+                            <h5 align="middle" class="pt-2">Don't have an account?</h5>
+                            <form>
+                                <button formaction="signup" class="btnRegister">Sign Up</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

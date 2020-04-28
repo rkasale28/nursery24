@@ -14,6 +14,8 @@ class Address(models.Model):
 
 class Order(models.Model):
     total_price=models.IntegerField()
+    secondary_id=models.CharField(max_length=8,blank=False)
+    date_placed=models.DateField(null=True)
     
 class ProductInOrder(models.Model):
     product=models.OneToOneField(Product,on_delete=models.CASCADE)
@@ -35,7 +37,6 @@ class ProductInOrder(models.Model):
     last_tracked_by=models.OneToOneField(Courier,on_delete=models.CASCADE,null=True)
     
 class Review(models.Model):
-    comment=models.CharField(max_length=250,null=True)
     rating=models.FloatField()
     consumer=models.OneToOneField(Consumer,on_delete=models.CASCADE)
     product=models.ForeignKey(Product,on_delete=models.CASCADE,null=True)

@@ -6,6 +6,7 @@ class Provider(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
     phone_number=models.CharField(max_length=10,blank=False)
     shop_name=models.CharField(max_length=100,blank=False,default="ABC")
+    profile_pic=models.ImageField(upload_to='dps/',default='dps/shop.jpg')
 
 class Address(models.Model):
     addr=models.TextField(max_length=100,null=True)

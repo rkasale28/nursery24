@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 class Courier(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
     phone_number=models.CharField(max_length=10,blank=False)
+    service_name=models.CharField(max_length=100,null=True)
+    profile_pic=models.ImageField(upload_to='dps/',default='dps/courier.jpg')
 
 class Address(models.Model):
     addr=models.TextField(max_length=100,null=True)
