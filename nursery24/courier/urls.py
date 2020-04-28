@@ -11,4 +11,7 @@ urlpatterns=[
     path('myprofile',views.myprofile,name="myprofile"),
     path('edit',views.edit,name="edit"),
     path('editsubmit',views.editsubmit,name="editsubmit"),
+    path('addresses',views.addresses,name="addresses"),
+    path('addaddress',views.addaddress,name="addaddress"),
+    path('addaddresssubmit',views.addaddresssubmit,name="addaddresssubmit"),
 ]

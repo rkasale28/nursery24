@@ -92,3 +92,19 @@ def editsubmit(request):
         return redirect('../courier/myprofile')  
     else: 
         return render(request,'coprofile.html')
+
+def addresses(request):
+    return render(request,'coaddress.html')
+
+def addaddress(request):
+    form=AddressForm()
+    return render(request,'coaddaddress.html',{'form':form})
+
+def addaddresssubmit(request):
+    if request.method=='POST':
+        courier_id=request.POST['courier']
+        addr=request.POST['addr']
+        courier=Courier.objects.get(pk=courier_id)
+        address=Address(addr=addr,courier=courier)
+        address.save()
+        return redirect('../courier/addresses')
