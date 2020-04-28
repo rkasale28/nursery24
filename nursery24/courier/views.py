@@ -4,6 +4,7 @@ from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
 from .models import Courier,Address
 from http import cookies
+from .forms import UserForm,AddressForm,CourierForm
 
 # Create your views here.
 def home(request):
@@ -63,3 +64,30 @@ def logout(request):
 
 def myprofile(request):
     return render(request,'coprofile.html')
+
+def edit(request):
+    userform=UserForm()
+    userform.fields['email'].initial=request.user.email
+    courierform=CourierForm()
+    courierform.fields['phone_number'].initial=Courier.objects.get(user=request.user).phone_number
+    courierform.fields['service_name'].initial=Courier.objects.get(user=request.user).service_name
+    return render(request,'coeditprofile.html',{'userform':userform,'courierform':courierform})
+
+def editsubmit(request):
+    if request.method=='POST':
+        service_name=request.POST['service_name']
+        email=request.POST['email']
+        request.user.email=email
+        request.user.save()
+        phone_number=request.POST['phone_number']
+        initial_profile_pic=request.user.courier.profile_pic.url
+        initial_profile_pic=initial_profile_pic.replace('/media/', '')
+        profile_pic=request.FILES['profile_pic'] if 'profile_pic' in request.FILES else initial_profile_pic
+        courier=Courier.objects.get(user=request.user)
+        courier.phone_number=phone_number
+        courier.service_name=service_name
+        courier.profile_pic = profile_pic
+        courier.save()     
+        return redirect('../courier/myprofile')  
+    else: 
+        return render(request,'coprofile.html')
