@@ -94,12 +94,16 @@ def editsubmit(request):
         request.user.email=email
         request.user.save()
         phone_number=request.POST['phone_number']
-        profile_pic=request.FILES['profile_pic']
+        initial_profile_pic=request.user.consumer.profile_pic.url
+        initial_profile_pic=initial_profile_pic.replace('/media/', '')
+        profile_pic=request.FILES['profile_pic'] if 'profile_pic' in request.FILES else initial_profile_pic
         consumer=Consumer.objects.get(user=request.user)
         consumer.phone_number=phone_number
         consumer.profile_pic=profile_pic
-        consumer.save()        
-    return render(request,'cprofile.html')
+        consumer.save()
+        return redirect('../consumer/myprofile')  
+    else: 
+        return render(request,'cprofile.html')        
 
 def addresses(request):
     return render(request,'caddress.html')
