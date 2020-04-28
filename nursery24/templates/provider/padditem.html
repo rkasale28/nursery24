@@ -19,20 +19,6 @@
     <authenticated-header></authenticated-header>
     {% endif %}
     
-    <ul class="nav nav-pills nav-fill bg-light">
-        <li class="nav-item">
-            <a class="nav-link" href="home">Pending Orders</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="additem">Add Item</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="removeitem">Remove Item</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="removebranch">Branch</a>
-        </li>
-    </ul>
 
     <form method = "post" enctype="multipart/form-data" action="additemsubmit"> 
         {% csrf_token %} 

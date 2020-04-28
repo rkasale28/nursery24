@@ -81,7 +81,7 @@ def additemsubmit(request):
             product.providers.add(provider,through_defaults={'price':price})
         else:
             check_product.providers.add(provider,through_defaults={'price':price})
-        return render(request,'phome.html')
+        return redirect('../provider/removeitem')
 
 def removeitem(request):
     return render(request,'premoveitem.html')
@@ -93,7 +93,7 @@ def removeitemsubmit(request):
         product=Product.objects.get(pk=product_id)
         provider=Provider.objects.get(pk=provider_id)
         provider.product_set.remove(product)
-        return render(request,'phome.html')
+        return redirect('../provider/removeitem')
 
 def addbranch(request):
     form=AddressForm()

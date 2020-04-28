@@ -24,7 +24,12 @@
 
         .d-block {
             height: 20vw;
-            object-fit: cover;
+             object-fit: cover;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: black;
         }
     </style>
 </head>
@@ -40,28 +45,42 @@
         <li class="nav-item">
             <a class="nav-link" href="home">Pending Orders</a>
         </li>
+        
         <li class="nav-item">
-            <a class="nav-link" href="additem">Add Item</a>
+            <a class="nav-link active" href="removeitem">Item</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="removeitem">Remove Item</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="removebranch">Branch</a>
-        </li>
+        
     </ul>
+    
+
+    
     <div class="d-flex justify-content-start ml-3 mt-3">
         {% for i in user.provider.price_set.all%}
         <provider-item-card name='{{i.product.name}}' price='{{i.price}}' image='{{i.product.image.url}}'
-            id='{{i.product.id}}' proid='{{user.provider.id}}' token='{{csrf_token}}'></provider-item-card>
+        id='{{i.product.id}}' proid='{{user.provider.id}}' token='{{csrf_token}}'></provider-item-card>
+        
         {% if forloop.counter|divisibleby:5 %}
     </div>
     <div class="d-flex justify-content-left ml-3 mt-3">
-
         {%endif%}
 
         {% endfor%}
+        <a href="additem">
+            <div class="d-flex justify-content-start">
+                <div class="card mr-3 bg-light" style="width: 255px;height:350px;border: 5px dashed black">
+                    <div class="card-title">
+                        <p class="card-text text-center" style="font-size: 200px;margin-top:10px;">+</p>
+                    </div>
+                </div>
+            </div>
+        </a>
     </div>
+
+        
+
+
+
+
     <div class="mb-3"></div>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
@@ -72,6 +91,19 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+
+
+    
+
+
+
+
+
+
+
+
+
+
     <script src="{% static 'js/header.js'%}"></script>
     <script src="{% static 'js/header_authenticated.js'%}"></script>
     <script src="{% static 'js/provider_item_card.js'%}"></script>
