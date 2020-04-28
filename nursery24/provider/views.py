@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
 from .models import Address,Provider,Product
-from .forms import AddressForm,ProductForm,PriceForm
+from .forms import AddressForm,ProductForm,PriceForm,UserForm,ProviderForm
 from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
@@ -119,3 +119,36 @@ def removebranchsubmit(request):
         address_id=request.POST['id']
         Address.objects.get(pk=address_id).delete()
         return redirect('../provider/removebranch')
+
+def edit(request):
+    userform=UserForm()
+    userform.fields['first_name'].initial=request.user.first_name
+    userform.fields['last_name'].initial=request.user.last_name
+    userform.fields['email'].initial=request.user.email
+    providerform=ProviderForm()
+    providerform.fields['phone_number'].initial=Provider.objects.get(user=request.user).phone_number
+    providerform.fields['shop_name'].initial=Provider.objects.get(user=request.user).shop_name
+    return render(request,'peditprofile.html',{'userform':userform,'providerform':providerform})
+
+def editsubmit(request):
+    if request.method=='POST':
+        first_name=request.POST['first_name']
+        last_name=request.POST['last_name']
+        email=request.POST['email']
+        request.user.first_name=first_name
+        request.user.last_name=last_name
+        request.user.email=email
+        request.user.save()
+        phone_number=request.POST['phone_number']
+        shop_name=request.POST['shop_name']
+        initial_profile_pic=request.user.provider.profile_pic.url
+        initial_profile_pic=initial_profile_pic.replace('/media/', '')
+        profile_pic=request.FILES['profile_pic'] if 'profile_pic' in request.FILES else initial_profile_pic
+        provider=Provider.objects.get(user=request.user)
+        provider.phone_number=phone_number
+        provider.profile_pic=profile_pic
+        provider.shop_name=shop_name
+        provider.save()
+        return redirect('../provider/myprofile')  
+    else: 
+        return render(request,'pprofile.html')        
