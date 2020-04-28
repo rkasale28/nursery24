@@ -56,7 +56,7 @@
             <div class="card-body d-flex flex-column">
                 <p class="card-text">{{i.addr}}</p>
 
-                <form action="removebranchsubmit" method="post" class="ml-auto" style="margin-top:150px">
+                <form action="removeaddresssubmit" method="post" class="ml-auto" style="margin-top:150px">
                 {% csrf_token %}
                 <input name="id" type="hidden" value="{{i.id}}">
                 <input type="submit" class=" btn btn-danger" value="Delete">

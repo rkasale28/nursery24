@@ -14,4 +14,5 @@ urlpatterns=[
     path('addresses',views.addresses,name="addresses"),
     path('addaddress',views.addaddress,name="addaddress"),
     path('addaddresssubmit',views.addaddresssubmit,name="addaddresssubmit"),
+    path('removeaddresssubmit',views.removeaddresssubmit,name="removeaddresssubmit"),
 ]

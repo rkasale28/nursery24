@@ -108,3 +108,9 @@ def addaddresssubmit(request):
         address=Address(addr=addr,courier=courier)
         address.save()
         return redirect('../courier/addresses')
+
+def removeaddresssubmit(request):
+    if request.method=='POST':
+        address_id=request.POST['id']
+        Address.objects.get(pk=address_id).delete()
+        return redirect('../courier/addresses')
