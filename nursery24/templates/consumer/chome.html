@@ -170,9 +170,37 @@
         </div>
     </div>
     <hr>
+    <h5 class="text-center" style="margin-bottom:15px;">Trending</h5>
+    <div class="d-flex justify-content-start ml-3 mt-3">
+        {% for i in trending %}
+        <div class="card mr-3" style="width: 255px;">
+            {%if i.price_set.all.values_list|length > 1%}
+            
+            <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}  provider = "{{i.provider.shop_name}}"></compare-price-item-card>
+            {% else %}
+            <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}}></item-card>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    <hr>
     <h5 class="text-center" style="margin-bottom:15px;">New Arrivals</h5>
     <div class="d-flex justify-content-start ml-3 mt-3">
         {% for i in newly_added %}
+        <div class="card mr-3" style="width: 255px;">
+            {%if i.price_set.all.values_list|length > 1%}
+            
+            <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}  provider = "{{i.provider.shop_name}}"></compare-price-item-card>
+            {% else %}
+            <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}}></item-card>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    <hr>
+    <h5 class="text-center" style="margin-bottom:15px;">Top Rated</h5>
+    <div class="d-flex justify-content-start ml-3 mt-3">
+        {% for i in ratings %}
         <div class="card mr-3" style="width: 255px;">
             {%if i.price_set.all.values_list|length > 1%}
             

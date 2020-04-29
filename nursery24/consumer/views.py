@@ -129,6 +129,7 @@ def deleteaddresssubmit(request):
         return redirect('../consumer/addresses') 
     
 def home(request):
+    data = {}
     newly_added=Product.objects.all().distinct().order_by('-date_added')[:5]
     today = date.today()
     products = []
@@ -140,11 +141,26 @@ def home(request):
             products.append(p.product_id)
     distinct_products = set(products)
     distinct_count = []
+    trending_products = []
+    distinct_products = list(distinct_products)
     for i in distinct_products:
         distinct_count.append(products.count(i))
-        print(i)
-    print(distinct_count)       
-    return render(request,'chome.html',{'newly_added':newly_added})
+    for x in range(len(distinct_products)-1):   
+        for y in range(0,len(distinct_products)-x-1):
+            if(distinct_count[y]<distinct_count[y+1]):
+                temp = distinct_count[y]
+                temp2 = distinct_products[y]
+                distinct_count[y] = distinct_count[y+1]
+                distinct_products[y] = distinct_products[y+1]
+                distinct_count[y+1] = temp
+                distinct_products[y+1] = temp2
+    for i in range(5):
+        trending_products.append(Product.objects.get(id = distinct_products[i]))
+    ratings=Product.objects.all().distinct().order_by('-rating')[:5]
+    data['newly_added'] = newly_added
+    data['trending'] = trending_products
+    data['ratings'] = ratings
+    return render(request,'chome.html',data)
 
 def plants(request):
     unique_price=Price.objects.all().filter(product__category='P').order_by('product__name','price').distinct('product__name')
