@@ -221,9 +221,17 @@ def selectaddress(request):
     print(data['addr'])
     return render(request,'cselectaddress.html',data) 
 
+def displayaddaddressformtoconfirmorder(request):
+    return render(request,'cdisplayaddaddressformtoconfirmorder.html')
 
 def confirmorder(request):
+    consumer=request.user.consumer
     address = request.POST['address']
+    try:
+        present = Address.objects.get(addr=address,consumer=consumer)
+    except ObjectDoesNotExist as d:
+        a=Consumer_Address(addr=address,consumer=consumer)
+        a.save()
     names = request.session['names']
     qty = request.session['qty']
     provnames = request.session['provider']
@@ -305,6 +313,7 @@ def confirmorder(request):
 
 def orderlogin(request):
     return render(request,'corderlogin.html')
+
 def orderlogin_submit(request):
     if request.method=='POST':
         uname=request.POST["uname"]
