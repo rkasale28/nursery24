@@ -19,8 +19,8 @@ class Order(models.Model):
     consumer=models.ForeignKey(Consumer,on_delete=models.CASCADE,null=True)
     
 class ProductInOrder(models.Model):
-    product=models.OneToOneField(Product,on_delete=models.CASCADE)
-    provider=models.OneToOneField(Provider,on_delete=models.CASCADE)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+    provider=models.ForeignKey(Provider,on_delete=models.CASCADE)
     order=models.ForeignKey(Order,on_delete=models.CASCADE,null=True)
     quantity=models.IntegerField(null=True)
     total_price=models.IntegerField(null=True)

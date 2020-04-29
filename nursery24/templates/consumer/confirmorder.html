@@ -1,24 +1,85 @@
-<html>
-<body>
+{% load static %}
 {% load custom_tags %}
-{% for i in length %}
-{% if prices|index:i != 0 %}
-<h3>Name = {{ names|index:i }} </h3>
-{% if changed|index:i == 'No' %}
-<h3>Quantity = {{ qty|index:i }} </h3>
-<h3>Price = {{ prices|index:i }} </h3> 
-<h3>Final Price = {{ finalprices|index:i }}</h3> <br>
-{% else %}
-<h3>Prices may have changed bcoz the selected provider couldnt deliver to your location</h3>
-<h3>Quantity = {{ qty|index:i }} </h3>
-<h3>Price = {{ prices|index:i }} </h3> 
-<h3>Final Price = {{ finalprices|index:i }}</h3> <br>
-{% endif %}
-{% else %}
-<h3>{{ names|index:i }} cannot be delivered at your location </h3>
-<br>
-{% endif %}
-{% endfor %}
-<h3>Total = {{ total }}</h3>
+
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmed</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+    .active {
+        color: #0275d8;
+        border-bottom: #0275d8 solid 2px;
+    }
+
+    .success {
+        background-color: #28a745;
+        border-bottom: #28a745 solid 2px;
+        border-right: #d3d3d3 solid 2px;
+        color: white;
+    }
+</style>
+
+<body>
+    <header-profile></header-profile>
+
+    <ul class="nav nav-fill bg-light">
+        <li class="nav-item pl-4  pr-4 pt-2 success">
+            <p class="text-left h5">Step 1</p>
+            <p class="text-left h6">Place Order</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2 success">
+            <p class="text-left h5">Step 2</p>
+            <p class="text-left h6">Select Delivery Address</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2 success">
+            <p class="text-left h5">Step 3</p>
+            <p class="text-left h6">Pay</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2 active">
+            <p class="text-left h5">Step 4</p>
+            <p class="text-left h6">Order Successful</p>
+        </li>
+    </ul>
+
+    <div class="row d-flex justify-content-center">
+        <div class="wrapper shadow-lg bg-white rounded m-3" style="width: 80%;">
+
+            <div class="text-right p-4">
+                <span class="font-weight-bold">Order Id: </span>
+                <span class="font-italic"> ABCDEFGHIJ </span>
+            </div>
+            {% for i in length %}
+            {% if prices|index:i != 0 %}
+            <div class="wrapper shadow-lg bg-white rounded m-3" style="width: 95%;">
+            <h3>Name = {{ names|index:i }} </h3>
+            {% if changed|index:i == 'No' %}
+            <h3>Quantity = {{ qty|index:i }} </h3>
+            <h3>Price = {{ prices|index:i }} </h3>
+            <h3>Final Price = {{ finalprices|index:i }}</h3> <br>
+            </div>
+            {% else %}
+            <div class="wrapper shadow-lg bg-white rounded m-3" style="width: 95%;">
+            <h3>Prices may have changed bcoz the selected provider couldnt deliver to your location</h3>
+            <h3>Quantity = {{ qty|index:i }} </h3>
+            <h3>Price = {{ prices|index:i }} </h3>
+            <h3>Final Price = {{ finalprices|index:i }}</h3> <br>
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="wrapper shadow-lg bg-white rounded m-3" style="width: 95%;">
+            <h3>{{ names|index:i }} cannot be delivered at your location </h3>
+            </div>
+            <br>
+            {% endif %}
+            {% endfor %}
+            <h3>Total = {{ total }}</h3>
+        </div>
+    </div>
+    <script src="{% static 'js/header_profile.js'%}"></script>
 </body>
+
 </html>
