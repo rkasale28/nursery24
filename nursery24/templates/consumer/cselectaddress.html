@@ -85,26 +85,6 @@
         </a>
     </div>
 
-<h2>Select one address or enter a new one</h2>
-
-<form action = 'confirmorder' method = 'POST'  >
-{% csrf_token %}
-{% for add in addr %}
-<h3>{{ add }}</h3>
-<input type = 'hidden' value = {{add}} name = 'address'> 
-<input type = 'submit'>
-{% endfor %}
-<br>
-</form>
-<form action = 'confirmorder' method = 'POST'  >
-{% csrf_token %}
-<h3>Enter delivery address:
-<input type = 'text' name = 'address'> 
-<br>
-<input type = 'submit'>
-</h3>
-</form>
-
 <script src="{% static 'js/header_profile.js'%}"></script>
 </body>
 </html>
