@@ -148,10 +148,15 @@
     <div class="row d-flex justify-content-end mb-3">
         <a href="" class="btn btn-primary p-3 mr-3">Go to Cart</a>
 
-        <a href="" class="btn btn-primary p-3" style="margin-right: 50px;">Pay</a>
+        <button href="" class="btn btn-primary p-3" style="margin-right: 50px;" onclick="proceed()">Confirm Order and proceed to Payment</button>
     </div>
 
     <script src="{% static 'js/header_profile.js'%}"></script>
+    <script>
+        let proceed = () => {
+            window.location.href = "payments";
+        }
+    </script>
 </body>
 
 </html>

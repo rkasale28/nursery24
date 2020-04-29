@@ -29,4 +29,7 @@ urlpatterns=[
     path('orderlogin',views.orderlogin,name="orderlogin"),
     path('orderlogin_submit',views.orderlogin_submit,name="orderlogin_submit"),
     path('selectaddress',views.selectaddress,name="selectaddress"),
+    path('payments',views.payments,name="payments"),
+     path('charge/', views.charge, name="charge"),
+    path('previousOrders', views.successMsg, name="success"),
 ]
