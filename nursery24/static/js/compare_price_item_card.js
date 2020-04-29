@@ -56,7 +56,7 @@ class ComparePriceItemCard extends HTMLElement{
         // this.shadowRoot.querySelector('#direct').addEventListener('click',()=>{
         //     location.href='/consumer/compareprices?id='+this.getAttribute('id')
         // })
-        
+        console.log(this.getAttribute('provider'));
         var btn=this.shadowRoot.querySelector('#compare')
 
         btn.onclick= (event) =>{
@@ -96,6 +96,7 @@ class ComparePriceItemCard extends HTMLElement{
         let name = this.shadowRoot.querySelector('h5').innerHTML;
         let price = this.shadowRoot.querySelector('#price').innerHTML;
         let id = this.getAttribute('id');
+        let provider = this.getAttribute('provider');
         let img = this.shadowRoot.querySelector('#image').src
         console.log(this.getAttribute('id'));
         //increments product in cookie
@@ -105,7 +106,7 @@ class ComparePriceItemCard extends HTMLElement{
         
             //console.log(price,name,decodedCookie);
             if(!decodedCookie.find(item => item.includes("product="))){
-                let product = [{name: name, providers: [{providerName: 'default',quantity: 1,perPrice: price,price: price}],img: img,id: id}];
+                let product = [{name: name, providers: [{providerName: provider,quantity: 1,perPrice: price,price: price}],img: img,id: id}];
                 //console.log(product);
                 document.cookie = 'product=' + JSON.stringify(product);
                 //console.log(document.cookie);
@@ -120,7 +121,7 @@ class ComparePriceItemCard extends HTMLElement{
                 let product = JSON.parse(productStringSplit[1]);
                // console.log(product);// success
                 if(!product.find(item=> item.name == name)){
-                    let newProduct = {name: name, providers: [{providerName: 'default',quantity: 1,perPrice: price,price: price}],img: img,id: id};
+                    let newProduct = {name: name, providers: [{providerName: provider,quantity: 1,perPrice: price,price: price}],img: img,id: id};
                 
                     this.shadowRoot.querySelector("#result").innerHTML = newProduct.providers[0].quantity;
 
