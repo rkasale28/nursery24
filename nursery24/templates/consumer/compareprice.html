@@ -70,9 +70,9 @@
                     <div  class="btn-toolbar ml-1 mb-2" role="toolbar" aria-label="Toolbar with button groups">
         
                         <div class="btn-group ml-auto mr-2" role="group" aria-label="First group">
-                            <button type="button" class="btn btn-success" id = '{{i.provider.shop_name}}|{{i.price}}|{{i.provider.address_set.all.0.addr}}|inc' onclick = inc(this)>+</button>
+                            <button type="button" class="btn btn-success" id = '{{i.provider.shop_name}}|{{i.price}}|{{i.product.name}}|{{i.product.image.url}}|inc' onclick = inc(this)>+</button>
                             <button type="button" class="btn btn-outline-secondary disabled" id = "result|{{i.provider.shop_name}}">0</button>
-                            <button type="button" class="btn btn-success" id = '{{i.provider.shop_name}}|{{i.price}}|{{i.provider.address_set.all.0.addr}}|dec' onclick = dec(this)>-</button>
+                            <button type="button" class="btn btn-success" id = '{{i.provider.shop_name}}|{{i.price}}|{{i.name}}|{{i.image.url}}|dec' onclick = dec(this)>-</button>
                         
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                 let decodedCookie = decodeURIComponent(document.cookie).split(';');
             
                 if(!decodedCookie.find(item => item.includes("product="))){
-                let product = [{name: "", providers: [{providerName: info[0],quantity: 1,perPrice: info[1],price: info[1]}],img: '',id: id}];
+                let product = [{name: info[2], providers: [{providerName: info[0],quantity: 1,perPrice: info[1],price: info[1]}],img: info[3],id: id}];
                 //console.log(product);
                 document.cookie = 'product=' + JSON.stringify(product);
                 //console.log(document.cookie);
@@ -138,7 +138,7 @@
                 let product = JSON.parse(productStringSplit[1]);
                // console.log(product);// success
                 if(!product.find(item=> item.id == id)){
-                    let newProduct = {name: '', providers: [{providerName: info[0],quantity: 1,perPrice: info[1],price: info[1]}],img: '',id: id};
+                    let newProduct = {name: info[2], providers: [{providerName: info[0],quantity: 1,perPrice: info[1],price: info[1]}],img: info[3],id: id};
                 
                     document.getElementById(`result|${info[0]}`).innerHTML = newProduct.providers[0].quantity;
 
