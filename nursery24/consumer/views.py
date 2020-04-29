@@ -194,7 +194,7 @@ def checkout(request):
             except:
                 provnames.append("Single")
                 qty.append(product['quantity'])
-                prices.append(product['price'])
+                prices.append(int(product['price']))
                 individual_price.append(product['perPrice'])
 
         data = {}
@@ -317,11 +317,14 @@ def confirmorder(request):
     #adding to the db only temporary
     d = date.today()
     unique_id = get_random_string(length = 7)
-    order = Order(total_price = total,date_placed = d,secondary_id = unique_id)
-    order.save()
-    order = Order.objects.get(secondary_id = unique_id)
     current_user = request.user
     consumer = Consumer.objects.get(user_id = current_user.id)
+    if max(finalprices) == 0:
+        return render(request,'confirmorder.html',data)
+    order = Order(total_price = total,date_placed = d,secondary_id = unique_id, consumer = consumer)
+    order.save()
+    order = Order.objects.get(secondary_id = unique_id)
+    
     x = 0
     
     for i in range(len(finalprices)):
@@ -329,7 +332,7 @@ def confirmorder(request):
             provider = Provider.objects.get(id = finalprovid[x])
             x+=1
             product = Product.objects.get(name = names[i])
-            productinorder = ProductInOrder(provider = provider,quantity = qty[i],total_price = finalprices[i],order = order,product = product,consumer = consumer) 
+            productinorder = ProductInOrder(provider = provider,quantity = qty[i],total_price = finalprices[i],order = order,product = product) 
             productinorder.save()
     return render(request,'confirmorder.html',data)
 
