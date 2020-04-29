@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse,HttpResponseRedirect
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
-from .models import Consumer,Product,Provider
+from .models import Consumer,Product,Provider,Order,ProductInOrder
 from .models import Address as Consumer_Address
 from provider.models import Address as Provider_Address
 from django.core.exceptions import ObjectDoesNotExist
@@ -19,6 +19,8 @@ from provider.models import Price
 from http import cookies
 from .forms import AddressForm,UserForm,ConsumerForm
 import json
+from datetime import date
+from django.utils.crypto import get_random_string
 
 import os
 # Create your views here.
@@ -231,6 +233,7 @@ def confirmorder(request):
     finalprices = []
     pri = []
     changed = []
+    finalprovid = []
     for i in range(len(names)):
         product = Product.objects.get(name = names[i])
         prov = Provider.objects.filter(price__product_id = product.id)
@@ -267,7 +270,7 @@ def confirmorder(request):
                 dist = (geodesic(provideraddr,customeraddr).km)    
             if(dist<50):
                 available.append(prov1[0].id)  
-                changed.append('No')            
+                changed.append('No')     
             else:
                 for p in prov:
                     addr = Provider_Address.objects.filter(provider_id = p.id)
@@ -285,6 +288,9 @@ def confirmorder(request):
                 for y in pro:
                     prices.append(y.price)
             finalprices.append(min(prices))
+            providerobj = Provider.objects.filter(price__product_id = product.id).filter(price__price = min(prices))
+            finalprovid.append(providerobj[0].id)
+
         else:
             finalprices.append(0)
             changed.append('Yes')
@@ -296,7 +302,23 @@ def confirmorder(request):
         total = total + int(qty[i])*int(finalprices[i])
     data['total'] = total
     data['changed'] = changed
-    print(changed)
+    #adding to the db only temporary
+    d = date.today()
+    unique_id = get_random_string(length = 7)
+    order = Order(total_price = total,date_placed = d,secondary_id = unique_id)
+    order.save()
+    order = Order.objects.get(secondary_id = unique_id)
+    current_user = request.user
+    consumer = Consumer.objects.get(user_id = current_user.id)
+    x = 0
+    
+    for i in range(len(finalprices)):
+        if finalprices[i] != 0:
+            provider = Provider.objects.get(id = finalprovid[x])
+            x+=1
+            product = Product.objects.get(name = names[i])
+            productinorder = ProductInOrder(provider = provider,quantity = qty[i],total_price = finalprices[i],order = order,product = product,consumer = consumer) 
+            productinorder.save()
     return render(request,'confirmorder.html',data)
 
 def orderlogin(request):

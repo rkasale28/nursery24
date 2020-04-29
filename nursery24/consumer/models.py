@@ -18,8 +18,8 @@ class Order(models.Model):
     date_placed=models.DateField(null=True)
     
 class ProductInOrder(models.Model):
-    product=models.OneToOneField(Product,on_delete=models.CASCADE)
-    provider=models.OneToOneField(Provider,on_delete=models.CASCADE)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+    provider=models.ForeignKey(Provider,on_delete=models.CASCADE)
     consumer=models.ForeignKey(Consumer,on_delete=models.CASCADE,null=True)
     order=models.ForeignKey(Order,on_delete=models.CASCADE,null=True)
     quantity=models.IntegerField(null=True)
@@ -39,4 +39,4 @@ class ProductInOrder(models.Model):
 class Review(models.Model):
     rating=models.FloatField()
     consumer=models.OneToOneField(Consumer,on_delete=models.CASCADE)
-    product=models.ForeignKey(Product,on_delete=models.CASCADE,null=True)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE,null=True) 
