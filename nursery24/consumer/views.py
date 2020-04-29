@@ -21,6 +21,17 @@ from .forms import AddressForm,UserForm,ConsumerForm
 import json
 
 import os
+
+
+import stripe
+
+# Stripe's Secret API Key 🤫
+stripe.api_key = 'sk_test_mMdwoJv6bGHI30Jb5FfoIQgV00iZJNQVQI'
+
+# This is Stripe's Publishable Key
+stripe_publishable_key = 'pk_test_1VWTyC4sr1TtRWpXMhMMWa6U00jagFandz'
+
+
 # Create your views here.
 def signup(request):
     return render(request,'csignup.html')
@@ -310,6 +321,58 @@ def confirmorder(request):
     data['changed'] = changed
     print(changed)
     return render(request,'confirmorder.html',data)
+
+def payments(request):
+    api = {}
+    cookies = request.COOKIES['product']
+    products = json.loads(cookies) 
+        
+    qty = []
+    provider = []
+    provnames = []
+    prices = []
+    individual_price=[]
+
+    for i in range(len(products)):
+        product = products[i]
+            
+        try:
+            provider = product['providers'][0]
+            prices.append(provider['price'])
+                
+                
+        except:
+            provnames.append("Single")
+                
+            prices.append(product['price'])
+             
+
+    data = {}
+        
+       
+    data['provnames'] = provnames
+    data['prices'] = prices  
+    data['sum']=sum(prices)    
+       
+    intent = stripe.PaymentIntent.create(
+    amount= data['sum'] * 100,
+    currency='inr',
+     metadata={'integration_check': 'accept_a_payment'},
+    )
+    api['intent'] = intent
+    api['client_secret'] = intent.client_secret;
+    api['publishable_key'] = stripe_publishable_key
+    return render(request,'payments.html',api)
+
+def charge(request):
+    if request.method == 'POST':
+        print('Data:', request.POST)
+    return redirect(reverse('success'))
+
+
+def successMsg(request):
+	return render(request, 'previousOrders.html')
+
 
 def orderlogin(request):
     return render(request,'corderlogin.html')
