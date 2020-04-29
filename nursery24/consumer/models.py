@@ -16,11 +16,11 @@ class Order(models.Model):
     total_price=models.IntegerField()
     secondary_id=models.CharField(max_length=8,blank=False)
     date_placed=models.DateField(null=True)
+    consumer=models.ForeignKey(Consumer,on_delete=models.CASCADE,null=True)
     
 class ProductInOrder(models.Model):
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
     provider=models.ForeignKey(Provider,on_delete=models.CASCADE)
-    consumer=models.ForeignKey(Consumer,on_delete=models.CASCADE,null=True)
     order=models.ForeignKey(Order,on_delete=models.CASCADE,null=True)
     quantity=models.IntegerField(null=True)
     total_price=models.IntegerField(null=True)

@@ -171,9 +171,7 @@ def cart(request):
     return render(request,'cart.html')
 
 def checkout(request): 
-    if request.method == "GET":
-       
-        
+    if request.method == "GET":        
         cookies = request.COOKIES['product']
         products = json.loads(cookies) 
         names = []
@@ -181,6 +179,7 @@ def checkout(request):
         provider = []
         provnames = []
         prices = []
+        individual_price=[]
 
         for i in range(len(products)):
             product = products[i]
@@ -190,18 +189,23 @@ def checkout(request):
                 provnames.append(provider['providerName'])
                 qty.append(provider['quantity'])
                 prices.append(provider['price'])
+                individual_price.append(provider['perPrice'])
                 
             except:
                 provnames.append("Single")
                 qty.append(product['quantity'])
                 prices.append(product['price'])
+                individual_price.append(product['perPrice'])
+
         data = {}
         data['names'] = names
         data['qty'] = qty
         data['length'] = range(len(names))
         data['provnames'] = provnames
-        data['prices'] = prices      
-        
+        data['prices'] = prices  
+        data['sum']=sum(prices)    
+        data['individual_price']=individual_price
+
         request.session['names'] = names
         request.session['qty'] = qty
         request.session['provider'] = provnames
@@ -219,9 +223,17 @@ def selectaddress(request):
     print(data['addr'])
     return render(request,'cselectaddress.html',data) 
 
+def displayaddaddressformtoconfirmorder(request):
+    return render(request,'cdisplayaddaddressformtoconfirmorder.html')
 
 def confirmorder(request):
+    consumer=request.user.consumer
     address = request.POST['address']
+    try:
+        present = Address.objects.get(addr=address,consumer=consumer)
+    except ObjectDoesNotExist as d:
+        a=Consumer_Address(addr=address,consumer=consumer)
+        a.save()
     names = request.session['names']
     qty = request.session['qty']
     provnames = request.session['provider']
@@ -323,6 +335,7 @@ def confirmorder(request):
 
 def orderlogin(request):
     return render(request,'corderlogin.html')
+
 def orderlogin_submit(request):
     if request.method=='POST':
         uname=request.POST["uname"]

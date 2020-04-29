@@ -18,6 +18,7 @@ urlpatterns=[
     path('cart',views.cart,name="cart"),
     path('checkout',views.checkout,name="checkout"),
     path('confirmorder',views.confirmorder,name="confirmorder"),
+    path('displayaddaddressformtoconfirmorder',views.displayaddaddressformtoconfirmorder,name="displayaddaddressformtoconfirmorder"),
     path('myprofile',views.myprofile,name="myprofile"),
     path('edit',views.edit,name="edit"),
     path('editsubmit',views.editsubmit,name="editsubmit"),

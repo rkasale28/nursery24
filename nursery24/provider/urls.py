@@ -17,5 +17,6 @@ urlpatterns=[
     path('removebranch',views.removebranch,name="removebranch"),
     path('removebranchsubmit',views.removebranchsubmit,name="removebranchsubmit"),
     path('myprofile',views.myprofile,name="myprofile"),
-    
+    path('edit',views.edit,name="edit"),
+    path('editsubmit',views.editsubmit,name="editsubmit"),
 ]
