@@ -19,7 +19,7 @@ from provider.models import Price
 from http import cookies
 from .forms import AddressForm,UserForm,ConsumerForm
 import json
-from datetime import date
+from datetime import date,timedelta
 from django.utils.crypto import get_random_string
 
 import os
@@ -71,7 +71,6 @@ def login_submit(request):
 
 def logout(request):
     auth.logout(request)
-    print("Reached here")
     return redirect('../consumer/home')
 
 def myprofile(request):
@@ -131,6 +130,20 @@ def deleteaddresssubmit(request):
     
 def home(request):
     newly_added=Product.objects.all().distinct().order_by('-date_added')[:5]
+    today = date.today()
+    products = []
+    prev_date = today - timedelta(days=7)
+    trending = Order.objects.filter(date_placed__range = (prev_date,today) )
+    for obj in trending:
+        prod = ProductInOrder.objects.filter(order_id = obj.id)
+        for p in prod:
+            products.append(p.product_id)
+    distinct_products = set(products)
+    distinct_count = []
+    for i in distinct_products:
+        distinct_count.append(products.count(i))
+        print(i)
+    print(distinct_count)       
     return render(request,'chome.html',{'newly_added':newly_added})
 
 def plants(request):

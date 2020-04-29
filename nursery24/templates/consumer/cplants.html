@@ -45,12 +45,12 @@
             <a class="nav-link" href="cart">Cart <span id ="count"></span></a>
         </li>
     </ul>
-
+    
     <div class="d-flex justify-content-start ml-3 mt-3">
         {% for i in unique_price %}
         <div class="card mr-3" style="width: 255px;">
             {%if i.product.price_set.all.values_list|length > 1%}
-            <compare-price-item-card name="{{i.product.name}}" price={{i.price}} image={{i.product.image.url}} id={{i.product.id}}></compare-price-item-card>
+            <compare-price-item-card name="{{i.product.name}}" price={{i.price}} image={{i.product.image.url}} id={{i.product.id}} provider = "{{i.provider.shop_name}}"></compare-price-item-card>
             {% else %}
             <item-card name="{{i.product.name}}" price={{i.price}} image={{i.product.image.url}}></item-card>
             {% endif %}
