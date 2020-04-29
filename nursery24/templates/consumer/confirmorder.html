@@ -21,6 +21,10 @@
         border-right: #d3d3d3 solid 2px;
         color: white;
     }
+
+    hr.new1 {
+        border-top: 1px solid #320D05;
+    }
 </style>
 
 <body>
@@ -29,56 +33,124 @@
     <ul class="nav nav-fill bg-light">
         <li class="nav-item pl-4  pr-4 pt-2 success">
             <p class="text-left h5">Step 1</p>
-            <p class="text-left h6">Place Order</p>
+            <p class="text-left h6">Confirm Order</p>
         </li>
         <li class="nav-item pl-4 pr-4 pt-2 success">
             <p class="text-left h5">Step 2</p>
             <p class="text-left h6">Select Delivery Address</p>
         </li>
-        <li class="nav-item pl-4 pr-4 pt-2 success">
-            <p class="text-left h5">Step 3</p>
-            <p class="text-left h6">Pay</p>
-        </li>
         <li class="nav-item pl-4 pr-4 pt-2 active">
+            <p class="text-left h5">Step 3</p>
+            <p class="text-left h6">Provider Availability</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2">
             <p class="text-left h5">Step 4</p>
-            <p class="text-left h6">Order Successful</p>
+            <p class="text-left h6">Payments</p>
         </li>
     </ul>
 
-    <div class="row d-flex justify-content-center">
-        <div class="wrapper shadow-lg bg-white rounded m-3" style="width: 80%;">
+    <div class="pt-2"></div>
 
-            <div class="text-right p-4">
-                <span class="font-weight-bold">Order Id: </span>
-                <span class="font-italic"> ABCDEFGHIJ </span>
-            </div>
+    <div class="row d-flex justify-content-center">
+        <div class="shadow-lg p-3 mb-3 bg-white rounded" style="width: 95%;">
             {% for i in length %}
             {% if prices|index:i != 0 %}
-            <div class="wrapper shadow-lg bg-white rounded m-3" style="width: 95%;">
-            <h3>Name = {{ names|index:i }} </h3>
-            {% if changed|index:i == 'No' %}
-            <h3>Quantity = {{ qty|index:i }} </h3>
-            <h3>Price = {{ prices|index:i }} </h3>
-            <h3>Final Price = {{ finalprices|index:i }}</h3> <br>
+            {% if changed|index:i != 'No' %}
+            <div class="alert alert-warning" role="alert" style="width: 95%;">
+                Prices may have changed bcoz the selected provider couldn't deliver to your location</h3>
             </div>
+            {%endif%}
+            <div class="row pl-2">
+                <div class="col-md-6">
+                    <p class="h5">{{ names|index:i }}</p>
+                </div>
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Price: </span>
+                </div>
+
+                <div class="col-md-2 text-left">
+                    <p class="h5"> Rs. {{ prices|index:i }}
+                </div>
+            </div>
+            <div class="row pb-4 pl-2">
+                <div class="col-md-6">
+                    <p class="h5"> <span class="font-weight-bold"> Quantity: </span> {{ qty|index:i }}
+                </div>
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Subtotal: </span>
+                </div>
+
+                <div class="col-md-2 text-left">
+                    <p class="h5"> Rs. {{ finalprices|index:i }}
+                </div>
+            </div>
+
             {% else %}
-            <div class="wrapper shadow-lg bg-white rounded m-3" style="width: 95%;">
-            <h3>Prices may have changed bcoz the selected provider couldnt deliver to your location</h3>
-            <h3>Quantity = {{ qty|index:i }} </h3>
-            <h3>Price = {{ prices|index:i }} </h3>
-            <h3>Final Price = {{ finalprices|index:i }}</h3> <br>
+            <div class="alert alert-danger m-3" role="alert" style="width: 95%;">
+                {{ names|index:i }} cannot be delivered at your location
             </div>
-            {% endif %}
-            {% else %}
-            <div class="wrapper shadow-lg bg-white rounded m-3" style="width: 95%;">
-            <h3>{{ names|index:i }} cannot be delivered at your location </h3>
-            </div>
-            <br>
             {% endif %}
             {% endfor %}
-            <h3>Total = {{ total }}</h3>
+            <hr class="new1">
+            <div class="row">
+                <div class="col-md-6"></div>
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Subtotal: </span>
+                </div>
+
+                <div class="col-md-2">
+                    <p class="h5"> Rs. {{ total }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"></div>
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Delivery Cost: </span>
+                </div>
+
+                <div class="col-md-2">
+                    <p class="h5"> Rs. 0
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"></div>
+
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Internet Handling Fees: </span>
+                </div>
+
+                <div class="col-md-2">
+                    <p class="h5"> Rs. 0
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"></div>
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Total: </span>
+                </div>
+
+                <div class="col-md-2">
+                    <p class="h5"> Rs. {{ total }}
+                </div>
+            </div>
         </div>
     </div>
+
+    <div class="row d-flex justify-content-end mb-3">
+        <a href="" class="btn btn-primary p-3 mr-3">Go to Cart</a>
+
+        <a href="" class="btn btn-primary p-3" style="margin-right: 50px;">Pay</a>
+    </div>
+
     <script src="{% static 'js/header_profile.js'%}"></script>
 </body>
 
