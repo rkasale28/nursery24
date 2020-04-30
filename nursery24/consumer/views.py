@@ -352,8 +352,17 @@ def confirmorder(request):
     for i in range(len(names)):
         data['finalprices'].append(int(qty[i])*int(finalprices[i]))
         total = total + int(qty[i])*int(finalprices[i])
+    if total>1500:
+        delivery = 0
+    elif total>1000:
+        delivery = 25
+    else:
+        delivery = 50
     data['total'] = total
     data['changed'] = changed
+    data['delivery'] = delivery
+    data['int_handling'] = 10
+    data['grand_total'] = total+delivery+10
     #adding to the db only temporary
     d = date.today()
     unique_id = get_random_string(length = 7)
@@ -361,7 +370,7 @@ def confirmorder(request):
     consumer = Consumer.objects.get(user_id = current_user.id)
     if max(finalprices) == 0:
         return render(request,'confirmorder.html',data)
-    order = Order(total_price = total,date_placed = d,secondary_id = unique_id, consumer = consumer)
+    order = Order(total_price = data['grand_total'],date_placed = d,secondary_id = unique_id, consumer = consumer)
     order.save()
     order = Order.objects.get(secondary_id = unique_id)
     
