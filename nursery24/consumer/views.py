@@ -446,7 +446,7 @@ def charge(request):
     
     return redirect(reverse('success', args=[amount]))
 
-def successfullorder(request):
+def successfulorder(request):
     today = date.today()
     today = today
     expected_delivery = today + timedelta(days=2)
