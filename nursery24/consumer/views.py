@@ -410,9 +410,9 @@ def payments(request):
        
     data['provnames'] = provnames
     data['prices'] = prices  
-    prices = map(lambda x: int(x),prices)
+    #prices = map(lambda x: int(x),prices)
 
-    data['sum']=sum(prices)    
+    data['sum']=request.session['grand_total']   
     api['sum'] = data['sum']
     # intent = stripe.PaymentIntent.create(
     # amount= data['sum'] * 100,
