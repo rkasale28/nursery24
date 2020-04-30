@@ -114,12 +114,13 @@ textarea {
     <article class="main-content">
 
         <!--  -->
-        <div>
-            {% load mathfilters %}
-
-            <h3>Amount Payable Rs. {{intent.amount|div:100}}</h3>
-        </div>
+        
      <form action="{% url 'charge' %}" method="post"  id="payment-form">
+      <div>
+        {% load mathfilters %}
+        {% csrf_token %}
+        <h3 >Amount Payable Rs. <span name="amount">{{sum}}</span></h3>
+    </div>
         <div class="form-group">
           <label>First Name</label>
           <input value="{{user.first_name}}" class="input-control" id="f_name" name="f_name" required />
@@ -154,7 +155,7 @@ textarea {
       
         <div class="form-group">
           <label>&nbsp;</label>
-          <button type="submit" data-secret="{{ client_secret }}">Pay</button>
+          <button type="submit">Pay</button>
           <button>Cancel</button>
       
         </div>
@@ -203,39 +204,39 @@ textarea {
       }
     });
 
-    // Handle form submission.
-    var form = document.getElementById('payment-form');
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-      stripe.confirmCardPayment("{{client_secret}}", {
-    payment_method: {
-      card: card,
-      billing_details: {
-        f_name: document.querySelector('#f_name').value,
-        l_name: document.querySelector('#l_name').value,
-        email: document.querySelector('#email').value,
-      }
-    }
-  }).then(function(result) {
-    if (result.error) {
-        document.querySelector('#err').innerHTML = `<h3>${result.error.message}</h3>`;
-        setTimeout(()=>document.querySelector('#err').innerHTML = ``,3000);
-      //console.log(result.error.message);
-    } else {
-      // The payment has been processed!
-      if (result.paymentIntent.status === 'succeeded') {
-        // Show a success message to your customer
-        // There's a risk of the customer closing the window before callback
-        // execution. Set up a webhook or plugin to listen for the
-        // payment_intent.succeeded event that handles any business critical
-        // post-payment actions.
-        alert(`Succcess 🎉`);
-        form.submit();
+    
 
-      }
-    }
-  });
-    });
+     // Handle form submission.
+		var form = document.getElementById('payment-form');
+		form.addEventListener('submit', function(event) {
+		  event.preventDefault();
+
+		  stripe.createToken(card).then(function(result) {
+		    if (result.error) {
+		      // Inform the user if there was an error.
+		      document.querySelector('#err').innerHTML = `<h3>${result.error.message}</h3>`;
+          console.log(result.error.message);
+          setTimeout(()=> document.querySelector('#err').innerHTML = ``, 3000);
+		    } else {
+		      // Send the token to your server.
+		      stripeTokenHandler(result.token);
+		    }
+		  });
+		});
+
+
+    function stripeTokenHandler(token) {
+		  // Insert the token ID into the form so it gets submitted to the server
+		  var form = document.getElementById('payment-form');
+		  var hiddenInput = document.createElement('input');
+		  hiddenInput.setAttribute('type', 'hidden');
+		  hiddenInput.setAttribute('name', 'stripeToken');
+		  hiddenInput.setAttribute('value', token.id);
+		  form.appendChild(hiddenInput);
+      alert('Your payment was successful 🎉');
+		  // Submit the form
+		  form.submit();
+		}
 
     
 </script>

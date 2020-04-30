@@ -18,6 +18,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from provider.models import Price
 from http import cookies
 from .forms import AddressForm,UserForm,ConsumerForm
+from django.urls import reverse
+from django.http import JsonResponse
+# from app import app
 import json
 
 import os
@@ -29,7 +32,7 @@ import stripe
 stripe.api_key = 'sk_test_mMdwoJv6bGHI30Jb5FfoIQgV00iZJNQVQI'
 
 # This is Stripe's Publishable Key
-stripe_publishable_key = 'pk_test_1VWTyC4sr1TtRWpXMhMMWa6U00jagFandz'
+publishable_key = 'pk_test_1VWTyC4sr1TtRWpXMhMMWa6U00jagFandz'
 
 
 # Create your views here.
@@ -211,7 +214,9 @@ def checkout(request):
         data['qty'] = qty
         data['length'] = range(len(names))
         data['provnames'] = provnames
+       
         data['prices'] = prices  
+        prices = map(lambda x: int(x),prices)
         data['sum']=sum(prices)    
         data['individual_price']=individual_price
 
@@ -352,26 +357,46 @@ def payments(request):
        
     data['provnames'] = provnames
     data['prices'] = prices  
+    prices = map(lambda x: int(x),prices)
+
     data['sum']=sum(prices)    
-       
-    intent = stripe.PaymentIntent.create(
-    amount= data['sum'] * 100,
-    currency='inr',
-     metadata={'integration_check': 'accept_a_payment'},
-    )
-    api['intent'] = intent
-    api['client_secret'] = intent.client_secret;
-    api['publishable_key'] = stripe_publishable_key
+    api['sum'] = data['sum']
+    # intent = stripe.PaymentIntent.create(
+    # amount= data['sum'] * 100,
+    # currency='inr',
+    #  metadata={'integration_check': 'accept_a_payment'},
+    # )
+    # api['intent'] = intent
+    # api['client_secret'] = intent.client_secret;
+    api['publishable_key'] = publishable_key
     return render(request,'payments.html',api)
 
 def charge(request):
+    amount = 0
     if request.method == 'POST':
         print('Data:', request.POST)
-    return redirect(reverse('success'))
+
+        amount = int(request.POST['amount'])
+
+        # customer = stripe.Customer.create(
+		#     email=request.POST['email'],
+		#     name=request.POST['f_name'] + request.POST['l_name'],
+		#     source=request.POST['stripeToken']
+		#     )
+
+		# charge = stripe.Charge.create(
+        #     customer=customer,
+		# 	amount=amount*100,
+		# 	currency='inr',
+		# 	description="Nursery Store Payment"
+		# 	)
+    
+    return redirect(reverse('success', args=[amount]))
 
 
 def successMsg(request):
-	return render(request, 'previousOrders.html')
+    amount = args
+    return render(request, 'previousOrders.html',{'amount':amount})
 
 
 def orderlogin(request):
@@ -397,3 +422,4 @@ def orderlogin_submit(request):
             return HttpResponse('Invalid Credentials')
     else:
         return render(request,'login')
+
