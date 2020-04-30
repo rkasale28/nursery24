@@ -146,8 +146,15 @@ def home(request):
     data = {}
     newly_added=Product.objects.all().distinct().order_by('-date_added')[:5]
     today = date.today()
+    today = today + timedelta(days=1)
     products = []
     prev_date = today - timedelta(days=7)
+    expected_delivery = today + timedelta(days=2)
+    day_name= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday']
+    day = expected_delivery.weekday()
+    if day_name[day] == 'Sunday' or day_name[day] == 'Monday' or day_name[day] == 'Tuesday':
+        expected_delivery = expected_delivery + timedelta(days=1)
+    print(expected_delivery) 
     trending = Order.objects.filter(date_placed__range = (prev_date,today) )
     for obj in trending:
         prod = ProductInOrder.objects.filter(order_id = obj.id)
@@ -368,26 +375,9 @@ def confirmorder(request):
     data['delivery'] = delivery
     data['int_handling'] = 10
     data['grand_total'] = total+delivery+10
-    #adding to the db only temporary
-    d = date.today()
-    unique_id = get_random_string(length = 7)
-    current_user = request.user
-    consumer = Consumer.objects.get(user_id = current_user.id)
-    if max(finalprices) == 0:
-        return render(request,'confirmorder.html',data)
-    order = Order(total_price = data['grand_total'],date_placed = d,secondary_id = unique_id, consumer = consumer)
-    order.save()
-    order = Order.objects.get(secondary_id = unique_id)
-    
-    x = 0
-    
-    for i in range(len(finalprices)):
-        if finalprices[i] != 0:
-            provider = Provider.objects.get(id = finalprovid[x])
-            x+=1
-            product = Product.objects.get(name = names[i])
-            productinorder = ProductInOrder(provider = provider,quantity = qty[i],total_price = finalprices[i],order = order,product = product) 
-            productinorder.save()
+    request.session['grand_total'] = data['grand_total']
+    request.session['finalprices'] = finalprices
+    request.session['finalprovid'] = finalprovid
     return render(request,'confirmorder.html',data)
 
 def payments(request):
@@ -455,6 +445,37 @@ def charge(request):
 		# 	)
     
     return redirect(reverse('success', args=[amount]))
+
+def successfullorder(request):
+    today = date.today()
+    today = today
+    expected_delivery = today + timedelta(days=2)
+    day_name= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday']
+    day = expected_delivery.weekday()
+    if day_name[day] == 'Sunday' or day_name[day] == 'Monday' or day_name[day] == 'Tuesday':
+        expected_delivery = expected_delivery + timedelta(days=1)
+    unique_id = get_random_string(length = 7)
+    current_user = request.user
+    grand_total = request.session['grand_total']
+    finalprices = request.session['finalprices']
+    finalprovid = request.session['finalprovid']
+    names = request.session['names']
+    qty = request.session['qty']
+    consumer = Consumer.objects.get(user_id = current_user.id)
+    order = Order(total_price = grand_total,date_placed = today,secondary_id = unique_id, consumer = consumer)
+    order.save()
+    order = Order.objects.get(secondary_id = unique_id)
+    
+    x = 0
+    
+    for i in range(len(finalprices)):
+        if finalprices[i] != 0:
+            provider = Provider.objects.get(id = finalprovid[x])
+            x+=1
+            product = Product.objects.get(name = names[i])
+            productinorder = ProductInOrder(provider = provider,quantity = qty[i],total_price = finalprices[i],order = order,product = product,expected_delivery_date = expected_delivery) 
+            productinorder.save()
+    return HttpResponse('<h2>Order Successful</h2>')
 
 
 def successMsg(request):
