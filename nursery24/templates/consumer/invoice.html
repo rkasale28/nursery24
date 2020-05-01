@@ -1,0 +1,8 @@
+{% load static %}
+{% load custom_tags %}
+{% for i in length %}
+<h2> Name = {{ names|index:i }}</h2>
+<h2> Quantity = {{ qty|index:i }}</h2>
+{% endfor %}
+<h2>Delivery By= {{ expected_delivery }}</h2>
+<h2>Grand Total = {{ grand_total }}</h2>

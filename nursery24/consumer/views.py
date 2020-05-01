@@ -20,6 +20,9 @@ from http import cookies
 from .forms import AddressForm,UserForm,ConsumerForm
 from django.urls import reverse
 from django.http import JsonResponse
+from django.core.mail import EmailMessage
+from django.conf import settings
+from .utils import render_to_pdf
 # from app import app
 import json
 from datetime import date,timedelta
@@ -486,6 +489,14 @@ def successfulorder(request):
     data['expected_delivery'] = expected_delivery
     data['grand_total'] = grand_total
     data['length'] = range(len(data['names']))
+    to = [current_user.email]
+    #send_mail('Test Mail','Practice for project',settings.EMAIL_HOST_USER,to,fail_silently=True)
+    pdf = render_to_pdf('invoice.html',data)
+    email = EmailMessage(
+    'Order Confirmation', 'Invoice attatched as pdf', 'settings.EMAIL_HOST_USER',to)
+    if pdf:
+        email.attach('invoice2.pdf',pdf ,'application/pdf')
+        email.send()
     return render(request,'csuccessfulorder.html',data)
 
 
