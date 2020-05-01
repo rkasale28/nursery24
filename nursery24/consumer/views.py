@@ -334,7 +334,11 @@ def confirmorder(request):
                 dist = (geodesic(provideraddr,customeraddr).km)    
             if(dist<50):
                 available.append(prov1[0].id)  
-                changed.append('No')     
+                changed.append('No')
+                pri = Price.objects.filter(product_id = product.id ).filter(provider_id = prov1[0].id)
+                finalprices.append(pri[0].price)
+                finalprovid.append(prov1[0].id)
+                break  
             else:
                 for p in prov:
                     addr = Provider_Address.objects.filter(provider_id = p.id)
