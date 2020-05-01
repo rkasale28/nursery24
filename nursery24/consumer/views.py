@@ -465,7 +465,9 @@ def successfulorder(request):
     order = Order(total_price = grand_total,date_placed = today,secondary_id = unique_id, consumer = consumer)
     order.save()
     order = Order.objects.get(secondary_id = unique_id)
-    
+    data = {}
+    data['names']= []
+    data['qty'] = []
     x = 0
     
     for i in range(len(finalprices)):
@@ -475,7 +477,12 @@ def successfulorder(request):
             product = Product.objects.get(name = names[i])
             productinorder = ProductInOrder(provider = provider,quantity = qty[i],total_price = finalprices[i],order = order,product = product,expected_delivery_date = expected_delivery) 
             productinorder.save()
-    return HttpResponse('<h2>Order Successful</h2>')
+            data['names'].append(names[i])
+            data['qty'].append(qty[i])
+    data['expected_delivery'] = expected_delivery
+    data['grand_total'] = grand_total
+    data['length'] = range(len(data['names']))
+    return render(request,'csuccessfulorder.html',data)
 
 
 def successMsg(request):
