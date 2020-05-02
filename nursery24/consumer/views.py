@@ -20,6 +20,9 @@ from http import cookies
 from .forms import AddressForm,UserForm,ConsumerForm
 from django.urls import reverse
 from django.http import JsonResponse
+from django.core.mail import EmailMessage
+from django.conf import settings
+from .utils import render_to_pdf
 # from app import app
 import json
 from datetime import date,timedelta
@@ -334,7 +337,11 @@ def confirmorder(request):
                 dist = (geodesic(provideraddr,customeraddr).km)    
             if(dist<50):
                 available.append(prov1[0].id)  
-                changed.append('No')     
+                changed.append('No')
+                pri = Price.objects.filter(product_id = product.id ).filter(provider_id = prov1[0].id)
+                finalprices.append(pri[0].price)
+                finalprovid.append(prov1[0].id)
+                break  
             else:
                 for p in prov:
                     addr = Provider_Address.objects.filter(provider_id = p.id)
@@ -465,7 +472,9 @@ def successfulorder(request):
     order = Order(total_price = grand_total,date_placed = today,secondary_id = unique_id, consumer = consumer)
     order.save()
     order = Order.objects.get(secondary_id = unique_id)
-    
+    data = {}
+    data['names']= []
+    data['qty'] = []
     x = 0
     
     for i in range(len(finalprices)):
@@ -475,7 +484,20 @@ def successfulorder(request):
             product = Product.objects.get(name = names[i])
             productinorder = ProductInOrder(provider = provider,quantity = qty[i],total_price = finalprices[i],order = order,product = product,expected_delivery_date = expected_delivery) 
             productinorder.save()
-    return HttpResponse('<h2>Order Successful</h2>')
+            data['names'].append(names[i])
+            data['qty'].append(qty[i])
+    data['expected_delivery'] = expected_delivery
+    data['grand_total'] = grand_total
+    data['length'] = range(len(data['names']))
+    to = [current_user.email]
+    #send_mail('Test Mail','Practice for project',settings.EMAIL_HOST_USER,to,fail_silently=True)
+    pdf = render_to_pdf('invoice.html',data)
+    email = EmailMessage(
+    'Order Confirmation', 'Invoice attatched as pdf', 'settings.EMAIL_HOST_USER',to)
+    if pdf:
+        email.attach('invoice2.pdf',pdf ,'application/pdf')
+        email.send()
+    return render(request,'csuccessfulorder.html',data)
 
 
 def successMsg(request):
