@@ -124,6 +124,7 @@ def editsubmit(request):
         return render(request,'cprofile.html')        
 
 def addresses(request):
+
     return render(request,'caddress.html')
 
 def addaddress(request):
@@ -529,3 +530,8 @@ def orderlogin_submit(request):
     else:
         return render(request,'login')
 
+def vieworders(request):
+    order=Order.objects.filter(consumer=request.user.consumer)
+    data={}
+    data['order']=order
+    return render(request,'cvieworder.html',data)

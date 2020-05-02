@@ -26,6 +26,7 @@ urlpatterns=[
     path('addaddress',views.addaddress,name="addaddress"),
     path('addaddresssubmit',views.addaddresssubmit,name="addaddresssubmit"),
     path('deleteaddresssubmit',views.deleteaddresssubmit,name="deleteaddresssubmit"),
+    path('vieworders',views.vieworders,name="vieworders"),
     path('orderlogin',views.orderlogin,name="orderlogin"),
     path('orderlogin_submit',views.orderlogin_submit,name="orderlogin_submit"),
     path('selectaddress',views.selectaddress,name="selectaddress"),
