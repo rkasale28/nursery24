@@ -88,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'nursery24',
         'USER': 'postgres',
-        'PASSWORD': '1234',
+        'PASSWORD': 'postgres',
         'HOST':'localhost'
     }
 }
