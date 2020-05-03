@@ -5,6 +5,8 @@ from django.contrib.auth.models import User,auth
 from .models import Address,Provider,Product
 from .forms import AddressForm,ProductForm,PriceForm,UserForm,ProviderForm
 from django.core.exceptions import ObjectDoesNotExist
+from geopy.geocoders import Nominatim
+from django.contrib.gis.geos import Point
 
 # Create your views here.
 def signup(request):
@@ -24,8 +26,12 @@ def signup_submit(request):
             user=User.objects.create_user(first_name=fname,last_name=lname,email=email,username=uname,password=pwd)    
             provider=Provider(user=user,phone_number=phone,shop_name=shop)
             provider.save()
-            address=Address(addr=addr,provider=provider)
+
+            geolocator = Nominatim(user_agent="provider")
+            location = geolocator.geocode(addr)
+            address=Address(addr=addr,provider=provider,point=Point(location.latitude, location.longitude))
             address.save()
+
             user=auth.authenticate(username=uname,password=pwd)
             auth.login(request,user)
             return redirect('../provider/home')
@@ -107,7 +113,9 @@ def addbranchsubmit(request):
         provider_id=request.POST['provider']
         addr=request.POST['addr']
         provider=Provider.objects.get(pk=provider_id)
-        address=Address(addr=addr,provider=provider)
+        geolocator = Nominatim(user_agent="provider")
+        location = geolocator.geocode(addr)
+        address=Address(addr=addr,provider=provider,point=Point(location.latitude, location.longitude))
         address.save()
         return redirect('../provider/removebranch')
 
@@ -151,4 +159,5 @@ def editsubmit(request):
         provider.save()
         return redirect('../provider/myprofile')  
     else: 
-        return render(request,'pprofile.html')        
+        return render(request,'pprofile.html')  
+   
