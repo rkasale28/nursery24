@@ -6,6 +6,8 @@ from .models import Courier,Address
 from http import cookies
 from .forms import UserForm,AddressForm,CourierForm
 from django.core.exceptions import ObjectDoesNotExist
+from geopy.geocoders import Nominatim
+from django.contrib.gis.geos import Point
 
 # Create your views here.
 def home(request):
@@ -26,7 +28,10 @@ def signup_submit(request):
             user=User.objects.create_user(email=email,username=uname,password=pwd)    
             courier=Courier(user=user,phone_number=phone,service_name=sname)
             courier.save()
-            address=Address(addr=addr,courier=courier)
+            
+            geolocator = Nominatim(user_agent="courier")
+            location = geolocator.geocode(addr)
+            address=Address(addr=addr,courier=courier,point=Point(location.latitude, location.longitude))
             address.save()
             user=auth.authenticate(username=uname,password=pwd)
             auth.login(request,user)
@@ -105,7 +110,10 @@ def addaddresssubmit(request):
         courier_id=request.POST['courier']
         addr=request.POST['addr']
         courier=Courier.objects.get(pk=courier_id)
-        address=Address(addr=addr,courier=courier)
+
+        geolocator = Nominatim(user_agent="courier")
+        location = geolocator.geocode(addr)
+        address=Address(addr=addr,courier=courier,point=Point(location.latitude, location.longitude))
         address.save()
         return redirect('../courier/addresses')
 
