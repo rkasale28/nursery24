@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.gis.db import models as gismodel
 from django.contrib.auth.models import User
 from courier.models import Courier
 from provider.models import Provider,Product
@@ -10,6 +11,7 @@ class Consumer(models.Model):
 
 class Address(models.Model):
     addr=models.TextField(max_length=100,null=True)
+    point = gismodel.PointField(null=True)
     consumer=models.ForeignKey(Consumer,on_delete=models.CASCADE)
 
 class Order(models.Model):
@@ -28,7 +30,8 @@ class ProductInOrder(models.Model):
         ('D','Delivered'),
         ('S','Shipped'),
         ('P','Placed'),
-        ('C','Cancelled')
+        ('C','Cancelled'),
+        ('R','Ready To Ship')
     ]
     status=models.CharField(max_length=1,choices=ORDER_STATUS_CHOICES,default='P')
     expected_delivery_date=models.DateField(null=True)

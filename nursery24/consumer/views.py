@@ -23,6 +23,7 @@ from django.http import JsonResponse
 from django.core.mail import EmailMessage
 from django.conf import settings
 from .utils import render_to_pdf
+from django.contrib.gis.geos import Point
 # from app import app
 import json
 from datetime import date,timedelta
@@ -124,7 +125,6 @@ def editsubmit(request):
         return render(request,'cprofile.html')        
 
 def addresses(request):
-
     return render(request,'caddress.html')
 
 def addaddress(request):
@@ -136,7 +136,9 @@ def addaddresssubmit(request):
         consumer_id=request.POST['consumer']
         addr=request.POST['addr']
         consumer=Consumer.objects.get(pk=consumer_id)
-        address=Consumer_Address(addr=addr,consumer=consumer)
+        geolocator = Nominatim(user_agent="consumer")
+        location = geolocator.geocode(addr)
+        address=Consumer_Address(addr=addr,consumer=consumer,point=Point(location.latitude, location.longitude))
         address.save()
         return redirect('../consumer/addresses')
 
@@ -268,16 +270,7 @@ def checkout(request):
     return render(request,'corderpage.html',data) 
 
 def selectaddress(request):
-    current_user = request.user
-    consumer = Consumer.objects.get(user_id = current_user.id)
-    add = Consumer_Address.objects.filter(consumer_id = consumer.id)
-    addr = []
-    data = {}
-    for a in add:
-        addr.append(a.addr)
-    data['addr'] = addr
-    print(data['addr'])
-    return render(request,'cselectaddress.html',data) 
+    return render(request,'cselectaddress.html') 
 
 def displayaddaddressformtoconfirmorder(request):
     return render(request,'cdisplayaddaddressformtoconfirmorder.html')
@@ -288,7 +281,9 @@ def confirmorder(request):
     try:
         present = Address.objects.get(addr=address,consumer=consumer)
     except ObjectDoesNotExist as d:
-        a=Consumer_Address(addr=address,consumer=consumer)
+        geolocator = Nominatim(user_agent="consumer")
+        location = geolocator.geocode(address)
+        a=Consumer_Address(addr=address,consumer=consumer,point=Point(location.latitude, location.longitude))
         a.save()
     names = request.session['names']
     qty = request.session['qty']
