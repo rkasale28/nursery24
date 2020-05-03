@@ -19,6 +19,8 @@ class Order(models.Model):
     secondary_id=models.CharField(max_length=8,blank=False)
     date_placed=models.DateField(null=True)
     consumer=models.ForeignKey(Consumer,on_delete=models.CASCADE,null=True)
+    delivery_addr=models.TextField(max_length=100,null=True)
+    delivery_point = gismodel.PointField(null=True)
     
 class ProductInOrder(models.Model):
     product=models.ForeignKey(Product,on_delete=models.CASCADE)

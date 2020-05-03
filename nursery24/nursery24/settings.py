@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'consumer.apps.ConsumerConfig',
     'courier.apps.CourierConfig',
     'provider.apps.ProviderConfig',
+    'deliveryPersonnel.apps.DeliverypersonnelConfig',
     'django.contrib.gis'
 ]
 

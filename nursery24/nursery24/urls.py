@@ -24,6 +24,7 @@ urlpatterns = [
     path('consumer/',include('consumer.urls')),
     path('provider/',include('provider.urls')),
     path('courier/',include('courier.urls')),
+    path('delivery/',include('deliveryPersonnel.urls')),
 ]
 
 if settings.DEBUG:
