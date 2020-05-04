@@ -60,7 +60,7 @@
             <div class="sticky-bottom float-right mr-1 mb-1">
                 <form enctype="multipart/form-data" action="removedpsubmit" method="post">
                     {% csrf_token %}
-                    <input name="id" type="hidden" value={{i.id}}>
+                    <input name="user_id" type="hidden" value={{i.user.id}}>
                     <button type="submit" class="btn btn-danger ml-1">Delete</button>
                 </form>
             </div>

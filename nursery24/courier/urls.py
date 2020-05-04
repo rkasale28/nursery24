@@ -20,4 +20,5 @@ urlpatterns=[
     path('viewdp',views.viewdp,name="viewdp"),
     path('updatedp',views.updatedp,name="updatedp"),
     path('updatedpsubmit',views.updatedpsubmit,name="updatedpsubmit"),
+    path('removedpsubmit',views.removedpsubmit,name="removedpsubmit"),
 ]

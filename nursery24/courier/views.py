@@ -182,3 +182,9 @@ def updatedpsubmit(request):
         dp.profile_pic = profile_pic
         dp.save()     
         return redirect('../courier/home')  
+
+def removedpsubmit(request):
+    if request.method=='POST':
+        user_id=request.POST['user_id']
+        User.objects.filter(pk=user_id).delete()
+        return redirect('../courier/home') 
