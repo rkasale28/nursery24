@@ -7,6 +7,6 @@ urlpatterns=[
     path('login_submit',views.login_submit,name="login_submit"),
     path('logout',views.logout,name="logout"),
     path('myprofile',views.myprofile,name="myprofile"),
-    # path('edit',views.edit,name="edit"),
+    path('changepassword',views.changepassword,name="changepassword"),
     # path('editsubmit',views.editsubmit,name="editsubmit"),
 ]

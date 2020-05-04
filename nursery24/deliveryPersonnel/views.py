@@ -29,3 +29,11 @@ def login_submit(request):
             return HttpResponse('Invalid Credentials')
     else:
         return render(request,'login')
+
+def logout(request):
+    auth.logout(request)
+    print("Reached here")
+    return redirect('../delivery/login')
+
+def myprofile(request):
+    return render(request,'dprofile.html')
