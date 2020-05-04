@@ -4,6 +4,8 @@ from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
 from django.core.exceptions import ObjectDoesNotExist
 from .models import DeliveryPersonnel
+from geopy.geocoders import Nominatim
+from django.contrib.gis.geos import Point
 
 # Create your views here.
 def home(request):
@@ -59,3 +61,19 @@ def changepasswordsubmit(request):
             user=auth.authenticate(username=uname,password=new)
             auth.login(request,user)
             return redirect('../delivery/home')
+
+def toggle(request):
+    request.user.deliverypersonnel.available=not request.user.deliverypersonnel.available
+    request.user.deliverypersonnel.save()
+    return redirect ('../delivery/home')
+
+def updatecurrentlocation(request):
+    if request.method=='POST':
+        current=request.POST["current"]
+        geolocator = Nominatim(user_agent="deliveryPersonnel")
+        location = geolocator.geocode(current)
+        dp=request.user.deliverypersonnel
+        dp.existing_location_addr=current
+        dp.existing_location_point=Point(location.latitude, location.longitude)
+        dp.save()
+        return redirect('../delivery/home')

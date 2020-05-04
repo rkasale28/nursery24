@@ -9,5 +9,7 @@ urlpatterns=[
     path('myprofile',views.myprofile,name="myprofile"),
     path('changePassword',views.changepassword,name="changepassword"),
     path('changePasswordsubmit',views.changepasswordsubmit,name="changepassword"),
+    path('toggle',views.toggle,name="toggle"),
+    path('updatecurrentlocation',views.updatecurrentlocation,name="updatecurrentlocation")
     # path('editsubmit',views.editsubmit,name="editsubmit"),
 ]

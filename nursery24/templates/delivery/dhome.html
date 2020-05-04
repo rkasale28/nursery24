@@ -24,6 +24,66 @@
             text-decoration: none;
             color: black;
         }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
     </style>
 </head>
 
@@ -34,10 +94,32 @@
     <authenticated-header></authenticated-header>
     {% endif %}
 
-    <hr>
-    <h3>Current Order</h3>
-    <hr>
-    
+    <div style="height:50px;border-bottom:solid black 1px" class="align-middle ">
+        {% if not user.deliverypersonnel.assigned %}
+        <div class="float-right m-2">
+            <span class="align-middle mr-1 h5">Available: </span>
+            <label class="switch">
+                <input type="checkbox" id="available" value="{{user.deliverypersonnel.available}}">
+                <span class="slider round"></span>
+            </label>
+        </div>
+        {%endif%}
+
+        {% if user.deliverypersonnel.available %}
+        <div class="m-2" style="width: fit-content;">
+            <form action="updatecurrentlocation" method="POST">
+                {% csrf_token %}
+                <input type="text" name="current" placeholder="Enter Current location" size="50px">
+                <input class="btn btn-primary" type="submit" value="Update">
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if user.deliverypersonnel.available %}
+    <h4 class="ml-2">Current Location: <span class="text-muted">{{user.deliverypersonnel.existing_location_addr}}</span></h4>
+    {% endif %}
+
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
@@ -49,6 +131,20 @@
         crossorigin="anonymous"></script>
     <script src="{% static 'js/header.js'%}"></script>
     <script src="{% static 'js/header_authenticated.js'%}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($('#available').val() == "True") {
+                $("input:checkbox").prop('checked', true);
+            } else {
+                $("input:checkbox").prop('checked', false);
+            }
+
+            $('#available').change(function () {
+                window.location.replace('../delivery/toggle')
+            });
+        });
+
+    </script>
 </body>
 
 </html>
