@@ -19,5 +19,6 @@ urlpatterns=[
     path('myprofile',views.myprofile,name="myprofile"),
     path('edit',views.edit,name="edit"),
     path('editsubmit',views.editsubmit,name="editsubmit"),
-    path('readytoship',views.readytoship,name="readytoship")
+    path('readytoship',views.readytoship,name="readytoship"),
+    path('ready',views.ready,name="ready"),
 ]

@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Placed Orders</title>
+    <title>Ready To Ship Orders</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -38,11 +38,11 @@
     
     <ul class="nav nav-pills nav-fill bg-light">
         <li class="nav-item">
-            <a class="nav-link active" href="home">Placed Pending Orders</a>
+            <a class="nav-link" href="home">Placed Pending Orders</a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="ready">Ready to Ship Orders</a>
+            <a class="nav-link active" href="ready">Ready to Ship Orders</a>
         </li>
                
         <li class="nav-item">
@@ -65,12 +65,12 @@
             </div>
             <h3></h3>
             <div class="sticky-bottom float-right mr-1 mb-1">
-                    <form action="readytoship" method="post">
+                    <form action="ship" method="post">
                         {% csrf_token %}
                         <input name="id" type="hidden" value="{{i.id}}">
                         <button type="submit" class="btn btn-primary mr-2 mb-2">
                             <i class="fa fa-check"></i>
-                            Ready to Ship</button>
+                            Ship</button>
                     </form>
             </div>
         </div>

@@ -178,4 +178,7 @@ def readytoship(request):
         product.last_tracked_by=dp
         product.save()
         return redirect('../provider/home')
-     
+
+def ready(request):
+    list=request.user.provider.productinorder_set.all().filter(status='R').order_by('order__date_placed')
+    return render(request,'pready.html',{'list':list})
