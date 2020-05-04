@@ -79,5 +79,5 @@ def updatecurrentlocation(request):
         return redirect('../delivery/home')
 
 def assigned(request):
-    list=request.user.deliverypersonnel.productinorder_set.all().filter(status='R').order_by('last_tracked_on')
+    list=request.user.deliverypersonnel.productinorder_set.all().filter(status='R') | request.user.deliverypersonnel.productinorder_set.all().filter(status='S')
     return render(request,'dassigned.html',{'list':list})

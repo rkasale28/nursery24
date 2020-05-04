@@ -33,7 +33,7 @@
             border-bottom: 22px solid #800080;
             border-top: 22px solid #800080;
             border-right: 15px solid transparent;
-            font-weight:700;
+            font-weight: 700;
             text-align: center;
         }
     </style>
@@ -57,23 +57,70 @@
 
     </ul>
 
-    <div class="bookmarkRibbon"><span style="color:white;position: relative;top: -12px;text-align: center;right: -10px;" class="h4">Provider</span></div>
+
     {% for i in list%}
+    {% if i.status == "R" %}
+    <div class="bookmarkRibbon"><span style="color:white;position: relative;top: -12px;text-align: center;right: -10px;"
+            class="h4">Provider</span></div>
+
     <div class="row h5 align-items-center" style="border-bottom: 1px solid black;height:50px">
-        <div class="col-4 align-middle text-center">{{i.provider.shop_name}}</div>
-        <div class="col-4 align-middle text-center">{{i.provider_addr}}</div>
-        <div class="col-4 align-middle text-center">{{i.provider.phone_number}}</div>
+        <div class="col-3 align-middle text-center">{{i.provider.user.first_name}} {{i.provider.user.last_name}}</div>
+        <div class="col-3 align-middle text-center">{{i.provider.shop_name}}</div>
+        <div class="col-3 align-middle text-center">{{i.provider_addr}}</div>
+        <div class="col-3 align-middle text-center">{{i.provider.phone_number}}</div>
     </div>
-    </div>
+    <br>
+    {% endif %}
     {% endfor %}
 
+
+
+    {% for i in list%}
+    {% if i.status == "S" %}
+    <div class="bookmarkRibbon"><span style="color:white;position: relative;top: -12px;text-align: center;right: -10px;"
+            class="h4">Consumer</span></div>
+
+    <div class="row h5 align-items-center" style="border-bottom: 1px solid black;height:50px">
+        <div class="col-3 align-middle text-center">{{i.order.consumer.user.first_name}}
+            {{i.order.consumer.user.last_name}}</div>
+        <div class="col-3 align-middle text-center">{{i.order.delivery_addr}}</div>
+        <div class="col-3 align-middle text-center">{{i.order.consumer.phone_number}}</div>
+        <div class="col-3 align-middle text-center">
+            <form method="POST" action="deliver">
+                <input type="hidden" value="{{i.id}}">
+                <button type="submit" class="btn btn-primary mr-2 mb-2">
+                    <i class="fa fa-check"></i>
+                    Delivered</button>
+            </form>
+        </div>
+    </div>
+    <br>
+    {% endif %}
+    {% endfor %}
+
+    {% for i in list%}
+    {% if i.status == "R" %}
     <div class="row d-flex justify-content-center">
-        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:350px">
+        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:370px">
             <div class="h1 text-muted" style="margin-top:150px">
                 <-- Map Here -->
             </div>
         </div>
     </div>
+    {% endif %}
+    {% endfor %}
+
+    {% for i in list%}
+    {% if i.status == "S" %}
+    <div class="row d-flex justify-content-center">
+        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:320px">
+            <div class="h1 text-muted" style="margin-top:150px">
+                <-- Map Here -->
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
 
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
