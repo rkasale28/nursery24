@@ -134,10 +134,8 @@
 
       </div>
       <div class="btn">
-        <form class="ml-auto" action="changePassword" method="POST">
-          {% csrf_token %}
-          <input name="id" type="hidden" value={{user.id}}>
-          <button type="submit" class="btn btn-warning">Change Password</button>
+        <form class="ml-auto">
+          <button formaction="changePassword" class="btn btn-warning">Change Password</button>
         </form>
       </div>
     </div>

@@ -37,3 +37,25 @@ def logout(request):
 
 def myprofile(request):
     return render(request,'dprofile.html')
+
+def changepassword(request):
+    return render(request,'dchange.html')
+
+def changepasswordsubmit(request):
+    if request.method=='POST':
+        uname=request.POST["user"]
+        prev=request.POST["prev"]
+        new=request.POST["new"]
+        cnf=request.POST["cnf"]
+        if (uname!=request.user.username):
+            return HttpResponse("Wrong Username")
+        elif not (request.user.check_password(prev)):
+            return HttpResponse("Wrong Password")
+        elif (new!=cnf):
+            return HttpResponse("Passwords don't match")
+        else:
+            request.user.set_password(new)
+            request.user.save()
+            user=auth.authenticate(username=uname,password=new)
+            auth.login(request,user)
+            return redirect('../delivery/home')
