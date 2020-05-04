@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +8,9 @@
   <title>Billing</title>
 
   <script src="https://js.stripe.com/v3/"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
   <style>
     html,
@@ -14,7 +18,6 @@
       height: 100%;
       padding: 0;
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
     }
 
     textarea {
@@ -112,10 +115,48 @@
     .StripeElement--webkit-autofill {
       background-color: #fefde5 !important;
     }
+
+    .active {
+      color: #0275d8;
+      border-bottom: #0275d8 solid 2px;
+  }
+
+  .success {
+      background-color: #28a745;
+      border-bottom: #28a745 solid 2px;
+      color: white;
+      border-right:#d3d3d3 solid 2px;
+  }
+
   </style>
 </head>
 
 <body>
+  <header-profile></header-profile>
+
+  <ul class="nav nav-fill bg-light">
+    <li class="nav-item pl-4  pr-4 pt-2 success">
+        <p class="text-left h5">Step 1</p>
+        <p class="text-left h6">Confirm Order</p>
+    </li>
+    <li class="nav-item pl-4 pr-4 pt-2 success">
+        <p class="text-left h5">Step 2</p>
+        <p class="text-left h6">Select Delivery Address</p>
+    </li>
+    <li class="nav-item pl-4 pr-4 pt-2 success">
+        <p class="text-left h5">Step 3</p>
+        <p class="text-left h6">Provider Availability</p>
+    </li>
+    <li class="nav-item pl-4 pr-4 pt-2 active">
+        <p class="text-left h5">Step 4</p>
+        <p class="text-left h6">Payments</p>
+    </li>
+    <li class="nav-item pl-4 pr-4 pt-2">
+        <p class="text-left h5">Step 5</p>
+        <p class="text-left h6">Order Successful</p>
+    </li>
+</ul>
+
   <article class="main-content">
 
     <!--  -->
@@ -167,6 +208,8 @@
     </form>
     <div id="err"></div>
   </article>
+  
+<script src="{% static 'js/header_profile.js'%}"></script>
 </body>
 <script>
   // Create a Stripe client.

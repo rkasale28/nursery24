@@ -145,7 +145,7 @@ MEDIA_URL='/media/'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'nursery24somaiya@gmail.com'
-EMAIL_HOST_PASSWORD = 'Nursery@24'
+EMAIL_HOST_PASSWORD = 'Nursery24'
 EMAIL_PORT = 587
 
 GDAL_LIBRARY_PATH = r'C:\Users\Rohit\AppData\Local\Programs\Python\Python38\Lib\site-packages\osgeo\gdal300.dll'
