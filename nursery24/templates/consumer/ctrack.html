@@ -64,11 +64,34 @@
     <div class="row d-flex justify-content-center">
         <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:350px">
             <div class="h3" style="margin-top:150px">
-                <span class="font-weight-bold">Will be shipped from:</span>
-                <span class="text-muted">{{pio.provider_addr}}</span><br>
+                <span class="font-weight-bold m-2">Will be shipped from:</span>
+                <span class="text-muted m-2">{{pio.provider_addr}}</span><br>
                 
-                <span class="font-weight-bold">Expected On:</span>
-                <span class="text-muted">{{pio.expected_delivery_date}}</span>
+                <span class="font-weight-bold m-2">Expected On:</span>
+                <span class="text-muted m-2">{{pio.expected_delivery_date}}</span>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if pio.status == "S" %}                    
+    <div class="row d-flex justify-content-center">
+        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:350px">
+            <div class="h3" style="margin-top:100px">
+                <span class="font-weight-bold m-2">Last Tracked On:</span>
+                <span class="text-muted m-2">{{pio.last_tracked_on}}</span><br>
+
+                <span class="font-weight-bold m-2">Last Tracked At:</span>
+                <span class="text-muted m-2">{{pio.last_tracked_by.existing_location_addr}}</span><br>
+                
+                <span class="font-weight-bold m-2">To be delivered by:</span>
+                <span class="text-muted m-2">{{pio.last_tracked_by.user.first_name}} {{pio.last_tracked_by.user.last_name}}</span><br>
+                
+                <span class="font-weight-bold m-2">Phone Number:</span>
+                <span class="text-muted m-2">{{pio.last_tracked_by.phone_number}}</span><br>
+                
+                <span class="font-weight-bold m-2">Expected On:</span>
+                <span class="text-muted m-2">{{pio.expected_delivery_date}}</span>
             </div>
         </div>
     </div>
