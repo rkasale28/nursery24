@@ -7,6 +7,9 @@ from .forms import AddressForm,ProductForm,PriceForm,UserForm,ProviderForm
 from django.core.exceptions import ObjectDoesNotExist
 from geopy.geocoders import Nominatim
 from django.contrib.gis.geos import Point
+from consumer.models import ProductInOrder
+from datetime import date
+from deliveryPersonnel.models import DeliveryPersonnel
 
 # Create your views here.
 def signup(request):
@@ -64,7 +67,8 @@ def logout(request):
     return redirect ('../provider/login')
 
 def home(request):
-    return render(request,'phome.html')
+    list=request.user.provider.productinorder_set.all().filter(status='P').order_by('order__date_placed')
+    return render(request,'phome.html',{'list':list})
 
 def additem(request):
     productform=ProductForm()
@@ -160,4 +164,18 @@ def editsubmit(request):
         return redirect('../provider/myprofile')  
     else: 
         return render(request,'pprofile.html')  
-   
+
+def readytoship(request):
+    if request.method=='POST':
+        id=request.POST['id']
+        product=ProductInOrder.objects.get(pk=id)
+        product.status='R'
+        product.last_tracked_on=date.today()
+
+        #static now
+        #change later
+        dp=DeliveryPersonnel.objects.get(id=8)
+        product.last_tracked_by=dp
+        product.save()
+        return redirect('../provider/home')
+     
