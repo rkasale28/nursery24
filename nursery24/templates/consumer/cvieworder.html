@@ -22,21 +22,6 @@
 </head>
 
 <body>
-    <div id="modal" class="modal fade" role='dialog'>
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-warning">
-                    <h4 class="modal-title">Track Order</h4>
-                </div>
-                <div class="modal-body" id= "modal-body">                
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default border" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-          </div>
-      </div>
-
     <header-profile></header-profile>
 
     <ul class="nav nav-pills nav-fill bg-light">
@@ -72,7 +57,7 @@
                     <div class="row mb-3 ml-1">
                         <div class="col-md-6 h5 font-weight-bold">{{j.product.name}}</div>
 
-                        {% if j.status == "P" or j.status == "S" %}
+                        {% if j.status == "P" or j.status == "R" or j.status == "S" %}
                         <div class="col-md-3 h5 text-right">Expected on: </div>
                         <div class="col-md-3 h5 text-muted">{{j.expected_delivery_date}}</div>
                         {% endif %}
@@ -92,9 +77,13 @@
                         <div class="col-md-2 h5 text-muted">{{j.quantity}}</div>
                         <div class="col-md-3"></div>
 
-                        {% if j.status == "P" or j.status == "S" %}
+                        {% if j.status == "P" or j.status == "R" or j.status == "S" %}
                         <div class="col-md-6 h5 text-center">
-                            <button type="button" class="btn btn-warning" id="track-open-modal" lto="{{j.date_last_tracked}}" ltb="{{j.last_tracked_by}}" lta="{{j.last_tracked_by}}" cd="{{j.last_tracked_by}}" style="width: 150px;">Track Order</button>
+                            <form action="track" method="post">
+                                {% csrf_token %}
+                            <input type="hidden" name="id" value="{{j.id}}">
+                            <input type="submit" value="Track Order" style="width: 150px;" class="btn btn-warning">
+                        </form>
                         </div>
                         {% endif %}
                     </div>
@@ -103,7 +92,7 @@
                         <div class="col-md-2 h5 text-muted">{{j.total_price}}</div>
                         <div class="col-md-3"></div>
 
-                        {% if j.status == "P" or j.status == "S" %}
+                        {% if j.status == "P" or j.status == "R" or j.status == "S" %}
                         <div class="col-md-6 h5 text-center">
                             <button class="btn btn-danger" style="width: 150px;">Cancel Order</button>
                         </div>
@@ -134,30 +123,6 @@
     <script src="{% static 'js/header_profile.js'%}"></script>
     <script src="{% static 'js/item_card.js'%}"></script>
     <script src="{% static 'js/compare_price_item_card.js'%}"></script>
-
-    <script type="text/javascript">
-        $(document).on("click", "#track-open-modal", function () {
-          var lto = $('#track-open-modal').attr('lto')
-          var lta = $('#track-open-modal').attr('lta')
-          var ltb = $('#track-open-modal').attr('ltb')
-          var cd = $('#track-open-modal').attr('cd')
-          data="<div class=\"row\">"
-          data = data+"<div class=\"h5 col-md-4\">Last Tracked On: </div><div class=\"col-md-6 h5 text-muted\">"+lto+"</div>";
-          data= data+"</div>"
-          data=data+"<div class=\"row\">"
-          data = data + "<div class=\"h5 col-md-4\">Last Tracked At: </div><div class=\"h5 text-muted col-md-6\">"+lta+"</div>";
-          data= data+"</div>"
-          data=data+"<div class=\"row\">"
-          data = data + "<div class=\"h5 col-md-4\">To be delivered by: </div><div class=\"col-md-6 h5 text-muted\">"+ltb+"</div>";
-          data= data+"</div>"
-          data=data+"<div class=\"row\">"
-          data = data + "<div class=\"h5 col-md-4\">Phone No.: </div><div class=\"col-md-6 h5 text-muted\">"+cd+"</div>";
-          data= data+"</div>"
-          $("#modal-body").html(data);   
-          $('#modal').modal('show');
-         });
-     
-     </script>
 </body>
 
 </html>

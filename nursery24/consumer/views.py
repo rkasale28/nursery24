@@ -530,3 +530,10 @@ def vieworders(request):
     data={}
     data['order']=order
     return render(request,'cvieworder.html',data)
+
+def track(request):
+    if request.method=='POST':
+        id=request.POST["id"]
+        pio=ProductInOrder.objects.get(pk=id)
+        return render(request,'ctrack.html',{'pio':pio})
+    
