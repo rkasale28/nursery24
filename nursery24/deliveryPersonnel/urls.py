@@ -11,6 +11,6 @@ urlpatterns=[
     path('changePasswordsubmit',views.changepasswordsubmit,name="changepassword"),
     path('toggle',views.toggle,name="toggle"),
     path('updatecurrentlocation',views.updatecurrentlocation,name="updatecurrentlocation"),
-    path('assigned',views.assigned,name="assigned")
-    # path('editsubmit',views.editsubmit,name="editsubmit"),
+    path('assigned',views.assigned,name="assigned"),
+    path('deliver',views.deliver,name="deliver")
 ]

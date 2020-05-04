@@ -6,6 +6,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import DeliveryPersonnel
 from geopy.geocoders import Nominatim
 from django.contrib.gis.geos import Point
+from datetime import date
+from consumer.models import ProductInOrder
 
 # Create your views here.
 def home(request):
@@ -81,3 +83,17 @@ def updatecurrentlocation(request):
 def assigned(request):
     list=request.user.deliverypersonnel.productinorder_set.all().filter(status='R') | request.user.deliverypersonnel.productinorder_set.all().filter(status='S')
     return render(request,'dassigned.html',{'list':list})
+
+def deliver(request):
+    if request.method=='POST':
+        id=request.POST["id"]
+        pio=ProductInOrder.objects.get(pk=id)
+        pio.status='D'
+        pio.date_delivered=date.today()
+        pio.last_tracked_on=date.today()
+        pio.save()
+        dp=pio.last_tracked_by
+        dp.assigned=False
+        dp.save()
+        return redirect('../delivery/home')
+    

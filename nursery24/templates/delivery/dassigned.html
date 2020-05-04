@@ -87,7 +87,8 @@
         <div class="col-3 align-middle text-center">{{i.order.consumer.phone_number}}</div>
         <div class="col-3 align-middle text-center">
             <form method="POST" action="deliver">
-                <input type="hidden" value="{{i.id}}">
+                {% csrf_token %}
+                <input name="id" type="hidden" value="{{i.id}}">
                 <button type="submit" class="btn btn-primary mr-2 mb-2">
                     <i class="fa fa-check"></i>
                     Delivered</button>
