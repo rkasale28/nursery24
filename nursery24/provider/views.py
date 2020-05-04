@@ -196,3 +196,12 @@ def readytoshipsubmit(request):
 def ready(request):
     list=request.user.provider.productinorder_set.all().filter(status='R').order_by('order__date_placed')
     return render(request,'pready.html',{'list':list})
+
+def ship(request):
+    if request.method=='POST':
+      id=request.POST['id']
+      pio=ProductInOrder.objects.get(pk=id)
+      pio.status='S'
+      pio.last_tracked_on=date.today()
+      pio.save()
+      return redirect('../provider/ready')

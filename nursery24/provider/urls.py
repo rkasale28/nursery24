@@ -22,4 +22,5 @@ urlpatterns=[
     path('readytoship',views.readytoship,name="readytoship"),
     path('readytoshipsubmit',views.readytoshipsubmit,name="readytoshipsubmit"),
     path('ready',views.ready,name="ready"),
+    path('ship',views.ship,name="ship")
 ]
