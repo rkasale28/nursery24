@@ -23,7 +23,7 @@
 
 <body>
     <div id="modal" class="modal fade" role='dialog'>
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-warning">
                     <h4 class="modal-title">Track Order</h4>
@@ -52,17 +52,6 @@
 
 
     </ul>
-    <!-- 
-    {% for i in order %}
-    {{i.secondary_id}}
-    {% for j in i.productinorder_set.all%}
-    <td>{{j.quantity}}</td>
-                    <td>{{j.provider.name}}</td>
-                    <td>{{j.date_last_tracked}}</td>
-                    <td>{{j.last_tracked_by_id}}</td>
-                    <td>{{j.status}}</td>
-                    {% endfor %}
-                    {% endfor %} -->
 
     <div class="row d-flex justify-content-center">
         {% for i in order %}
@@ -105,7 +94,7 @@
 
                         {% if j.status == "P" or j.status == "S" %}
                         <div class="col-md-6 h5 text-center">
-                            <button type="button" class="btn btn-warning" id="track-open-modal" lto="{{j.quantity}}" ltb="{{j.product.name}}" lta="{{j}}" style="width: 150px;">Track Order</button>
+                            <button type="button" class="btn btn-warning" id="track-open-modal" lto="{{j.date_last_tracked}}" ltb="{{j.last_tracked_by}}" lta="{{j.last_tracked_by}}" cd="{{j.last_tracked_by}}" style="width: 150px;">Track Order</button>
                         </div>
                         {% endif %}
                     </div>
@@ -148,17 +137,21 @@
 
     <script type="text/javascript">
         $(document).on("click", "#track-open-modal", function () {
-          var lto = $('#track-open-modal').attr('lto');
+          var lto = $('#track-open-modal').attr('lto')
           var lta = $('#track-open-modal').attr('lta')
           var ltb = $('#track-open-modal').attr('ltb')
+          var cd = $('#track-open-modal').attr('cd')
           data="<div class=\"row\">"
-          data = data+"<div class=\"h5 col-md-6\">Last Tracked On: </div><div class=\"col-md-6 h5 text-muted\">"+lto+"</div>";
+          data = data+"<div class=\"h5 col-md-4\">Last Tracked On: </div><div class=\"col-md-6 h5 text-muted\">"+lto+"</div>";
           data= data+"</div>"
           data=data+"<div class=\"row\">"
-          data = data + "<div class=\"h5 col-md-6\">Last Tracked At: </div><div class=\"h5 text-muted col-md-6\">"+lta+"</div>";
+          data = data + "<div class=\"h5 col-md-4\">Last Tracked At: </div><div class=\"h5 text-muted col-md-6\">"+lta+"</div>";
           data= data+"</div>"
           data=data+"<div class=\"row\">"
-          data = data + "<div class=\"h5 col-md-6\">To be delivered by: </div><div class=\"col-md-6 h5 text-muted\">"+ltb+"</div>";
+          data = data + "<div class=\"h5 col-md-4\">To be delivered by: </div><div class=\"col-md-6 h5 text-muted\">"+ltb+"</div>";
+          data= data+"</div>"
+          data=data+"<div class=\"row\">"
+          data = data + "<div class=\"h5 col-md-4\">Phone No.: </div><div class=\"col-md-6 h5 text-muted\">"+cd+"</div>";
           data= data+"</div>"
           $("#modal-body").html(data);   
           $('#modal').modal('show');

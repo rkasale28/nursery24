@@ -5,9 +5,12 @@ from django.contrib.auth.models import User,auth
 from .models import Courier,Address
 from http import cookies
 from .forms import UserForm,AddressForm,CourierForm
+from deliveryPersonnel.forms import UserForm as DForm
+from deliveryPersonnel.forms import DeliveryPersonnelForm,UpdateForm
 from django.core.exceptions import ObjectDoesNotExist
 from geopy.geocoders import Nominatim
 from django.contrib.gis.geos import Point
+from deliveryPersonnel.models import DeliveryPersonnel
 
 # Create your views here.
 def home(request):
@@ -122,3 +125,60 @@ def removeaddresssubmit(request):
         address_id=request.POST['id']
         Address.objects.get(pk=address_id).delete()
         return redirect('../courier/addresses')
+
+def adddp(request):
+    userform=DForm()
+    delform=DeliveryPersonnelForm()
+    return render(request,'coadddp.html',{'userform':userform,'delform':delform})
+
+def adddpsubmit(request):
+    if request.method=='POST':
+        username=request.POST['username']
+        fname=request.POST['first_name']
+        lname=request.POST['last_name']
+        email=request.POST['email']
+        user=User.objects.create_user(email=email,username=username,password='abc',first_name=fname,last_name=lname) 
+        courier=request.user.courier   
+        phone=request.POST['phone_number']
+        profile_pic=request.FILES['profile_pic']
+        dp=DeliveryPersonnel(user=user,courier=courier,phone_number=phone,profile_pic=profile_pic)
+        dp.save()            
+        return redirect('../courier/home')
+
+def viewdp(request):
+    if request.method=='POST':
+        id=request.POST['id']
+        dp=DeliveryPersonnel.objects.get(pk=id)
+        return render(request,'coview.html',{'dp':dp})
+
+def updatedp(request):
+    if request.method=='POST':
+        id=request.POST['id']
+        dp=DeliveryPersonnel.objects.get(pk=id)
+        updateform=UpdateForm()
+        updateform.fields['first_name'].initial=dp.user.first_name
+        updateform.fields['last_name'].initial=dp.user.last_name
+        updateform.fields['email'].initial=dp.user.email
+        delform=DeliveryPersonnelForm()
+        delform.fields['phone_number'].initial=dp.phone_number
+        return render(request,'coupdateprofile.html',{'updateform':updateform,'delform':delform,'id':id})
+
+def updatedpsubmit(request):
+    if request.method=='POST':
+        id=request.POST['id']
+        dp=DeliveryPersonnel.objects.get(pk=id)
+        first_name=request.POST['first_name']
+        last_name=request.POST['last_name']
+        email=request.POST['email']
+        phone_number=request.POST['phone_number']
+        initial_profile_pic=dp.profile_pic.url
+        initial_profile_pic=initial_profile_pic.replace('/media/', '')
+        profile_pic=request.FILES['profile_pic'] if 'profile_pic' in request.FILES else initial_profile_pic
+        dp.user.first_name=first_name
+        dp.user.last_name=last_name
+        dp.user.email=email
+        dp.user.save()
+        dp.phone_number=phone_number
+        dp.profile_pic = profile_pic
+        dp.save()     
+        return redirect('../courier/home')  

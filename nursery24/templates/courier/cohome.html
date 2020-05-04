@@ -15,15 +15,14 @@
             display: inline-block;
         }
 
-        .card-img-top {
-            width: 100%;
-            height: 15vw;
-            object-fit: cover;
-        }
-
         .d-block {
             height: 20vw;
             object-fit: cover;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: black;
         }
     </style>
 </head>
@@ -37,15 +36,60 @@
 
     <ul class="nav nav-pills nav-fill bg-light">
         <li class="nav-item">
-            <a class="nav-link active" href="home">Delivery Personnel</a>
+            <a class="nav-link active" href="home">Manage Delivery Personnel</a>
         </li>
-               
+
         <li class="nav-item">
             <a class="nav-link" href="viewcomment">View Comments</a>
         </li>
-        
+
+        <li class="nav-item">
+            <a class="nav-link" href="viewsummary">View Summary</a>
+        </li>
+
     </ul>
     
+    <div class="d-flex justify-content-start ml-3 mt-3">
+        {% for i in user.courier.deliverypersonnel_set.all%}
+        <div class="card mr-3 border-dark" style="width: 250px;height:330px">
+            <img class="card-img-top" id='image' style="width: 100%;height:15vw;object-fit: cover;" src={{i.profile_pic.url}}>
+
+            <div class="card-body">
+                <h5 class="card-title">{{i.user.first_name}} {{i.user.last_name}}</h5>
+            </div>
+            <div class="sticky-bottom float-right mr-1 mb-1">
+                <form enctype="multipart/form-data" action="removedpsubmit" method="post">
+                    {% csrf_token %}
+                    <input name="id" type="hidden" value={{i.id}}>
+                    <button type="submit" class="btn btn-danger ml-1">Delete</button>
+                </form>
+            </div>
+
+            <div class="sticky-bottom float-left mr-1 mb-1">
+                <form enctype="multipart/form-data" action="viewdp" method="post">
+                    {% csrf_token %}
+                    <input name="id" type="hidden" value={{i.id}}>
+                    <button type="submit" class="btn btn-primary ml-1">View Profile</button>
+                </form>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:5 %}
+    </div>
+    <div class="d-flex justify-content-left ml-3 mt-3">
+        {%endif%}
+
+        {% endfor%}
+        <a href="adddp">
+            <div class="d-flex justify-content-start">
+                <div class="card mr-3 bg-light" style="width: 250px;height:330px;border: 5px dashed black">
+                    <div class="card-title">
+                        <p class="card-text text-center" style="font-size: 200px;margin-top:0px;">+</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>

@@ -15,4 +15,9 @@ urlpatterns=[
     path('addaddress',views.addaddress,name="addaddress"),
     path('addaddresssubmit',views.addaddresssubmit,name="addaddresssubmit"),
     path('removeaddresssubmit',views.removeaddresssubmit,name="removeaddresssubmit"),
+    path('adddp',views.adddp,name="adddp"),
+    path('adddpsubmit',views.adddpsubmit,name="adddpsubmit"),
+    path('viewdp',views.viewdp,name="viewdp"),
+    path('updatedp',views.updatedp,name="updatedp"),
+    path('updatedpsubmit',views.updatedpsubmit,name="updatedpsubmit"),
 ]
