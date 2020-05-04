@@ -105,7 +105,11 @@
 </style>
 
 <body>
-  <header-profile></header-profile>
+  {% if not user.is_authenticated%}
+  <header-bar></header-bar>
+  {% else %}
+  <authenticated-header></authenticated-header>
+  {% endif %}
 
   <div class="wrapper shadow-lg mb-5 bg-white rounded">
 
@@ -144,7 +148,8 @@
 
   </div>
 
-  <script src="{% static 'js/header_profile.js'%}"></script>
+  <script src="{% static 'js/header.js'%}"></script>
+  <script src="{% static 'js/header_authenticated.js'%}"></script>
 </body>
 
 </html>

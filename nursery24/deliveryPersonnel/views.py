@@ -77,3 +77,7 @@ def updatecurrentlocation(request):
         dp.existing_location_point=Point(location.latitude, location.longitude)
         dp.save()
         return redirect('../delivery/home')
+
+def assigned(request):
+    list=request.user.deliverypersonnel.productinorder_set.all().filter(status='R').order_by('last_tracked_on')
+    return render(request,'dassigned.html',{'list':list})

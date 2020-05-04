@@ -168,6 +168,12 @@ def editsubmit(request):
 def readytoship(request):
     if request.method=='POST':
         id=request.POST['id']
+        return render(request,'pselectaddress.html',{'productinorderid':id})
+
+def readytoshipsubmit(request):
+    if request.method=='POST':
+        id=request.POST['id']
+        addr=request.POST['addr']
         product=ProductInOrder.objects.get(pk=id)
         product.status='R'
         product.last_tracked_on=date.today()
@@ -175,7 +181,15 @@ def readytoship(request):
         #static now
         #change later
         dp=DeliveryPersonnel.objects.get(id=8)
+        dp.assigned=True
+        dp.save()
         product.last_tracked_by=dp
+
+        geolocator = Nominatim(user_agent="provider")
+        location = geolocator.geocode(addr)
+        
+        product.provider_addr=addr
+        product.provider_point=Point(location.latitude, location.longitude)
         product.save()
         return redirect('../provider/home')
 

@@ -20,5 +20,6 @@ urlpatterns=[
     path('edit',views.edit,name="edit"),
     path('editsubmit',views.editsubmit,name="editsubmit"),
     path('readytoship',views.readytoship,name="readytoship"),
+    path('readytoshipsubmit',views.readytoshipsubmit,name="readytoshipsubmit"),
     path('ready',views.ready,name="ready"),
 ]

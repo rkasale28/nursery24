@@ -41,6 +41,8 @@ class ProductInOrder(models.Model):
     date_delivered=models.DateField(null=True)
     last_tracked_on=models.DateField(null=True)
     last_tracked_by=models.ForeignKey(DeliveryPersonnel,on_delete=models.CASCADE,null=True)
+    provider_addr=models.TextField(max_length=100,null=True)
+    provider_point = gismodel.PointField(null=True)
     
 class Review(models.Model):
     rating=models.FloatField()

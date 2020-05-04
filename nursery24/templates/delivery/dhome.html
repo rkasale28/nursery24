@@ -94,6 +94,20 @@
     <authenticated-header></authenticated-header>
     {% endif %}
 
+    {% if user.deliverypersonnel.assigned %}
+    <ul class="nav nav-pills nav-fill bg-light">
+        <li class="nav-item">
+            <a class="nav-link active" href="home">My Details</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="assigned">Assigned Orders</a>
+        </li>
+
+    </ul>
+
+    {% endif %}
+
     <div style="height:50px;border-bottom:solid black 1px" class="align-middle ">
         {% if not user.deliverypersonnel.assigned %}
         <div class="float-right m-2">
@@ -116,8 +130,26 @@
         {% endif %}
     </div>
 
-    {% if user.deliverypersonnel.available %}
-    <h4 class="ml-2">Current Location: <span class="text-muted">{{user.deliverypersonnel.existing_location_addr}}</span></h4>
+    {% if user.deliverypersonnel.assigned %}
+    <h4 class="ml-2">Current Location: <span class="text-muted">{{user.deliverypersonnel.existing_location_addr}}</span>
+    </h4>
+    <div class="row d-flex justify-content-center">
+        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:350px">
+            <div class="h1 text-muted" style="margin-top:150px">
+                <-- Map Here -->
+            </div>
+        </div>
+    </div>
+    {% elif user.deliverypersonnel.available %}
+    <h4 class="ml-2">Current Location: <span class="text-muted">{{user.deliverypersonnel.existing_location_addr}}</span>
+    </h4>
+    <div class="row d-flex justify-content-center">
+        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:380px">
+            <div class="h1 text-muted" style="height: 100%;margin-top:150px">
+                <-- Map Here -->
+            </div>
+        </div>
+    </div>
     {% endif %}
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

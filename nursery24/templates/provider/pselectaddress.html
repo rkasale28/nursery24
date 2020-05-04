@@ -6,27 +6,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Profile</title>
+    <title>Select Address</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        .card {
+            display: inline-block;
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 15vw;
+            object-fit: cover;
+        }
+
+        .d-block {
+            height: 20vw;
+            object-fit: cover;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
 </head>
 
 <body>
-
     {% if not user.is_authenticated%}
     <header-bar></header-bar>
     {% else %}
     <authenticated-header></authenticated-header>
     {% endif %}
 
-    <form action="updatedpsubmit" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="hidden" name="id" value="{{id}}">
-        {{updateform.as_p}}
-        {{delform.as_p}}
-        <button type="submit">Update</button>
-    </form>
+    <div class="d-flex justify-content-start ml-3 mt-3">
+        {% for i in user.provider.address_set.all%}
+        <div class="card mr-3" style="width: 255px;height:255px">
+            <div class="card-body d-flex flex-column">
+                <p class="card-text">{{i.addr}}</p>
+
+                <form action="readytoshipsubmit" method="post" class="ml-auto" style="margin-top:150px">
+                {% csrf_token %}
+                <input name="id" type="hidden" value="{{productinorderid}}">
+                <input name="addr" type="hidden" value="{{i.addr}}">
+                <input type="submit" class=" btn btn-primary" value="Select">
+                </form>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:5 %}
+    </div>
+    <div class="d-flex justify-content-left ml-3 mt-3">
+        {%endif%}
+
+        {% endfor%}
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
@@ -37,7 +70,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-
+        
     <script src="{% static 'js/header.js'%}"></script>
     <script src="{% static 'js/header_authenticated.js'%}"></script>
 </body>

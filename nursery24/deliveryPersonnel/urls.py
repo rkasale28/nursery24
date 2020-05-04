@@ -10,6 +10,7 @@ urlpatterns=[
     path('changePassword',views.changepassword,name="changepassword"),
     path('changePasswordsubmit',views.changepasswordsubmit,name="changepassword"),
     path('toggle',views.toggle,name="toggle"),
-    path('updatecurrentlocation',views.updatecurrentlocation,name="updatecurrentlocation")
+    path('updatecurrentlocation',views.updatecurrentlocation,name="updatecurrentlocation"),
+    path('assigned',views.assigned,name="assigned")
     # path('editsubmit',views.editsubmit,name="editsubmit"),
 ]
