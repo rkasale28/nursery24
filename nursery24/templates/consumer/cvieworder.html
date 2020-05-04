@@ -82,7 +82,17 @@
                             <form action="track" method="post">
                                 {% csrf_token %}
                             <input type="hidden" name="id" value="{{j.id}}">
-                            <input type="submit" value="Track Order" style="width: 150px;" class="btn btn-warning">
+                            <input type="submit" value="Track Order" style="width: 200px;" class="btn btn-warning">
+                        </form>
+                        </div>
+                        {% endif %}
+
+                        {% if j.status == "D" %}
+                        <div class="col-md-6 h5 text-center">
+                            <form action="rate" method="post">
+                                {% csrf_token %}
+                            <input type="hidden" name="id" value="{{j.id}}">
+                            <input type="submit" value="Rate Product" style="width: 200px;" class="btn btn-warning">
                         </form>
                         </div>
                         {% endif %}
@@ -92,9 +102,15 @@
                         <div class="col-md-2 h5 text-muted">{{j.total_price}}</div>
                         <div class="col-md-3"></div>
 
+                        {% if j.status == "D" %}
+                        <div class="col-md-6 h5 text-center">
+                            <button class="btn btn-danger" style="width: 200px;">Comment On Delivery</button>
+                        </div>
+                        {% endif %}
+
                         {% if j.status == "P" or j.status == "R" or j.status == "S" %}
                         <div class="col-md-6 h5 text-center">
-                            <button class="btn btn-danger" style="width: 150px;">Cancel Order</button>
+                            <button class="btn btn-danger" style="width: 200px;">Cancel Order</button>
                         </div>
                         {% endif %}
                     </div>
