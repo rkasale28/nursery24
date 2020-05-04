@@ -7,7 +7,7 @@ from .models import DeliveryPersonnel
 
 # Create your views here.
 def home(request):
-    return HttpResponse('Home')
+    return render(request,'dhome.html')
 
 def login(request):
     return render(request,'dlogin.html')
