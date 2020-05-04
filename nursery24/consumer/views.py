@@ -536,4 +536,17 @@ def track(request):
         id=request.POST["id"]
         pio=ProductInOrder.objects.get(pk=id)
         return render(request,'ctrack.html',{'pio':pio})
-    
+
+def cancel(request):
+    if request.method=='POST':
+        id=request.POST["id"]
+        pio=ProductInOrder.objects.get(pk=id)
+        pio.last_tracked_on=date.today()
+        if (pio.status=='R'):
+            pio.status='I'
+            pio.save()
+            #Send Mail to pio.last_tracked_by
+        else:
+            pio.status='N'
+            pio.save()
+        return redirect('../consumer/vieworders')

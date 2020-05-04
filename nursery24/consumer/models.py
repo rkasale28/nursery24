@@ -34,7 +34,9 @@ class ProductInOrder(models.Model):
         ('S','Shipped'),
         ('P','Placed'),
         ('C','Cancelled'),
-        ('R','Ready To Ship')
+        ('R','Ready To Ship'),
+        ('N','Not Returned'),
+        ('I','Inform Courier about cancellation')
     ]
     status=models.CharField(max_length=1,choices=ORDER_STATUS_CHOICES,default='P')
     expected_delivery_date=models.DateField(null=True)

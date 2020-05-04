@@ -81,7 +81,7 @@ def updatecurrentlocation(request):
         return redirect('../delivery/home')
 
 def assigned(request):
-    list=request.user.deliverypersonnel.productinorder_set.all().filter(status='R') | request.user.deliverypersonnel.productinorder_set.all().filter(status='S')
+    list=request.user.deliverypersonnel.productinorder_set.all().filter(status='R') | request.user.deliverypersonnel.productinorder_set.all().filter(status='S') | request.user.deliverypersonnel.productinorder_set.all().filter(status='N') | request.user.deliverypersonnel.productinorder_set.all().filter(status='I')
     return render(request,'dassigned.html',{'list':list})
 
 def deliver(request):
@@ -96,4 +96,14 @@ def deliver(request):
         dp.assigned=False
         dp.save()
         return redirect('../delivery/home')
-    
+
+def read(request):
+    if request.method=='POST':
+      id=request.POST['id']
+      pio=ProductInOrder.objects.get(pk=id)
+      pio.status='C'
+      pio.save()
+      request.user.deliverypersonnel.assigned=False
+      request.user.deliverypersonnel.save()
+      return redirect('../delivery/home')
+     

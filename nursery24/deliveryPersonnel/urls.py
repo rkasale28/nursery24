@@ -12,5 +12,6 @@ urlpatterns=[
     path('toggle',views.toggle,name="toggle"),
     path('updatecurrentlocation',views.updatecurrentlocation,name="updatecurrentlocation"),
     path('assigned',views.assigned,name="assigned"),
-    path('deliver',views.deliver,name="deliver")
+    path('deliver',views.deliver,name="deliver"),
+    path('read',views.read,name="read")
 ]

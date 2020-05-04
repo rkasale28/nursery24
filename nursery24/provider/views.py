@@ -205,3 +205,19 @@ def ship(request):
       pio.last_tracked_on=date.today()
       pio.save()
       return redirect('../provider/ready')
+
+def cancelled(request):
+    list=request.user.provider.productinorder_set.all().filter(status='N').order_by('last_tracked_on')
+    return render(request,'pcancelled.html',{'list':list})
+
+def returned(request):
+    if request.method=='POST':
+      id=request.POST['id']
+      pio=ProductInOrder.objects.get(pk=id)
+      pio.status='C'
+      pio.save()
+      dp=pio.last_tracked_by
+      dp.assigned=False
+      dp.save()
+      return redirect('../provider/cancelled')
+        

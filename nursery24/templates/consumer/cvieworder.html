@@ -67,9 +67,9 @@
                         <div class="col-md-3 h5 text-muted">{{j.date_delivered}}</div>
                         {% endif %}
 
-                        {% if j.status == "C" %}
+                        {% if j.status == "C" or j.status == "E" or j.status == "N" %}
                         <div class="col-md-3 h5 text-right">Cancelled on: </div>
-                        <div class="col-md-3 h5 text-muted">{{j.date_last_tracked}}</div>
+                        <div class="col-md-3 h5 text-muted">{{j.last_tracked_on}}</div>
                         {% endif %}
                     </div>
                     <div class="row ml-1">
@@ -102,15 +102,14 @@
                         <div class="col-md-2 h5 text-muted">{{j.total_price}}</div>
                         <div class="col-md-3"></div>
 
-                        {% if j.status == "D" %}
-                        <div class="col-md-6 h5 text-center">
-                            <button class="btn btn-danger" style="width: 200px;">Comment On Delivery</button>
-                        </div>
-                        {% endif %}
-
+                        
                         {% if j.status == "P" or j.status == "R" or j.status == "S" %}
                         <div class="col-md-6 h5 text-center">
-                            <button class="btn btn-danger" style="width: 200px;">Cancel Order</button>
+                            <form action="cancel" method="post">
+                                {% csrf_token %}
+                            <input type="hidden" name="id" value="{{j.id}}">
+                            <input type="submit" value="Cancel Order" style="width: 200px;" class="btn btn-danger">
+                        </form>
                         </div>
                         {% endif %}
                     </div>

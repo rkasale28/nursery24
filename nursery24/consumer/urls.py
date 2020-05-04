@@ -34,5 +34,6 @@ urlpatterns=[
     path('successfulorder',views.successfulorder,name="successfulorder"),
     path('charge/', views.charge, name="charge"),
     path('previousOrders', views.successMsg, name="previousOrders"),
-    path('track',views.track,name="track")
+    path('track',views.track,name="track"),
+    path('cancel',views.cancel,name="cancel")
 ]
