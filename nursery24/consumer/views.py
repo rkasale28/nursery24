@@ -546,7 +546,13 @@ def cancel(request):
             pio.status='I'
             pio.save()
             #Send Mail to pio.last_tracked_by
+        elif (pio.status=='P'):
+            pio.status='C'
+            pio.save()
         else:
             pio.status='N'
             pio.save()
         return redirect('../consumer/vieworders')
+
+def sample(request):
+    return render(request,'sample.html')

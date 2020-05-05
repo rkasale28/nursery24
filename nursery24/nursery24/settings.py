@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'courier.apps.CourierConfig',
     'provider.apps.ProviderConfig',
     'deliveryPersonnel.apps.DeliverypersonnelConfig',
-    'django.contrib.gis'
+    'django.contrib.gis',
+    'leaflet'
 ]
 
 MIDDLEWARE = [

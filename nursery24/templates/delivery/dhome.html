@@ -129,7 +129,7 @@
         </div>
         {% endif %}
     </div>
-
+    {{user.deliverypersonnel.existing_location_point}}
     {% if user.deliverypersonnel.assigned %}
     <h4 class="ml-2">Current Location: <span class="text-muted">{{user.deliverypersonnel.existing_location_addr}}</span>
     </h4>
