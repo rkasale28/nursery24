@@ -10,81 +10,85 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <style>
-        .card {
-            display: inline-block;
-        }
+    <link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
+    <script type='text/javascript' src='http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js'></script>
+</head>
+<style>
+    .card {
+        display: inline-block;
+    }
 
-        .d-block {
-            height: 20vw;
-            object-fit: cover;
-        }
+    .d-block {
+        height: 20vw;
+        object-fit: cover;
+    }
 
-        a:hover {
-            text-decoration: none;
-            color: black;
-        }
+    a:hover {
+        text-decoration: none;
+        color: black;
+    }
 
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 30px;
-        }
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 30px;
+    }
 
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
 
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 24px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 24px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
 
-        input:checked+.slider {
-            background-color: #2196F3;
-        }
+    input:checked+.slider {
+        background-color: #2196F3;
+    }
 
-        input:focus+.slider {
-            box-shadow: 0 0 1px #2196F3;
-        }
+    input:focus+.slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
 
-        input:checked+.slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
-        }
+    input:checked+.slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
 
-        /* Rounded sliders */
-        .slider.round {
-            border-radius: 34px;
-        }
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
 
-        .slider.round:before {
-            border-radius: 50%;
-        }
-    </style>
+    .slider.round:before {
+        border-radius: 50%;
+    }
+</style>
 </head>
 
 <body>
@@ -129,25 +133,17 @@
         </div>
         {% endif %}
     </div>
-    {{user.deliverypersonnel.existing_location_point}}
     {% if user.deliverypersonnel.assigned %}
-    <h4 class="ml-2">Current Location: <span class="text-muted">{{user.deliverypersonnel.existing_location_addr}}</span>
-    </h4>
+
     <div class="row d-flex justify-content-center">
-        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:350px">
-            <div class="h1 text-muted" style="margin-top:150px">
-                <-- Map Here -->
-            </div>
+        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:380px">
+            <div id="map" style="height: 100%;border-radius: 10px"></div>
         </div>
     </div>
     {% elif user.deliverypersonnel.available %}
-    <h4 class="ml-2">Current Location: <span class="text-muted">{{user.deliverypersonnel.existing_location_addr}}</span>
-    </h4>
-    <div class="row d-flex justify-content-center">
-        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:380px">
-            <div class="h1 text-muted" style="height: 100%;margin-top:150px">
-                <-- Map Here -->
-            </div>
+    <div class="row d-flex justify-content-center m-2">
+        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:420px">
+            <div id="map" style="height: 100%;border-radius: 10px"></div>
         </div>
     </div>
     {% endif %}
@@ -176,6 +172,32 @@
             });
         });
 
+        var map = L.map('map').setView([0, 0], 2)
+
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            subdomains: ['a', 'b', 'c']
+        }).addTo(map);
+
+        var x = "{{user.deliverypersonnel.existing_location_point.x}}";
+        var y = "{{user.deliverypersonnel.existing_location_point.y}}";
+
+        var marker = L.marker([0, 0]).addTo(map);
+        marker.setLatLng([x, y]);
+
+        var popup = L.popup()
+            .setLatLng([x, y])
+            .setContent("{{user.deliverypersonnel.existing_location_addr}}")
+            .openOn(map);
+
+        map.setView([x, y], 13);
+
+        marker.on('click', function (e) {
+            var popup = L.popup()
+                .setLatLng([x, y])
+                .setContent("{{user.deliverypersonnel.existing_location_addr}}")
+                .openOn(map);
+        });
     </script>
 </body>
 
