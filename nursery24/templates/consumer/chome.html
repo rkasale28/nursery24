@@ -98,9 +98,9 @@
         <div class="card mr-3" style="width: 255px;">
             {%if i.price_set.all.values_list|length > 1%}
             
-            <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}  provider = "{{i.provider.shop_name}}"></compare-price-item-card>
+            <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}  provider = "{{i.providers.all.0.shop_name}}"></compare-price-item-card>
             {% else %}
-            <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}}></item-card>
+            <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} provider = "{{i.providers.all.0.shop_name}}"></item-card>
             {% endif %}
         </div>
         {% endfor %}
@@ -112,9 +112,9 @@
         <div class="card mr-3" style="width: 255px;">
             {%if i.price_set.all.values_list|length > 1%}
             
-            <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}  provider = "{{i.provider.shop_name}}"></compare-price-item-card>
+            <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}  provider = "{{i.providers.all.0.shop_name}}"></compare-price-item-card>
             {% else %}
-            <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}}></item-card>
+            <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} provider = "{{i.providers.all.0.shop_name}}"></item-card>
             {% endif %}
         </div>
         {% endfor %}
@@ -126,9 +126,9 @@
         <div class="card mr-3" style="width: 255px;">
             {%if i.price_set.all.values_list|length > 1%}
             
-            <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}  provider = "{{i.providers.shop_name}}"></compare-price-item-card>
+            <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}  provider = "{{i.providers.all.0.shop_name}}"></compare-price-item-card>
             {% else %}
-            <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id ={{i.id}}></item-card>
+            <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id ={{i.id}} provider = "{{i.providers.all.0.shop_name}}"></item-card>
             {% endif %}
         </div>
         {% endfor %}
@@ -136,13 +136,14 @@
 
     <hr>
     <div class="d-flex justify-content-start ml-3 mt-3">
-        {% for i in trending %}
+        {% for i in ratings %}
         <div class="card mr-3" style="width: 255px;">
             {%if i.price_set.all.values_list|length > 1%}
             
             <!-- <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}  provider = "{{i.provider.shop_name}}"></compare-price-item-card> -->
-            <div>{{i.name}} {{i.price_set.all.0.price}} {{i.providers.provider.user}}</div>
+            <div>{{i.name}} {{i.price_set.all.0.price}} {{i.providers.all.0.shop_name}}</div>
             {% else %}
+            <div>{{i.providers.all.0.shop_name}}</div>
             <!-- <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id ={{i.id}}></item-card> -->
             {% endif %}
         </div>

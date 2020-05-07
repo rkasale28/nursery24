@@ -71,9 +71,9 @@
         {% for product in products %}
         <div class="card mr-3" style="width: 255px;">
             {%if product.price_set.all.values_list|length > 1%}
-            <compare-price-item-card name="{{product.name}}" price="{{product.price_set.all.values|dictsort:'price'|first|get_item:'price'}}" image={{product.image.url}} id={{product.id}}  provider = "{{i.provider.shop_name}}"></compare-price-item-card>
+            <compare-price-item-card name="{{product.name}}" price="{{product.price_set.all.values|dictsort:'price'|first|get_item:'price'}}" image={{product.image.url}} id={{product.id}}  provider = "{{product.provider.shop_name}}"></compare-price-item-card>
             {% else %}
-            <item-card name="{{product.name}}" price="{{product.price_set.all.values|dictsort:'price'|first|get_item:'price'}}" image={{product.image.url}}></item-card>
+            <item-card name="{{product.name}}" price="{{product.price_set.all.values|dictsort:'price'|first|get_item:'price'}}" image={{product.image.url}} provider = "{{product.provider.shop_name}}"></item-card>
             {% endif %}
         </div>
 
