@@ -103,8 +103,12 @@
 </body>
 <script>
 
-    
-
+    let decodedCookie = decodeURIComponent(document.cookie).split(';');
+    let productString = decodedCookie.find(item => item.includes("product="));
+    let productStringSplit = productString.split('=');
+    let product = JSON.parse(productStringSplit[1]);
+    product = [];
+    document.cookie = 'product=' + JSON.stringify(product);
 
 </script>
 </html>

@@ -135,21 +135,7 @@
     </div>
 
     <hr>
-    <div class="d-flex justify-content-start ml-3 mt-3">
-        {% for i in ratings %}
-        <div class="card mr-3" style="width: 255px;">
-            {%if i.price_set.all.values_list|length > 1%}
-            
-            <!-- <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}  provider = "{{i.provider.shop_name}}"></compare-price-item-card> -->
-            <div>{{i.name}} {{i.price_set.all.0.price}} {{i.providers.all.0.shop_name}}</div>
-            {% else %}
-            <div>{{i.providers.all.0.shop_name}}</div>
-            <!-- <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id ={{i.id}}></item-card> -->
-            {% endif %}
-        </div>
-        {% endfor %}
-    </div>
-
+ 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
