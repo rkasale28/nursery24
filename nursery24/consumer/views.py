@@ -28,6 +28,7 @@ from django.contrib.gis.geos import Point
 import json
 from datetime import date,timedelta
 from django.utils.crypto import get_random_string
+from django.contrib.gis.measure import D
 
 import os
 
@@ -236,7 +237,6 @@ def checkout(request):
         provnames = []
         prices = []
         individual_price=[]
-
         for i in range(len(products)):
             product = products[i]
             names.append(product['name'])
@@ -279,7 +279,7 @@ def confirmorder(request):
     consumer=request.user.consumer
     address = request.POST['address']
     try:
-        present = Address.objects.get(addr=address,consumer=consumer)
+        present = Consumer_Address.objects.get(addr=address,consumer=consumer)
     except ObjectDoesNotExist as d:
         geolocator = Nominatim(user_agent="consumer")
         location = geolocator.geocode(address)
@@ -304,19 +304,30 @@ def confirmorder(request):
         n = []
         available = []
         prices = []
-        d = nom.geocode(address,timeout = None)
+        #d = nom.geocode(address,timeout = None)
+        present = Consumer_Address.objects.get(addr=address,consumer=consumer)
+        pnt=present.point
         ps = []      
-        customeraddr = (d.latitude,d.longitude)
+        #customeraddr = (d.latitude,d.longitude)
         if provnames[i] == 'Single':
                 prov1 = Provider.objects.get(price__product_id = product.id)
-                addr = Provider_Address.objects.filter(provider_id = prov1.id)
-                for a in addr:
-                    n = nom.geocode("%s" % a.addr,timeout = None )
-                    provideraddr = (n.latitude,n.longitude)
-                    dist = (geodesic(provideraddr,customeraddr).km)    
-                if(dist<50):
-                    available.append(prov1.id)
-                    changed.append('No')
+                addr = Provider_Address.objects.filter(provider_id = prov1.id).filter(point__distance_lte=(pnt, D(km=40)))
+                for i in addr:
+                    dist=(i.point.distance(pnt)*100)
+                    if dist>50:
+                        print ('No')
+                    else:
+                        available.append(prov1.id)
+                        changed.append('No')
+                
+                
+                # for a in addr:
+                #     n = nom.geocode("%s" % a.addr,timeout = None )
+                #     provideraddr = (n.latitude,n.longitude)
+                #     dist = (geodesic(provideraddr,customeraddr).km)    
+                # if(dist<50):
+                #     available.append(prov1.id)
+                #     changed.append('No')
         else:
             if provnames[i] == 'default':
                 pri = Price.objects.filter(product_id = product.id )
