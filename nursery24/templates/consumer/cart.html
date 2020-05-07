@@ -112,7 +112,7 @@
         let type2 = product.filter(item=> item.id);
 
         (type1) ? 
-        cartItems.innerHTML = type1.map(item=> `<cart-card name="${item.name}" price=${item.perPrice} quantity=${item.quantity} image=${item.img}></cart-card>`)
+        cartItems.innerHTML = type1.map(item=> `<cart-card name="${item.name}" price=${item.perPrice} quantity=${item.quantity} image=${item.img} provider="${item.provider}"></cart-card>`)
         : ifEmpty.innerHTML = ``;
 
         if(type2){

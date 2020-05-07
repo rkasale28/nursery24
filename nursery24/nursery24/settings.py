@@ -149,4 +149,4 @@ EMAIL_HOST_USER = 'nursery24somaiya@gmail.com'
 EMAIL_HOST_PASSWORD = 'Nursery24'
 EMAIL_PORT = 587
 
-GDAL_LIBRARY_PATH = r'C:\Users\Rohit\AppData\Local\Programs\Python\Python38\Lib\site-packages\osgeo\gdal300.dll'
+GDAL_LIBRARY_PATH = r'C:\Users\ameya\GDAL-3.0.4-cp38-cp38-win_amd64\osgeo\gdal300.dll'
