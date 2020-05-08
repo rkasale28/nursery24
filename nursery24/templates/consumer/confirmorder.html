@@ -55,15 +55,11 @@
 
     <div class="pt-2"></div>
 
+
     <div class="row d-flex justify-content-center">
         <div class="shadow-lg p-3 mb-3 bg-white rounded" style="width: 95%;">
             {% for i in length %}
-            {% if prices|index:i != 0 %}
-            {% if changed|index:i != 'No' %}
-            <div class="alert alert-warning" role="alert" style="width: 95%;">
-                Prices may have changed bcoz the selected provider couldn't deliver to your location</h3>
-            </div>
-            {%endif%}
+            {% if available|index:i %}
             <div class="row pl-2">
                 <div class="col-md-6">
                     <p class="h5">{{ names|index:i }}</p>
@@ -74,7 +70,7 @@
                 </div>
 
                 <div class="col-md-2 text-left">
-                    <p class="h5"> Rs. {{ prices|index:i }}
+                    <p class="h5"> Rs. {{ per_price|index:i }}
                 </div>
             </div>
             <div class="row pb-4 pl-2">
@@ -87,65 +83,17 @@
                 </div>
 
                 <div class="col-md-2 text-left">
-                    <p class="h5"> Rs. {{ finalprices|index:i }}
+                    <p class="h5"> Rs. {{ total_price|index:i }}
                 </div>
             </div>
 
             {% else %}
-            <div class="alert alert-danger m-3" role="alert" style="width: 95%;">
-                {{ names|index:i }} cannot be delivered at your location
+            <div class="alert alert-danger mb-4" role="alert" style="width: 95%;">
+                {{names|index:i}} can't be delivered.
             </div>
+            
             {% endif %}
             {% endfor %}
-            <hr class="new1">
-            <div class="row">
-                <div class="col-md-6"></div>
-
-                <div class="col-md-3 text-right">
-                    <p class="h5"> <span class="font-weight-bold"> Subtotal: </span>
-                </div>
-
-                <div class="col-md-2">
-                    <p class="h5"> Rs. {{ total }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6"></div>
-
-                <div class="col-md-3 text-right">
-                    <p class="h5"> <span class="font-weight-bold"> Delivery Cost: </span>
-                </div>
-
-                <div class="col-md-2">
-                    <p class="h5"> Rs. {{ delivery }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6"></div>
-
-
-                <div class="col-md-3 text-right">
-                    <p class="h5"> <span class="font-weight-bold"> Internet Handling Fees: </span>
-                </div>
-
-                <div class="col-md-2">
-                    <p class="h5"> Rs. {{ int_handling }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6"></div>
-
-                <div class="col-md-3 text-right">
-                    <p class="h5"> <span class="font-weight-bold"> Total: </span>
-                </div>
-
-                <div class="col-md-2">
-                    <p class="h5"> Rs. {{ grand_total }}
-                </div>
-            </div>
         </div>
     </div>
 

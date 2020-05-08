@@ -52,7 +52,7 @@
             {%if i.product.price_set.all.values_list|length > 1%}
             <compare-price-item-card name="{{i.product.name}}" price={{i.price}} image={{i.product.image.url}} id={{i.product.id}}  provider = "{{i.provider.shop_name}}"></compare-price-item-card>
             {% else %}
-            <item-card name="{{i.product.name}}" price={{i.price}} image={{i.product.image.url}}></item-card>
+            <item-card name="{{i.product.name}}" price={{i.price}} image={{i.product.image.url}} provider = "{{i.provider.shop_name}}"></item-card>
             {% endif %}
         </div>
 
