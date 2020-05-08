@@ -188,6 +188,7 @@ def home(request):
     for i in range(5):
         trending_products.append(Product.objects.get(id = distinct_products[i]))
     ratings=Product.objects.all().distinct().order_by('-rating')[:5]
+    print(ratings)
     data['newly_added'] = newly_added
     data['trending'] = trending_products
     data['ratings'] = ratings
