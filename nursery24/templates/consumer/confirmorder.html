@@ -94,13 +94,60 @@
             
             {% endif %}
             {% endfor %}
+            <div class="row pt-2" style="border-top: 1px solid black;">
+                <div class="col-md-6"></div>
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Subtotal: </span>
+                </div>
+
+                <div class="col-md-2">
+                    <p class="h5"> Rs. {{ total }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"></div>
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Delivery Cost: </span>
+                </div>
+
+                <div class="col-md-2">
+                    <p class="h5"> Rs. {{ delivery }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"></div>
+
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Internet Handling Fees: </span>
+                </div>
+
+                <div class="col-md-2">
+                    <p class="h5"> Rs. {{ int_handling }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"></div>
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Total: </span>
+                </div>
+
+                <div class="col-md-2">
+                    <p class="h5"> Rs. {{ grand_total }}
+                </div>
+            </div>
+
         </div>
     </div>
 
     <div class="row d-flex justify-content-end mb-3">
-        <a href="" class="btn btn-primary p-3 mr-3">Go to Cart</a>
-
-        <button href="" class="btn btn-primary p-3" style="margin-right: 50px;" onclick="proceed()">Place Order</button>
+        <button class="btn btn-primary p-3" style="margin-right: 50px;" onclick="proceed()">Place Order</button>
     </div>
 
     <script src="{% static 'js/header_profile.js'%}"></script>

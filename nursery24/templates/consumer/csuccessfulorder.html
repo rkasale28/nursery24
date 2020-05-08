@@ -55,6 +55,7 @@
 
     <div class="pt-2"></div>
 
+    <p class="h5">Redirecting to Home Page...</p>
     <div class="row d-flex justify-content-center">
         <div class="shadow-lg p-3 mb-3 bg-white rounded" style="width: 95%;">
             {% for i in length %}
@@ -62,12 +63,27 @@
                 <div class="col-md-6">
                     <p class="h5">{{ names|index:i }}</p>
                 </div>
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Price: </span>
+                </div>
+
+                <div class="col-md-2 text-left">
+                    <p class="h5"> Rs. {{ per_price|index:i }}
+                </div>
             </div>
             <div class="row pb-4 pl-2">
                 <div class="col-md-6">
                     <p class="h5"> <span class="font-weight-bold"> Quantity: </span> {{ qty|index:i }}
                 </div>
 
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Subtotal: </span>
+                </div>
+
+                <div class="col-md-2 text-left">
+                    <p class="h5"> Rs. {{ total_price|index:i }}
+                </div>
             </div>
             {% if forloop.last %}
             <div style="border-bottom: 1px solid black;"></div>
@@ -109,6 +125,10 @@
     let product = JSON.parse(productStringSplit[1]);
     product = [];
     document.cookie = 'product=' + JSON.stringify(product);
+
+    window.setTimeout(function () {
+        window.location.replace('../consumer/home');
+    }, 5000);
 
 </script>
 </html>
