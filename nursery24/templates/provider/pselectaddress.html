@@ -41,15 +41,15 @@
     {% endif %}
 
     <div class="d-flex justify-content-start ml-3 mt-3">
-        {% for i in user.provider.address_set.all%}
+        {% for i in address%}
         <div class="card mr-3" style="width: 255px;height:255px">
             <div class="card-body d-flex flex-column">
-                <p class="card-text">{{i.addr}}</p>
+                <p class="card-text">{{i}}</p>
 
                 <form action="readytoshipsubmit" method="post" class="ml-auto" style="margin-top:150px">
                 {% csrf_token %}
                 <input name="id" type="hidden" value="{{productinorderid}}">
-                <input name="addr" type="hidden" value="{{i.addr}}">
+                <input name="addr" type="hidden" value="{{i}}">
                 <input type="submit" class=" btn btn-primary" value="Select">
                 </form>
             </div>

@@ -442,7 +442,7 @@ def successfulorder(request):
     delivery_addr = cust_addr,
     delivery_point = cust_pt)
 
-    #order.save()
+    order.save()
     order=Order.objects.get(id=40)
     
     data = {}
@@ -472,8 +472,7 @@ def successfulorder(request):
             order = order,
             quantity = data['qty'][i],
             total_price = total_price,
-            expected_delivery_date = expected_delivery)
-            #.save()
+            expected_delivery_date = expected_delivery).save()
     
     to = [current_user.email]
     #send_mail('Test Mail','Practice for project',settings.EMAIL_HOST_USER,to,fail_silently=True)
