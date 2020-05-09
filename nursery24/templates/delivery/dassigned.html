@@ -85,20 +85,24 @@
     {% endif %}
 
     {% if pio.status == "N" %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         Order has been cancelled. Please return to Provider
     </div>
-    <div class="bookmarkRibbon"><span style="color:white;position: relative;top: -12px;text-align: center;right: -10px;"
-            class="h4">Provider</span></div>
+    <div class="row h5 align-items-center" style="height:50px">
+        <div class="col-3 align-middle text-center">
+            <div class="bookmarkRibbon">
+                <span style="color:white;position: relative;top: -12px;text-align: center;right: -10px;"
+                    class="h4">Provider</span>
+            </div>
+        </div>
 
-    <div class="row h5 align-items-center" style="border-bottom: 1px solid black;height:50px">
         <div class="col-3 align-middle text-center">{{pio.provider.user.first_name}} {{pio.provider.user.last_name}}
         </div>
         <div class="col-3 align-middle text-center">{{pio.provider.shop_name}}</div>
-        <div class="col-3 align-middle text-center">{{pio.provider_addr}}</div>
         <div class="col-3 align-middle text-center">{{pio.provider.phone_number}}</div>
     </div>
-    {% endif %}
+{% endif %}
 
     {% if pio.status == "I" %}
     <div class="alert alert-danger" role="alert">
@@ -146,10 +150,8 @@
 
     {% if pio.status == "N" %}
     <div class="row d-flex justify-content-center">
-        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:260px">
-            <div class="h1 text-muted" style="margin-top:150px">
-                <-- Map Here -->
-            </div>
+        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:400px;">
+            <div id="map" style="height: 100%;border-radius: 10px;"></div>
         </div>
     </div>
     {% endif %}
@@ -171,7 +173,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var status = "{{pio.status}}"
-            if (status == "R") {
+            if (status == "R" | status=="N") {
                 var map = L.map('map').setView(["{{pio.last_tracked_by.existing_location_point.x}}", "{{pio.last_tracked_by.existing_location_point.y}}"], 12)
 
                 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

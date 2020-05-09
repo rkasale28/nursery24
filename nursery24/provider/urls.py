@@ -25,5 +25,6 @@ urlpatterns=[
     path('ship',views.ship,name="ship"),
     path('cancelled',views.cancelled,name="cancelled"),
     path('returned',views.returned,name="returned"),
-    path('notreturned',views.notreturned,name="notreturned")
+    path('notreturned',views.notreturned,name="notreturned"),
+    path('track',views.track,name="track")
 ]

@@ -234,4 +234,11 @@ def returned(request):
       dp.assigned=False
       dp.save()
       return redirect('../provider/cancelled')
+
+def track(request):
+    if request.method=='POST':
+      id=request.POST['id']
+      pio=ProductInOrder.objects.get(pk=id)
+      return render(request,'ptrack.html',{'pio':pio})
+    
         
