@@ -442,7 +442,7 @@ def successfulorder(request):
     delivery_point = cust_pt)
 
     order.save()
-    order=Order.objects.get(id=40)
+    order=Order.objects.get(secondary_id=unique_id)
     
     data = {}
     data['names']= request.session['names']
@@ -488,6 +488,7 @@ def successfulorder(request):
     data['qty']=quantity
     data['expected_delivery']=expected_delivery
     data['grand_total']=grand_total
+    data['unique_id']=unique_id
     return render(request,'csuccessfulorder.html',data)
 
 
@@ -521,7 +522,7 @@ def orderlogin_submit(request):
         return render(request,'login')
 
 def vieworders(request):
-    order=Order.objects.filter(consumer=request.user.consumer)
+    order=Order.objects.filter(consumer=request.user.consumer).order_by('-date_placed')
     data={}
     data['order']=order
     return render(request,'cvieworder.html',data)
