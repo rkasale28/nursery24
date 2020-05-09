@@ -28,6 +28,7 @@ from django.contrib.gis.geos import *
 from django.contrib.gis.db.models.functions import Distance
 
 # from app import app
+import datetime
 import json
 from datetime import date,timedelta
 from django.utils.crypto import get_random_string
@@ -422,12 +423,19 @@ def charge(request):
 
 def successfulorder(request):
     today = date.today()
-    
-    expected_delivery = today + timedelta(days=2)
+    current_time = datetime.datetime.now()
     day_name= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday']
-    day = expected_delivery.weekday()
-    if day_name[day] == 'Sunday' or day_name[day] == 'Monday' or day_name[day] == 'Tuesday':
-        expected_delivery = expected_delivery + timedelta(days=1)
+    
+    if current_time.hour < 18:
+        expected_delivery = today + timedelta(days=1)
+        day = expected_delivery.weekday()
+        if day_name[day] == 'Sunday' or day_name[day] == 'Monday':
+            expected_delivery = expected_delivery + timedelta(days=1)
+    else:
+        expected_delivery = today + timedelta(days=2)
+        day = expected_delivery.weekday()
+        if day_name[day] == 'Sunday' or day_name[day] == 'Monday' or day_name[day] == 'Tuesday':
+            expected_delivery = expected_delivery + timedelta(days=1)
     
     unique_id = get_random_string(length = 7)
     current_user = request.user
