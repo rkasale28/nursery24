@@ -423,14 +423,9 @@ def charge(request):
     return redirect(reverse('success', args=[amount]))
 
 def successfulorder(request):
-<<<<<<< HEAD
     today = datetime.datetime.now()
     
     expected_delivery = today + timedelta(days=2)
-=======
-    today = date.today()
-    current_time = datetime.datetime.now()
->>>>>>> 0dfc2e48301f232b04cb5918ad39d9e6e13f21dd
     day_name= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday']
     
     if current_time.hour < 18:
