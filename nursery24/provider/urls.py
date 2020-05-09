@@ -24,5 +24,6 @@ urlpatterns=[
     path('ready',views.ready,name="ready"),
     path('ship',views.ship,name="ship"),
     path('cancelled',views.cancelled,name="cancelled"),
-    path('returned',views.returned,name="returned")
+    path('returned',views.returned,name="returned"),
+    path('notreturned',views.notreturned,name="notreturned")
 ]

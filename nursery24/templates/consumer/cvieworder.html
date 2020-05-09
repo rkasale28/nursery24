@@ -67,7 +67,7 @@
                         <div class="col-md-3 h5 text-muted">{{j.date_delivered}}</div>
                         {% endif %}
 
-                        {% if j.status == "C" or j.status == "E" or j.status == "N" %}
+                        {% if j.status == "C" or j.status == "I" or j.status == "N" %}
                         <div class="col-md-3 h5 text-right">Cancelled on: </div>
                         <div class="col-md-3 h5 text-muted">{{j.last_tracked_on}}</div>
                         {% endif %}
