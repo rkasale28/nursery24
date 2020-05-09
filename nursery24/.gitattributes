@@ -1,2 +1,2 @@
 *.js linguist-detectable=true
-static\js\leaflet-routing-machine.js check-attr linguist-detectable=false
+static\js\leaflet-routing-machine.js linguist-detectable=false
