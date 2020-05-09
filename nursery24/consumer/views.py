@@ -28,6 +28,7 @@ from django.contrib.gis.geos import *
 from django.contrib.gis.db.models.functions import Distance
 
 # from app import app
+import datetime
 import json
 from datetime import date,timedelta
 import datetime
@@ -165,27 +166,29 @@ def home(request):
     day = expected_delivery.weekday()
     if day_name[day] == 'Sunday' or day_name[day] == 'Monday' or day_name[day] == 'Tuesday':
         expected_delivery = expected_delivery + timedelta(days=1)
-    print(expected_delivery) 
-    trending = Order.objects.filter(date_placed__range = (prev_date,today) )
-    for obj in trending:
-        prod = ProductInOrder.objects.filter(order_id = obj.id)
-        for p in prod:
-            products.append(p.product_id)
-    distinct_products = set(products)
-    distinct_count = []
-    trending_products = []
-    distinct_products = list(distinct_products)
-    for i in distinct_products:
-        distinct_count.append(products.count(i))
-    for x in range(len(distinct_products)-1):   
-        for y in range(0,len(distinct_products)-x-1):
-            if(distinct_count[y]<distinct_count[y+1]):
-                temp = distinct_count[y]
-                temp2 = distinct_products[y]
-                distinct_count[y] = distinct_count[y+1]
-                distinct_products[y] = distinct_products[y+1]
-                distinct_count[y+1] = temp
-                distinct_products[y+1] = temp2
+    distinct_products = []
+    while len(distinct_products) < 5:
+        trending = Order.objects.filter(date_placed__range = (prev_date,today) )
+        for obj in trending:
+            prod = ProductInOrder.objects.filter(order_id = obj.id)
+            for p in prod:
+                products.append(p.product_id)
+        distinct_products = set(products)
+        distinct_count = []
+        trending_products = []
+        distinct_products = list(distinct_products)
+        for i in distinct_products:
+            distinct_count.append(products.count(i))
+        for x in range(len(distinct_products)-1):   
+            for y in range(0,len(distinct_products)-x-1):
+                if(distinct_count[y]<distinct_count[y+1]):
+                    temp = distinct_count[y]
+                    temp2 = distinct_products[y]
+                    distinct_count[y] = distinct_count[y+1]
+                    distinct_products[y] = distinct_products[y+1]
+                    distinct_count[y+1] = temp
+                    distinct_products[y+1] = temp2
+        prev_date = prev_date - timedelta(days = 7)
     # print ('Distinct Products: ',distinct_products)
     for i in range(5):
         trending_products.append(Product.objects.get(id = distinct_products[i]))
@@ -420,20 +423,34 @@ def charge(request):
     return redirect(reverse('success', args=[amount]))
 
 def successfulorder(request):
+<<<<<<< HEAD
     today = datetime.datetime.now()
     
     expected_delivery = today + timedelta(days=2)
+=======
+    today = date.today()
+    current_time = datetime.datetime.now()
+>>>>>>> 0dfc2e48301f232b04cb5918ad39d9e6e13f21dd
     day_name= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday']
-    day = expected_delivery.weekday()
-    if day_name[day] == 'Sunday' or day_name[day] == 'Monday' or day_name[day] == 'Tuesday':
-        expected_delivery = expected_delivery + timedelta(days=1)
+    
+    if current_time.hour < 18:
+        expected_delivery = today + timedelta(days=1)
+        day = expected_delivery.weekday()
+        if day_name[day] == 'Sunday' or day_name[day] == 'Monday':
+            expected_delivery = expected_delivery + timedelta(days=1)
+    else:
+        expected_delivery = today + timedelta(days=2)
+        day = expected_delivery.weekday()
+        if day_name[day] == 'Sunday' or day_name[day] == 'Monday' or day_name[day] == 'Tuesday':
+            expected_delivery = expected_delivery + timedelta(days=1)
     
     unique_id = get_random_string(length = 7)
     current_user = request.user
+    consumer = Consumer.objects.get(user_id = current_user.id)
     
     grand_total = request.session['grand_total']
     cust_addr = request.session['cust_addr']
-    cust_pt=Consumer_Address.objects.get(addr=cust_addr).point
+    cust_pt=Consumer_Address.objects.get(consumer_id= consumer.id).point
     
     order=Order(total_price = grand_total,
     secondary_id = unique_id,
