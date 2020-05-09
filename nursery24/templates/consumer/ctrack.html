@@ -51,6 +51,24 @@
         <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar"
             aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">Shipped</div>
     </div>
+    <div class="row h5 align-items-center" style="height:50px">
+        <div class="col-4 align-middle text-center">
+            <span class="font-weight-bold m-2">Last Tracked On:</span>
+            <span class="text-muted m-2">{{pio.last_tracked_on}}</span>
+        </div>
+
+        <div class="col-4 align-middle text-center">{{pio.last_tracked_by.user.first_name}}
+            {{pio.last_tracked_by.user.last_name}}
+        </div>
+        <div class="col-4 align-middle text-center">{{pio.last_tracked_by.phone_number}}</div>
+    </div>
+
+    <div class="row d-flex justify-content-center">
+        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:380px;">
+            <div id="map" style="height: 100%;border-radius: 10px;"></div>
+        </div>
+    </div>
+
 
     {% elif pio.status == "D" %}
     <div class="progress" style="height:50px">
@@ -63,37 +81,13 @@
 
     <div class="row d-flex justify-content-center">
         <div class="bgwhite text-center"
-            style="border:dashed 1px black; border-radius: 10px;width:95%;height:410px;margin-top:15px">
+            style="border:dashed 1px black; border-radius: 10px;width:95%;height:410px">
             <div id="map" style="height: 100%;border-radius: 10px;"></div>
         </div>
     </div>
     {% endif %}
 
-    {% if pio.status == "S" %}
-    <div class="row d-flex justify-content-center">
-        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:350px">
-            <div class="h3" style="margin-top:100px">
-                <span class="font-weight-bold m-2">Last Tracked On:</span>
-                <span class="text-muted m-2">{{pio.last_tracked_on}}</span><br>
-
-                <span class="font-weight-bold m-2">Last Tracked At:</span>
-                <span class="text-muted m-2">{{pio.last_tracked_by.existing_location_addr}}</span><br>
-
-                <span class="font-weight-bold m-2">To be delivered by:</span>
-                <span class="text-muted m-2">{{pio.last_tracked_by.user.first_name}}
-                    {{pio.last_tracked_by.user.last_name}}</span><br>
-
-                <span class="font-weight-bold m-2">Phone Number:</span>
-                <span class="text-muted m-2">{{pio.last_tracked_by.phone_number}}</span><br>
-
-                <span class="font-weight-bold m-2">Expected On:</span>
-                <span class="text-muted m-2">{{pio.expected_delivery_date}}</span>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-
+    
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
@@ -110,43 +104,83 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            var status = "{{pio.status}}"
+            if (status == "R") {
+                var map = L.map('map').setView(["{{pio.provider_point.x}}", "{{pio.provider_point.y}}"], 12)
 
-            var map = L.map('map').setView(["{{pio.provider_point.x}}", "{{pio.provider_point.y}}"], 12)
+                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                    subdomains: ['a', 'b', 'c']
+                }).addTo(map);
 
-            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-                subdomains: ['a', 'b', 'c']
-            }).addTo(map);
+                var i = L.divIcon({
+                    html: '<i class="fa fa-map-marker fa-5x" style="color: blue;"></i>',
+                    //iconSize: [100, 100],
+                    className: 'myDivIcon'
+                })
+                i.options.iconSize = [100, 100];
 
-            var i = L.divIcon({
-                html: '<i class="fa fa-map-marker fa-5x" style="color: blue;"></i>',
-                //iconSize: [100, 100],
-                className: 'myDivIcon'
-            })
-            i.options.iconSize = [100, 100];
+                var i1 = L.divIcon({
+                    html: '<i class="fa fa-user fa-3x" style="color: blue;"></i>',
+                    //iconSize: [100, 100],
+                    className: 'myDivIcon'
+                })
+                i1.options.iconSize = [100, 100];
 
-            var i1 = L.divIcon({
-                html: '<i class="fa fa-user fa-3x" style="color: blue;"></i>',
-                //iconSize: [100, 100],
-                className: 'myDivIcon'
-            })
-            i1.options.iconSize = [100, 100];
+                var marker = L.marker([0, 0], { icon: i }).addTo(map).bindPopup("{{pio.provider_addr}}");
+                marker.setLatLng(["{{pio.provider_point.x}}", "{{pio.provider_point.y}}"]);
+                marker.openPopup()
 
-            var marker = L.marker([0, 0], { icon: i }).addTo(map).bindPopup("{{pio.provider_addr}}");
-            marker.setLatLng(["{{pio.provider_point.x}}", "{{pio.provider_point.y}}"]);
-            marker.openPopup()
-
-            var marker1 = L.marker([0, 0], { icon: i1 }).addTo(map).bindPopup("{{pio.order.delivery_addr}}");
-            marker1.setLatLng(["{{pio.order.delivery_point.x}}", "{{pio.order.delivery_point.y}}"]);
+                var marker1 = L.marker([0, 0], { icon: i1 }).addTo(map).bindPopup("{{pio.order.delivery_addr}}");
+                marker1.setLatLng(["{{pio.order.delivery_point.x}}", "{{pio.order.delivery_point.y}}"]);
 
 
-            L.Routing.control({
-                waypoints: [
-                    L.latLng("{{pio.provider_point.x}}", "{{pio.provider_point.y}}"),
-                    L.latLng("{{pio.order.delivery_point.x}}", "{{pio.order.delivery_point.y}}")
-                ],
-                createMarker: function () { return null; }
-            }).addTo(map);
+                L.Routing.control({
+                    waypoints: [
+                        L.latLng("{{pio.provider_point.x}}", "{{pio.provider_point.y}}"),
+                        L.latLng("{{pio.order.delivery_point.x}}", "{{pio.order.delivery_point.y}}")
+                    ],
+                    createMarker: function () { return null; }
+                }).addTo(map);
+            }
+            else if (status == "S") {
+                var map = L.map('map').setView(["{{pio.last_tracked_by.existing_location_point.x}}", "{{pio.last_tracked_by.existing_location_point.y}}"], 12)
+
+                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                    subdomains: ['a', 'b', 'c']
+                }).addTo(map);
+
+                var i = L.divIcon({
+                    html: '<i class="fa fa-motorcycle fa-3x" style="color: blue;"></i>',
+                    //iconSize: [100, 100],
+                    className: 'myDivIcon'
+                })
+                i.options.iconSize = [100, 100];
+
+                var i1 = L.divIcon({
+                    html: '<i class="fa fa-user fa-3x" style="color: blue;"></i>',
+                    //iconSize: [100, 100],
+                    className: 'myDivIcon'
+                })
+                i1.options.iconSize = [100, 100];
+
+                var marker = L.marker([0, 0], { icon: i }).addTo(map).bindPopup("{{pio.last_tracked_by.existing_location_addr}}");
+                marker.setLatLng(["{{pio.last_tracked_by.existing_location_point.x}}", "{{pio.last_tracked_by.existing_location_point.y}}"]);
+                marker.openPopup()
+
+                var marker1 = L.marker([0, 0], { icon: i1 }).addTo(map).bindPopup("{{pio.order.delivery_addr}}");
+                marker1.setLatLng(["{{pio.order.delivery_point.x}}", "{{pio.order.delivery_point.y}}"]);
+
+
+                L.Routing.control({
+                    waypoints: [
+                        L.latLng("{{pio.last_tracked_by.existing_location_point.x}}", "{{pio.last_tracked_by.existing_location_point.y}}"),
+                        L.latLng("{{pio.order.delivery_point.x}}", "{{pio.order.delivery_point.y}}")
+                    ],
+                    createMarker: function () { return null; }
+                }).addTo(map);
+            }
         });
 
     </script>
