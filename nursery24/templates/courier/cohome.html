@@ -50,7 +50,7 @@
     </ul>
     
     <div class="d-flex justify-content-start ml-3 mt-3">
-        {% for i in user.courier.deliverypersonnel_set.all%}
+        {% for i in user.courier.deliverypersonnel_set.all|dictsort:"user.first_name"%}
         <div class="card mr-3 border-dark" style="width: 250px;height:330px">
             <img class="card-img-top" id='image' style="width: 100%;height:15vw;object-fit: cover;" src={{i.profile_pic.url}}>
 
