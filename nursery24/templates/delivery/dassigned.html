@@ -10,7 +10,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
+    <script type='text/javascript' src='http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js'></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="{% static 'css/leaflet-routing-machine.css' %} " />
     <style>
         .card {
             display: inline-block;
@@ -57,92 +62,80 @@
 
     </ul>
 
+    {% if pio.status == "R" %}
+    <div class="row h5 align-items-center" style="height:50px">
+        <div class="col-3 align-middle text-center">
+            <div class="bookmarkRibbon">
+                <span style="color:white;position: relative;top: -12px;text-align: center;right: -10px;"
+                    class="h4">Provider</span>
+            </div>
+        </div>
 
-    {% for i in list%}
-    {% if i.status == "R" %}
-    <div class="bookmarkRibbon"><span style="color:white;position: relative;top: -12px;text-align: center;right: -10px;"
-            class="h4">Provider</span></div>
-
-    <div class="row h5 align-items-center" style="border-bottom: 1px solid black;height:50px">
-        <div class="col-3 align-middle text-center">{{i.provider.user.first_name}} {{i.provider.user.last_name}}</div>
-        <div class="col-3 align-middle text-center">{{i.provider.shop_name}}</div>
-        <div class="col-3 align-middle text-center">{{i.provider_addr}}</div>
-        <div class="col-3 align-middle text-center">{{i.provider.phone_number}}</div>
+        <div class="col-3 align-middle text-center">{{pio.provider.user.first_name}} {{pio.provider.user.last_name}}
+        </div>
+        <div class="col-3 align-middle text-center">{{pio.provider.shop_name}}</div>
+        <div class="col-3 align-middle text-center">{{pio.provider.phone_number}}</div>
     </div>
-    <br>
-    {% endif %}
-    {% endfor %}
 
-    {% for i in list%}
-    {% if i.status == "N" %}
+    <div class="row d-flex justify-content-center">
+        <div class="bgwhite text-center"
+            style="border:dashed 1px black; border-radius: 10px;width:95%;height:400px;">
+            <div id="map" style="height: 100%;border-radius: 10px;"></div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if pio.status == "N" %}
     <div class="alert alert-danger" role="alert">
         Order has been cancelled. Please return to Provider
-      </div>
+    </div>
     <div class="bookmarkRibbon"><span style="color:white;position: relative;top: -12px;text-align: center;right: -10px;"
             class="h4">Provider</span></div>
 
     <div class="row h5 align-items-center" style="border-bottom: 1px solid black;height:50px">
-        <div class="col-3 align-middle text-center">{{i.provider.user.first_name}} {{i.provider.user.last_name}}</div>
-        <div class="col-3 align-middle text-center">{{i.provider.shop_name}}</div>
-        <div class="col-3 align-middle text-center">{{i.provider_addr}}</div>
-        <div class="col-3 align-middle text-center">{{i.provider.phone_number}}</div>
+        <div class="col-3 align-middle text-center">{{pio.provider.user.first_name}} {{pio.provider.user.last_name}}
+        </div>
+        <div class="col-3 align-middle text-center">{{pio.provider.shop_name}}</div>
+        <div class="col-3 align-middle text-center">{{pio.provider_addr}}</div>
+        <div class="col-3 align-middle text-center">{{pio.provider.phone_number}}</div>
     </div>
-    <br>
     {% endif %}
-    {% endfor %}
 
-    {% for i in list%}
-    {% if i.status == "I" %}
+    {% if pio.status == "I" %}
     <div class="alert alert-danger" role="alert">
         Sorry to inform you that order has been cancelled.
-      </div>
-      <form action="read" method="post" class="float-right">
+    </div>
+    <form action="read" method="post" class="float-right">
         {% csrf_token %}
-        <input name="id" type="hidden" value="{{i.id}}">
+        <input name="id" type="hidden" value="{{pio.id}}">
         <button type="submit" class="btn btn-primary mr-2 mb-2">
             <i class="fa fa-check"></i>
             Mark as read</button>
     </form>
     {% endif %}
-    {% endfor %}
-    {% for i in list%}
-    {% if i.status == "S" %}
+
+    {% if pio.status == "S" %}
     <div class="bookmarkRibbon"><span style="color:white;position: relative;top: -12px;text-align: center;right: -10px;"
             class="h4">Consumer</span></div>
 
     <div class="row h5 align-items-center" style="border-bottom: 1px solid black;height:50px">
-        <div class="col-3 align-middle text-center">{{i.order.consumer.user.first_name}}
-            {{i.order.consumer.user.last_name}}</div>
-        <div class="col-3 align-middle text-center">{{i.order.delivery_addr}}</div>
-        <div class="col-3 align-middle text-center">{{i.order.consumer.phone_number}}</div>
+        <div class="col-3 align-middle text-center">{{pio.order.consumer.user.first_name}}
+            {{pio.order.consumer.user.last_name}}</div>
+        <div class="col-3 align-middle text-center">{{pio.order.delivery_addr}}</div>
+        <div class="col-3 align-middle text-center">{{pio.order.consumer.phone_number}}</div>
         <div class="col-3 align-middle text-center">
             <form method="POST" action="deliver">
                 {% csrf_token %}
-                <input name="id" type="hidden" value="{{i.id}}">
+                <input name="id" type="hidden" value="{{pio.id}}">
                 <button type="submit" class="btn btn-primary mr-2 mb-2">
                     <i class="fa fa-check"></i>
                     Delivered</button>
             </form>
         </div>
     </div>
-    <br>
     {% endif %}
-    {% endfor %}
 
-    {% for i in list%}
-    {% if i.status == "R" %}
-    <div class="row d-flex justify-content-center">
-        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:370px">
-            <div class="h1 text-muted" style="margin-top:150px">
-                <-- Map Here -->
-            </div>
-        </div>
-    </div>
-    {% endif %}
-    {% endfor %}
-
-    {% for i in list%}
-    {% if i.status == "N" %}
+    {% if pio.status == "N" %}
     <div class="row d-flex justify-content-center">
         <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:260px">
             <div class="h1 text-muted" style="margin-top:150px">
@@ -151,10 +144,8 @@
         </div>
     </div>
     {% endif %}
-    {% endfor %}
 
-    {% for i in list%}
-    {% if i.status == "S" %}
+    {% if pio.status == "S" %}
     <div class="row d-flex justify-content-center">
         <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:320px">
             <div class="h1 text-muted" style="margin-top:150px">
@@ -163,7 +154,6 @@
         </div>
     </div>
     {% endif %}
-    {% endfor %}
 
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -175,8 +165,50 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="{% static 'js/leaflet-routing-machine.js'%}"></script>
     <script src="{% static 'js/header.js'%}"></script>
     <script src="{% static 'js/header_authenticated.js'%}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var map = L.map('map').setView(["{{pio.last_tracked_by.existing_location_point.x}}", "{{pio.last_tracked_by.existing_location_point.y}}"], 12)
+
+            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                subdomains: ['a', 'b', 'c']
+            }).addTo(map);
+
+            var i = L.divIcon({
+                html: '<i class="fa fa-motorcycle fa-2x" style="color: blue;"></i>',
+                //iconSize: [100, 100],
+                className: 'myDivIcon'
+            })
+
+            var i1 = L.divIcon({
+                html: '<i class="fa fa-map-marker fa-2x" style="color: blue;"></i>',
+                //iconSize: [100, 100],
+                className: 'myDivIcon'
+            })
+
+            var marker = L.marker([0, 0], { icon: i }).addTo(map).bindPopup("{{pio.last_tracked_by.existing_location_addr}}");
+            marker.setLatLng(["{{pio.last_tracked_by.existing_location_point.x}}", "{{pio.last_tracked_by.existing_location_point.y}}"]);
+
+            var marker1 = L.marker([0, 0], { icon: i1 }).addTo(map).bindPopup("{{pio.provider_addr}}");
+            marker1.setLatLng(["{{pio.provider_point.x}}", "{{pio.provider_point.y}}"]);
+            marker1.openPopup()
+
+            L.Routing.control({
+                waypoints: [
+                    L.latLng("{{pio.last_tracked_by.existing_location_point.x}}", "{{pio.last_tracked_by.existing_location_point.y}}"),
+                    L.latLng("{{pio.provider_point.x}}", "{{pio.provider_point.y}}")
+                ],
+                createMarker: function () { return null; }
+            }).addTo(map);
+        });
+
+    </script>
 </body>
 
 </html>
