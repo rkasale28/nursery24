@@ -81,8 +81,8 @@ def updatecurrentlocation(request):
         return redirect('../delivery/home')
 
 def assigned(request):
-    list=request.user.deliverypersonnel.productinorder_set.all().filter(status='R') | request.user.deliverypersonnel.productinorder_set.all().filter(status='S') | request.user.deliverypersonnel.productinorder_set.all().filter(status='N') | request.user.deliverypersonnel.productinorder_set.all().filter(status='I')
-    return render(request,'dassigned.html',{'list':list})
+    pio=request.user.deliverypersonnel.productinorder_set.first()
+    return render(request,'dassigned.html',{'pio':pio})
 
 def deliver(request):
     if request.method=='POST':

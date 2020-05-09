@@ -35,7 +35,7 @@
     {% else %}
     <authenticated-header></authenticated-header>
     {% endif %}
-    
+
     <ul class="nav nav-pills nav-fill bg-light">
         <li class="nav-item">
             <a class="nav-link" href="home">Placed Pending Orders</a>
@@ -46,48 +46,64 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link" href="notreturned">Not Yet Returned</a>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link" href="cancelled">Cancelled Orders</a>
         </li>
-                       
+
         <li class="nav-item">
             <a class="nav-link" href="removeitem">Item</a>
         </li>
-        
+
     </ul>
 
-    
+
     <div class="d-flex justify-content-start ml-3 mt-3">
         {% for i in list%}
-        <div class="card mr-3" style="width: 255px">
-            <img class="card-img-top" id='image' style="width: 100%;height: 15vw;object-fit: cover;" src="{{i.last_tracked_by.profile_pic.url}}">
-            <div class="card-body">
-                <h5 class="card-title">{{i.last_tracked_by.user.first_name}} {{i.last_tracked_by.user.last_name}}</h5>
-                <div class="h6 card-subtitle">
-                    <span class="font-weight-bold">Phone No.: </span>
-                    <span class="text-muted">{{i.last_tracked_by.phone_number}}</span><br>
+        <div class="card mr-4" style="width: 430px;">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src="{{i.last_tracked_by.profile_pic.url}}" class="card-img"
+                        style="width: 100%;height: 100%;object-fit: cover;">
                 </div>
-                <span class="font-weight-bold">Location: </span>
-                <span class="text-muted">{{i.last_tracked_by.existing_location_addr}}</span>
-            </div>
-            <h3></h3>
-            <div class="sticky-bottom float-right mr-1 mb-1">
-                    <form action="ship" method="post">
-                        {% csrf_token %}
-                        <input name="id" type="hidden" value="{{i.id}}">
-                        <button type="submit" class="btn btn-primary mr-2 mb-2">
-                            <i class="fa fa-check"></i>
-                            Ship</button>
-                    </form>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{i.last_tracked_by.user.first_name}}
+                            {{i.last_tracked_by.user.last_name}}</h5>
+                        <p class="card-text text-muted">{{i.last_tracked_by.phone_number}}</p>
+                        <p class="card-text"><span class="font-weight-bold">Current Location:
+                            </span>{{i.last_tracked_by.existing_location_addr}}</p>
+                        <p class="card-text"><span class="font-weight-bold">Product Name: </span>{{i.product.name}}</p>
+                        <div class="sticky-bottom float-left mr-1 mb-1">
+                            <form action="track" method="post">
+                                {% csrf_token %}
+                                <input name="id" type="hidden" value="{{i.id}}">
+                                <button type="submit" class="btn btn-success mr-2 mb-2">
+                                    <i class="fa fa-chevron-right"></i>
+                                    Track</button>
+                            </form>
+                        </div>
+                        <div class="sticky-bottom float-right mr-1 mb-1">
+                            <form action="ship" method="post">
+                                {% csrf_token %}
+                                <input name="id" type="hidden" value="{{i.id}}">
+                                <button type="submit" class="btn btn-primary mr-2 mb-2">
+                                    <i class="fa fa-check"></i>
+                                    Shipped</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        {% if forloop.counter|divisibleby:5 %}
+        {% if forloop.counter|divisibleby:3 %}
     </div>
     <div class="d-flex justify-content-left ml-3 mt-3">
         {%endif%}
-
-        {% endfor%}
+        {%endfor%}
     </div>
-    
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"

@@ -24,10 +24,14 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from .utils import render_to_pdf
 from django.contrib.gis.geos import Point
+from django.contrib.gis.geos import *
+from django.contrib.gis.db.models.functions import Distance
+
 # from app import app
 import json
 from datetime import date,timedelta
 from django.utils.crypto import get_random_string
+from django.contrib.gis.measure import D
 
 import os
 
@@ -181,9 +185,11 @@ def home(request):
                 distinct_products[y] = distinct_products[y+1]
                 distinct_count[y+1] = temp
                 distinct_products[y+1] = temp2
+    # print ('Distinct Products: ',distinct_products)
     for i in range(5):
         trending_products.append(Product.objects.get(id = distinct_products[i]))
     ratings=Product.objects.all().distinct().order_by('-rating')[:5]
+    print(ratings)
     data['newly_added'] = newly_added
     data['trending'] = trending_products
     data['ratings'] = ratings
@@ -236,7 +242,6 @@ def checkout(request):
         provnames = []
         prices = []
         individual_price=[]
-
         for i in range(len(products)):
             product = products[i]
             names.append(product['name'])
@@ -279,108 +284,72 @@ def confirmorder(request):
     consumer=request.user.consumer
     address = request.POST['address']
     try:
-        present = Address.objects.get(addr=address,consumer=consumer)
+        present = Consumer_Address.objects.get(addr=address,consumer=consumer)
     except ObjectDoesNotExist as d:
         geolocator = Nominatim(user_agent="consumer")
         location = geolocator.geocode(address)
         a=Consumer_Address(addr=address,consumer=consumer,point=Point(location.latitude, location.longitude))
         a.save()
-    names = request.session['names']
-    qty = request.session['qty']
-    provnames = request.session['provider']
-    data = {}
-    data['names'] = names
-    data['qty'] = qty
-    data['length'] = range(len(names))
-    data['provnames'] = provnames
-    finalprices = []
-    pri = []
-    changed = []
-    finalprovid = []
-    for i in range(len(names)):
-        product = Product.objects.get(name = names[i])
-        prov = Provider.objects.filter(price__product_id = product.id)
-        nom = Nominatim(timeout = None)
-        n = []
-        available = []
-        prices = []
-        d = nom.geocode(address,timeout = None)
-        ps = []      
-        customeraddr = (d.latitude,d.longitude)
-        if provnames[i] == 'Single':
-                prov1 = Provider.objects.get(price__product_id = product.id)
-                addr = Provider_Address.objects.filter(provider_id = prov1.id)
-                for a in addr:
-                    n = nom.geocode("%s" % a.addr,timeout = None )
-                    provideraddr = (n.latitude,n.longitude)
-                    dist = (geodesic(provideraddr,customeraddr).km)    
-                if(dist<50):
-                    available.append(prov1.id)
-                    changed.append('No')
+    
+    cookies = request.COOKIES['product']
+    products = json.loads(cookies) 
+    
+    data={}
+    data['names']=[]
+    data['per_price']=[]
+    data['total_price']=[]
+    data['qty']=[]
+    data['available']=[]
+    providers=[]
+    
+    cust_pt = Consumer_Address.objects.get(addr=address,consumer=consumer).point
+         
+    for i in products:
+        p=Product.objects.get(name=i['name'])
+        try:
+            pro=Provider.objects.get(shop_name=i['provider'])
+            qty=i['quantity']
+            perPrice=i['perPrice']
+            price=i['price']
+        except:
+            pro=Provider.objects.get(shop_name=i['providers'][0]['providerName'])
+            qty=i['providers'][0]['quantity']
+            perPrice=i['providers'][0]['perPrice']
+            price=i['providers'][0]['price']
+        pro_addr=Provider_Address.objects.filter(provider=pro.id).annotate(distance=Distance('point', cust_pt)).order_by('distance').first()
+        dist=(pro_addr.point.distance(cust_pt)*100)
+        if (dist<=50):
+            data['names'].append(p.name)
+            data['qty'].append(qty)
+            data['per_price'].append(perPrice)
+            data['total_price'].append(int(price))
+            data['available'].append(True)
+            providers.append(pro.shop_name)
         else:
-            if provnames[i] == 'default':
-                pri = Price.objects.filter(product_id = product.id )
-                for pr in pri:
-                    ps.append(pr.price)               
-                prov1 = Provider.objects.filter(price__product_id = product.id).filter(price__price = min(ps))
-                print(prov1)
-            else:
-                prov1 = Provider.objects.filter(shop_name = provnames[i])
-            addr = Provider_Address.objects.filter(provider_id = prov1[0].id)
-            for a in addr:
-                n = nom.geocode("%s" % a.addr,timeout = None )
-                provideraddr = (n.latitude,n.longitude)
-                dist = (geodesic(provideraddr,customeraddr).km)    
-            if(dist<50):
-                available.append(prov1[0].id)  
-                changed.append('No')
-                pri = Price.objects.filter(product_id = product.id ).filter(provider_id = prov1[0].id)
-                finalprices.append(pri[0].price)
-                finalprovid.append(prov1[0].id)
-                break  
-            else:
-                for p in prov:
-                    addr = Provider_Address.objects.filter(provider_id = p.id)
-                    for a in addr:
-                        n = nom.geocode("%s" % a.addr,timeout = None )
-                        provideraddr = (n.latitude,n.longitude)
-                        dist = (geodesic(provideraddr,customeraddr).km)    
-                        if(dist<50): 
-                            available.append(p.id)  
-                            changed.append('Yes')
-                            break
-        if(len(available) != 0):
-            for x in available:
-                pro = Price.objects.filter(product_id = product.id).filter(provider_id = x)
-                for y in pro:
-                    prices.append(y.price)
-            finalprices.append(min(prices))
-            providerobj = Provider.objects.filter(price__product_id = product.id).filter(price__price = min(prices))
-            finalprovid.append(providerobj[0].id)
+            data['names'].append(p.name)
+            data['qty'].append(None)
+            data['per_price'].append(None)
+            data['total_price'].append(0)
+            data['available'].append(False)
+            providers.append(None)
+    
+    total=sum(data['total_price'])
 
-        else:
-            finalprices.append(0)
-            changed.append('Yes')
-    data['prices'] = finalprices
-    data['finalprices'] = []
-    total = 0
-    for i in range(len(names)):
-        data['finalprices'].append(int(qty[i])*int(finalprices[i]))
-        total = total + int(qty[i])*int(finalprices[i])
     if total>1500:
         delivery = 0
     elif total>1000:
-        delivery = 25
+        delivery = 0.25*total
     else:
-        delivery = 50
+        delivery = 0.50*total
     data['total'] = total
-    data['changed'] = changed
-    data['delivery'] = delivery
+    data['delivery'] = int(delivery)
     data['int_handling'] = 10
-    data['grand_total'] = total+delivery+10
+    data['grand_total'] = total+int(delivery)+10
+    data['length']=range(len(data['names']))
     request.session['grand_total'] = data['grand_total']
-    request.session['finalprices'] = finalprices
-    request.session['finalprovid'] = finalprovid
+    request.session['available']=data['available']
+    request.session['cust_addr']=address
+    request.session['provider']=providers
     return render(request,'confirmorder.html',data)
 
 def payments(request):
@@ -451,40 +420,59 @@ def charge(request):
 
 def successfulorder(request):
     today = date.today()
-    today = today
+    
     expected_delivery = today + timedelta(days=2)
     day_name= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday']
     day = expected_delivery.weekday()
     if day_name[day] == 'Sunday' or day_name[day] == 'Monday' or day_name[day] == 'Tuesday':
         expected_delivery = expected_delivery + timedelta(days=1)
+    
     unique_id = get_random_string(length = 7)
     current_user = request.user
-    grand_total = request.session['grand_total']
-    finalprices = request.session['finalprices']
-    finalprovid = request.session['finalprovid']
-    names = request.session['names']
-    qty = request.session['qty']
-    consumer = Consumer.objects.get(user_id = current_user.id)
-    order = Order(total_price = grand_total,date_placed = today,secondary_id = unique_id, consumer = consumer)
-    order.save()
-    order = Order.objects.get(secondary_id = unique_id)
-    data = {}
-    data['names']= []
-    data['qty'] = []
-    x = 0
     
-    for i in range(len(finalprices)):
-        if finalprices[i] != 0:
-            provider = Provider.objects.get(id = finalprovid[x])
-            x+=1
-            product = Product.objects.get(name = names[i])
-            productinorder = ProductInOrder(provider = provider,quantity = qty[i],total_price = finalprices[i],order = order,product = product,expected_delivery_date = expected_delivery) 
-            productinorder.save()
-            data['names'].append(names[i])
-            data['qty'].append(qty[i])
-    data['expected_delivery'] = expected_delivery
-    data['grand_total'] = grand_total
-    data['length'] = range(len(data['names']))
+    grand_total = request.session['grand_total']
+    cust_addr = request.session['cust_addr']
+    cust_pt=Consumer_Address.objects.get(addr=cust_addr).point
+    
+    order=Order(total_price = grand_total,
+    secondary_id = unique_id,
+    date_placed = today,
+    consumer = current_user.consumer,
+    delivery_addr = cust_addr,
+    delivery_point = cust_pt)
+
+    order.save()
+    order=Order.objects.get(id=40)
+    
+    data = {}
+    data['names']= request.session['names']
+    data['qty']=request.session['qty']
+    providers=request.session['provider']
+    available=request.session['available']
+    names=[]
+    quantity=[]
+    t_price=[]
+    p=[]
+
+    for i in range(len(data['names'])):
+        if available[i]:
+            prod=Product.objects.get(name=data['names'][i])
+            prov=Provider.objects.get(shop_name=providers[i])
+            price=Price.objects.get(provider=prov,product=prod).price
+            total_price=price*data['qty'][i]
+            
+            names.append(data['names'][i])
+            quantity.append(data['qty'][i])
+            p.append(price)
+            t_price.append(total_price)
+            
+            ProductInOrder(product = prod,
+            provider = prov,
+            order = order,
+            quantity = data['qty'][i],
+            total_price = total_price,
+            expected_delivery_date = expected_delivery).save()
+    
     to = [current_user.email]
     #send_mail('Test Mail','Practice for project',settings.EMAIL_HOST_USER,to,fail_silently=True)
     pdf = render_to_pdf('invoice.html',data)
@@ -493,6 +481,13 @@ def successfulorder(request):
     if pdf:
         email.attach('invoice2.pdf',pdf ,'application/pdf')
         email.send()
+    data['length'] = range(len(names))
+    data['total_price']=t_price
+    data['per_price']=p
+    data['names']=names
+    data['qty']=quantity
+    data['expected_delivery']=expected_delivery
+    data['grand_total']=grand_total
     return render(request,'csuccessfulorder.html',data)
 
 

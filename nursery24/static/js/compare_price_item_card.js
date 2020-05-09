@@ -56,6 +56,7 @@ class ComparePriceItemCard extends HTMLElement{
         // this.shadowRoot.querySelector('#direct').addEventListener('click',()=>{
         //     location.href='/consumer/compareprices?id='+this.getAttribute('id')
         // })
+       // console.log(this.getAttribute('i').providers);
         console.log(this.getAttribute('provider'));
         var btn=this.shadowRoot.querySelector('#compare')
 

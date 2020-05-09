@@ -10,6 +10,9 @@ from django.contrib.gis.geos import Point
 from consumer.models import ProductInOrder
 from datetime import date
 from deliveryPersonnel.models import DeliveryPersonnel
+from django.contrib.gis.db.models.functions import Distance
+from django.db.models import Q
+
 
 # Create your views here.
 def signup(request):
@@ -166,30 +169,37 @@ def editsubmit(request):
         return render(request,'pprofile.html')  
 
 def readytoship(request):
+    address=[]
     if request.method=='POST':
         id=request.POST['id']
-        return render(request,'pselectaddress.html',{'productinorderid':id})
+        pio=ProductInOrder.objects.get(id=id)
+        cust_pt=pio.order.delivery_point
+        addr=Address.objects.filter(provider=request.user.provider).annotate(distance=Distance('point', cust_pt)).order_by('distance')
+        for i in addr:
+            dist=(i.point.distance(cust_pt)*100)
+            if (dist<=50):
+                address.append(i.addr)
+            else:
+                break
+        return render(request,'pselectaddress.html',{'address':address,'productinorderid':id})
 
 def readytoshipsubmit(request):
     if request.method=='POST':
         id=request.POST['id']
         addr=request.POST['addr']
         product=ProductInOrder.objects.get(pk=id)
-        product.status='R'
-        product.last_tracked_on=date.today()
+        address=Address.objects.filter(provider=request.user.provider).get(addr=addr)      
 
-        #static now
-        #change later
-        dp=DeliveryPersonnel.objects.get(id=8)
+        product.status='R'
+        product.last_tracked_on=date.today()      
+        product.provider_addr=addr
+        product.provider_point=address.point
+        
+        dp=DeliveryPersonnel.objects.filter(assigned=False).filter(available=True).annotate(distance=Distance('existing_location_point', address.point)).order_by('distance').first()
         dp.assigned=True
         dp.save()
-        product.last_tracked_by=dp
-
-        geolocator = Nominatim(user_agent="provider")
-        location = geolocator.geocode(addr)
         
-        product.provider_addr=addr
-        product.provider_point=Point(location.latitude, location.longitude)
+        product.last_tracked_by=dp
         product.save()
         return redirect('../provider/home')
 
@@ -207,8 +217,12 @@ def ship(request):
       return redirect('../provider/ready')
 
 def cancelled(request):
-    list=request.user.provider.productinorder_set.all().filter(status='N').order_by('last_tracked_on')
+    list=request.user.provider.productinorder_set.all().filter(Q(status='I') | Q(status='C')).order_by('last_tracked_on')
     return render(request,'pcancelled.html',{'list':list})
+
+def notreturned(request):
+    list=request.user.provider.productinorder_set.all().filter(status='N').order_by('last_tracked_on')
+    return render(request,'pnotreturned.html',{'list':list})
 
 def returned(request):
     if request.method=='POST':
@@ -220,4 +234,11 @@ def returned(request):
       dp.assigned=False
       dp.save()
       return redirect('../provider/cancelled')
+
+def track(request):
+    if request.method=='POST':
+      id=request.POST['id']
+      pio=ProductInOrder.objects.get(pk=id)
+      return render(request,'ptrack.html',{'pio':pio})
+    
         
