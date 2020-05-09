@@ -1,2 +1,2 @@
 * linguist-vendored
-*.js linguist-vendored=false
+static\js\leaflet-routing-machine.js linguist-vendored=true
