@@ -186,8 +186,8 @@ def home(request):
                 distinct_count[y+1] = temp
                 distinct_products[y+1] = temp2
     # print ('Distinct Products: ',distinct_products)
-    # for i in range(2):
-    #     trending_products.append(Product.objects.get(id = distinct_products[i]))
+    for i in range(5):
+        trending_products.append(Product.objects.get(id = distinct_products[i]))
     ratings=Product.objects.all().distinct().order_by('-rating')[:5]
     print(ratings)
     data['newly_added'] = newly_added
@@ -244,7 +244,6 @@ def checkout(request):
         individual_price=[]
         for i in range(len(products)):
             product = products[i]
-            print (product)
             names.append(product['name'])
             try:
                 provider = product['providers'][0]
