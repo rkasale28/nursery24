@@ -54,7 +54,7 @@
     <div class="row h5 align-items-center" style="height:50px">
         <div class="col-4 align-middle text-center">
             <span class="font-weight-bold m-2">Last Tracked On:</span>
-            <span class="text-muted m-2">{{pio.last_tracked_on}}</span>
+            <span class="text-muted m-2">{{pio.last_tracked_on | date}}</span>
         </div>
 
         <div class="col-4 align-middle text-center">{{pio.last_tracked_by.user.first_name}}

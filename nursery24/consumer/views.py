@@ -30,6 +30,7 @@ from django.contrib.gis.db.models.functions import Distance
 # from app import app
 import json
 from datetime import date,timedelta
+import datetime
 from django.utils.crypto import get_random_string
 from django.contrib.gis.measure import D
 
@@ -155,7 +156,7 @@ def deleteaddresssubmit(request):
 def home(request):
     data = {}
     newly_added=Product.objects.all().distinct().order_by('-date_added')[:5]
-    today = date.today()
+    today = datetime.datetime.now()
     today = today + timedelta(days=1)
     products = []
     prev_date = today - timedelta(days=7)
@@ -419,7 +420,7 @@ def charge(request):
     return redirect(reverse('success', args=[amount]))
 
 def successfulorder(request):
-    today = date.today()
+    today = datetime.datetime.now()
     
     expected_delivery = today + timedelta(days=2)
     day_name= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday']
@@ -537,7 +538,8 @@ def cancel(request):
     if request.method=='POST':
         id=request.POST["id"]
         pio=ProductInOrder.objects.get(pk=id)
-        pio.last_tracked_on=date.today()
+        pio.last_tracked_on=datetime.datetime.now()
+
         if (pio.status=='R'):
             pio.status='I'
             pio.save()

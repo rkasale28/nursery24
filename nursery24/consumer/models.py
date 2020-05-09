@@ -18,7 +18,7 @@ class Address(models.Model):
 class Order(models.Model):
     total_price=models.IntegerField()
     secondary_id=models.CharField(max_length=8,blank=False)
-    date_placed=models.DateField(null=True)
+    date_placed=models.DateTimeField(null=True)
     consumer=models.ForeignKey(Consumer,on_delete=models.CASCADE,null=True)
     delivery_addr=models.TextField(max_length=100,null=True)
     delivery_point = gismodel.PointField(null=True)
@@ -39,9 +39,9 @@ class ProductInOrder(models.Model):
         ('I','Inform Courier about cancellation')
     ]
     status=models.CharField(max_length=1,choices=ORDER_STATUS_CHOICES,default='P')
-    expected_delivery_date=models.DateField(null=True)
-    date_delivered=models.DateField(null=True)
-    last_tracked_on=models.DateField(null=True)
+    expected_delivery_date=models.DateTimeField(null=True)
+    date_delivered=models.DateTimeField(null=True)
+    last_tracked_on=models.DateTimeField(null=True)
     last_tracked_by=models.ForeignKey(DeliveryPersonnel,on_delete=models.CASCADE,null=True)
     provider_addr=models.TextField(max_length=100,null=True)
     provider_point = gismodel.PointField(null=True)

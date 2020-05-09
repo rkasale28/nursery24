@@ -12,7 +12,7 @@ from datetime import date
 from deliveryPersonnel.models import DeliveryPersonnel
 from django.contrib.gis.db.models.functions import Distance
 from django.db.models import Q
-
+import datetime
 
 # Create your views here.
 def signup(request):
@@ -191,7 +191,8 @@ def readytoshipsubmit(request):
         address=Address.objects.filter(provider=request.user.provider).get(addr=addr)      
 
         product.status='R'
-        product.last_tracked_on=date.today()      
+        product.last_tracked_on=datetime.datetime.now()
+      
         product.provider_addr=addr
         product.provider_point=address.point
         
@@ -212,7 +213,8 @@ def ship(request):
       id=request.POST['id']
       pio=ProductInOrder.objects.get(pk=id)
       pio.status='S'
-      pio.last_tracked_on=date.today()
+      pio.last_tracked_on=datetime.datetime.now()
+
       pio.save()
       return redirect('../provider/ready')
 

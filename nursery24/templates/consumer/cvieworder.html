@@ -59,17 +59,17 @@
 
                         {% if j.status == "P" or j.status == "R" or j.status == "S" %}
                         <div class="col-md-3 h5 text-right">Expected on: </div>
-                        <div class="col-md-3 h5 text-muted">{{j.expected_delivery_date}}</div>
+                        <div class="col-md-3 h5 text-muted">{{j.expected_delivery_date | date }}</div>
                         {% endif %}
 
                         {% if j.status == "D" %}
                         <div class="col-md-3 h5 text-right">Delivered on: </div>
-                        <div class="col-md-3 h5 text-muted">{{j.date_delivered}}</div>
+                        <div class="col-md-3 h5 text-muted">{{j.date_delivered | date}}</div>
                         {% endif %}
 
                         {% if j.status == "C" or j.status == "I" or j.status == "N" %}
                         <div class="col-md-3 h5 text-right">Cancelled on: </div>
-                        <div class="col-md-3 h5 text-muted">{{j.last_tracked_on}}</div>
+                        <div class="col-md-3 h5 text-muted">{{j.last_tracked_on | date}}</div>
                         {% endif %}
                     </div>
                     <div class="row ml-1">
