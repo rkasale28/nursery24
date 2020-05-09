@@ -26,5 +26,7 @@ urlpatterns=[
     path('cancelled',views.cancelled,name="cancelled"),
     path('returned',views.returned,name="returned"),
     path('notreturned',views.notreturned,name="notreturned"),
-    path('track',views.track,name="track")
+    path('track',views.track,name="track"),
+    path('updateprice',views.updateprice,name="updateprice"),
+    path('updatepricesubmit',views.updatepricesubmit,name="updatepricesubmit"),
 ]

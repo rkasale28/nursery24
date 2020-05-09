@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
-from .models import Address,Provider,Product
+from .models import Address,Provider,Product,Price
 from .forms import AddressForm,ProductForm,PriceForm,UserForm,ProviderForm
 from django.core.exceptions import ObjectDoesNotExist
 from geopy.geocoders import Nominatim
@@ -242,5 +242,28 @@ def track(request):
       id=request.POST['id']
       pio=ProductInOrder.objects.get(pk=id)
       return render(request,'ptrack.html',{'pio':pio})
-    
-        
+
+def track(request):
+    if request.method=='POST':
+      id=request.POST['id']
+      pio=ProductInOrder.objects.get(pk=id)
+      return render(request,'ptrack.html',{'pio':pio})
+
+def updateprice(request):        
+    if request.method=='POST':
+      id=request.POST['id']
+      proid=request.POST['proid']
+      return render(request,'pupdatepriceform.html',{'id':id,'proid':proid})
+
+
+def updatepricesubmit(request):        
+    if request.method=='POST':
+      id=request.POST['id']
+      proid=request.POST['proid']
+      price=request.POST['price']
+      provider=Provider.objects.get(pk=proid)
+      product=Product.objects.get(pk=id)  
+      p=Price.objects.get(provider=provider,product=product)     
+      p.price=price
+      p.save()
+      return redirect('../provider/removeitem')
