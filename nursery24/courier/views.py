@@ -11,6 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from geopy.geocoders import Nominatim
 from django.contrib.gis.geos import Point
 from deliveryPersonnel.models import DeliveryPersonnel
+from django.db.models import Q
 
 # Create your views here.
 def home(request):
@@ -188,3 +189,15 @@ def removedpsubmit(request):
         user_id=request.POST['user_id']
         User.objects.filter(pk=user_id).delete()
         return redirect('../courier/home') 
+
+def viewsummary(request):
+    array=[]
+    obj=request.user.courier.deliverypersonnel_set.all().order_by('user__first_name','user__last_name')
+    for i in obj:
+        c={}
+        c['name']=i.user.first_name+' '+i.user.last_name
+        c['D']=i.productinorder_set.filter(status='D').count()
+        c['C']=i.productinorder_set.filter(Q(status='C') | Q(status='I')).count()
+        c['N']=i.productinorder_set.filter(status='N').count()
+        array.append(c)
+    return render(request,'cosummary.html',{'array':array})

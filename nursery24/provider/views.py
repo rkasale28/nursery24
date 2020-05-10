@@ -219,7 +219,7 @@ def ship(request):
       return redirect('../provider/ready')
 
 def cancelled(request):
-    list=request.user.provider.productinorder_set.all().filter(Q(status='I') | Q(status='C')).order_by('last_tracked_on')
+    list=request.user.provider.productinorder_set.all().filter(Q(status='I') | Q(status='C')).order_by('-last_tracked_on')
     return render(request,'pcancelled.html',{'list':list})
 
 def notreturned(request):

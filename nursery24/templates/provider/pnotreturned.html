@@ -26,6 +26,14 @@
             height: 20vw;
             object-fit: cover;
         }
+
+        .product-name {
+            display: inline-block;
+            width: 180px;
+            white-space: nowrap;
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+        }
     </style>
 </head>
 
@@ -48,7 +56,7 @@
         <li class="nav-item">
             <a class="nav-link active" href="notreturned">Not Yet Returned</a>
         </li>
-        
+
         <li class="nav-item">
             <a class="nav-link" href="cancelled">Cancelled Orders</a>
         </li>
@@ -71,9 +79,14 @@
                         <h5 class="card-title">{{i.last_tracked_by.user.first_name}}
                             {{i.last_tracked_by.user.last_name}}</h5>
                         <p class="card-text text-muted">{{i.last_tracked_by.phone_number}}</p>
-                        <p class="card-text"><span class="font-weight-bold">Current Location:
-                            </span>{{i.last_tracked_by.existing_location_addr}}</p>
-                        <p class="card-text"><span class="font-weight-bold">Product Name: </span>{{i.product.name}}</p>
+                        <p class="card-text">
+                            <span class="font-weight-bold">Current Location:</span>
+                            <span class="product-name">{{i.last_tracked_by.existing_location_addr}}</span>
+                        </p>
+                        <p class="card-text">
+                            <span class="font-weight-bold">Product Name: </span>
+                            <span class="product-name">{{i.product.name}}</span>
+                        </p>
                         <div class="sticky-bottom float-left mr-1 mb-1">
                             <form action="track" method="post">
                                 {% csrf_token %}

@@ -484,7 +484,8 @@ def successfulorder(request):
             order = order,
             quantity = data['qty'][i],
             total_price = total_price,
-            expected_delivery_date = expected_delivery).save()
+            expected_delivery_date = expected_delivery,
+            last_tracked_on=today).save()
     
     to = [current_user.email]
     #send_mail('Test Mail','Practice for project',settings.EMAIL_HOST_USER,to,fail_silently=True)

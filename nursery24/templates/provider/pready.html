@@ -26,6 +26,14 @@
             height: 20vw;
             object-fit: cover;
         }
+
+        .product-name{
+            display: inline-block;
+            width: 180px;
+            white-space: nowrap;
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+        }
     </style>
 </head>
 
@@ -66,7 +74,7 @@
             <div class="row no-gutters">
                 <div class="col-md-4">
                     <img src="{{i.last_tracked_by.profile_pic.url}}" class="card-img"
-                        style="width: 100%;height: 100%;object-fit: cover;">
+                        style="height:100%;width:100%;object-fit: cover;">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
@@ -74,8 +82,8 @@
                             {{i.last_tracked_by.user.last_name}}</h5>
                         <p class="card-text text-muted">{{i.last_tracked_by.phone_number}}</p>
                         <p class="card-text"><span class="font-weight-bold">Current Location:
-                            </span>{{i.last_tracked_by.existing_location_addr}}</p>
-                        <p class="card-text"><span class="font-weight-bold">Product Name: </span>{{i.product.name}}</p>
+                            </span><span class="product-name">{{i.last_tracked_by.existing_location_addr}}</span></p>
+                        <p class="card-text"><span class="font-weight-bold">Product Name: </span><span class="product-name">{{i.product.name}}</span></p>
                         <div class="sticky-bottom float-left mr-1 mb-1">
                             <form action="track" method="post">
                                 {% csrf_token %}

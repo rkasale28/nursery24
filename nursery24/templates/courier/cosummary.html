@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Not Yet Returned</title>
+    <title>View Summary</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -16,15 +16,14 @@
             display: inline-block;
         }
 
-        .card-img-top {
-            width: 100%;
-            height: 15vw;
-            object-fit: cover;
-        }
-
         .d-block {
             height: 20vw;
             object-fit: cover;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: black;
         }
     </style>
 </head>
@@ -38,49 +37,47 @@
 
     <ul class="nav nav-pills nav-fill bg-light">
         <li class="nav-item">
-            <a class="nav-link" href="home">Placed Pending Orders</a>
+            <a class="nav-link" href="home">Manage Delivery Personnel</a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="ready">Ready to Ship Orders</a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="notreturned">Not Yet Returned</a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link  active" href="cancelled">Cancelled Orders</a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="removeitem">Item</a>
+            <a class="nav-link active" href="viewsummary">View Summary</a>
         </li>
 
     </ul>
 
-
-    <div class="d-flex justify-content-start ml-3 mt-3">
-        {% for i in list%}
-        <div class="card mr-3" style="width: 255px">
-            <img class="card-img-top" id='image' style="width: 100%;height: 15vw;object-fit: cover;" src="{{i.product.image.url}}">
-            <div class="card-body">
-                <h5 class="card-title">{{i.product.name}}</h5>
-                <div class="h6 card-subtitle">
-                    <span class="font-weight-bold">Quantity: </span>
-                    <span class="text-muted">{{i.quantity}}</span><br>
-
-                    <span class="font-weight-bold">Cancelled On: </span>
-                    <span class="text-muted">{{i.last_tracked_on | date}}</span></h6>
-                </div>
-            </div>
-        </div>
-        {% if forloop.counter|divisibleby:5 %}
+    <div class="row">
+        <div class="col-md-10"></div>
+        <div class="col-md-2  justify-content-right">
+            <button type="submit" class="btn btn-primary m-2">
+                <i class="fa fa-bar-chart"></i>
+        Analyse</button>
     </div>
-    <div class="d-flex justify-content-left ml-3 mt-3">
-        {%endif%}
+    </div>
 
-        {% endfor%}
+    <div class="row d-flex justify-content-center">
+        <table class="table table-striped table-bordered ml-3 mr-3">
+            <thead class="thead-dark text-center">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Delivery Personnel Name</th>
+                    <th scope="col">Delivered Orders</th>
+                    <th scope="col">Cancelled Orders</th>
+                    <th scope="col">Not yet Returned</th>
+                </tr>
+            </thead>
+            {% for i in array %}
+            <tbody>
+                <tr>
+                    <td class="text-center">{{forloop.counter}}</td>
+                    <td>{{i.name}}</td>
+                    <td>{{i.D}}</td>
+                    <td>{{i.C}}</td>
+                    <td>{{i.N}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -94,6 +91,7 @@
         crossorigin="anonymous"></script>
     <script src="{% static 'js/header.js'%}"></script>
     <script src="{% static 'js/header_authenticated.js'%}"></script>
+
 </body>
 
 </html>
