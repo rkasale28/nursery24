@@ -267,3 +267,17 @@ def updatepricesubmit(request):
       p.price=price
       p.save()
       return redirect('../provider/removeitem')
+
+def viewsummary(request):
+    array=[]
+    obj=request.user.provider.product_set.all()
+    for i in obj:
+        c={}
+        c['name']=i.name
+        c['D']=ProductInOrder.objects.filter(product=i,provider=request.user.provider,status='D').count()
+        cnt=ProductInOrder.objects.filter(product=i,provider=request.user.provider,status='C').count()
+        cnt+=ProductInOrder.objects.filter(product=i,provider=request.user.provider,status='I').count()
+        c['C']=cnt
+        c['N']=ProductInOrder.objects.filter(product=i,provider=request.user.provider,status='N').count()
+        array.append(c)
+    return render(request,'psummary.html',{'array':array})

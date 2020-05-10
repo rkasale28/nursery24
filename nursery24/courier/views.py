@@ -201,7 +201,7 @@ def viewsummary(request):
         c={}
         c['name']=i.user.first_name+' '+i.user.last_name
         c['D']=i.productinorder_set.filter(status='D').count()
-        c['C']=i.productinorder_set.filter(Q(status='C') | Q(status='I')).count()
+        c['C']=i.productinorder_set.filter(Q(status='C') | Q(status='I') | Q(status='N')).count()
         array.append(c)
     return render(request,'cosummary.html',{'array':array})
 
@@ -228,7 +228,7 @@ def analyse(request):
         name.append(i.user.first_name+' '+i.user.last_name)
         pio=i.productinorder_set.filter(last_tracked_on__range=(start_date,end_date))
         d.append(pio.filter(status='D').count())
-        c.append(pio.filter(Q(status='C') | Q(status='I')).count())
+        c.append(pio.filter(Q(status='C') | Q(status='I') | Q(status='N')).count())
         
     data['name']=json.dumps(name)
     data['c']=json.dumps(c)
