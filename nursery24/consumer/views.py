@@ -31,7 +31,6 @@ from django.contrib.gis.db.models.functions import Distance
 import datetime
 import json
 from datetime import date,timedelta
-import datetime
 from django.utils.crypto import get_random_string
 from django.contrib.gis.measure import D
 

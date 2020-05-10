@@ -12,6 +12,10 @@ from geopy.geocoders import Nominatim
 from django.contrib.gis.geos import Point
 from deliveryPersonnel.models import DeliveryPersonnel
 from django.db.models import Q
+import datetime
+from datetime import timedelta
+from consumer.models import ProductInOrder
+import json
 
 # Create your views here.
 def home(request):
@@ -192,12 +196,42 @@ def removedpsubmit(request):
 
 def viewsummary(request):
     array=[]
-    obj=request.user.courier.deliverypersonnel_set.all().order_by('user__first_name','user__last_name')
+    obj=request.user.courier.deliverypersonnel_set.all()
     for i in obj:
         c={}
         c['name']=i.user.first_name+' '+i.user.last_name
         c['D']=i.productinorder_set.filter(status='D').count()
         c['C']=i.productinorder_set.filter(Q(status='C') | Q(status='I')).count()
-        c['N']=i.productinorder_set.filter(status='N').count()
         array.append(c)
     return render(request,'cosummary.html',{'array':array})
+
+def analyse(request):
+    data={}
+    if request.method=='POST':
+        start_date=request.POST['from']
+        t=request.POST['to']
+    else:
+        start_date=(datetime.datetime.now() + datetime.timedelta(-5)).strftime("%Y-%m-%d")
+        t=datetime.datetime.now().strftime("%Y-%m-%d")
+    
+    end_date = (datetime.datetime.strptime(t, "%Y-%m-%d")+datetime.timedelta(1)).strftime("%Y-%m-%d")
+
+    data['start_date']=start_date
+    data['end_date']=t
+
+    name=[]
+    c=[]
+    d=[]
+    
+    obj=request.user.courier.deliverypersonnel_set.all().order_by('user__first_name','user__last_name')
+    for i in obj:
+        name.append(i.user.first_name+' '+i.user.last_name)
+        pio=i.productinorder_set.filter(last_tracked_on__range=(start_date,end_date))
+        d.append(pio.filter(status='D').count())
+        c.append(pio.filter(Q(status='C') | Q(status='I')).count())
+        
+    json_name = json.dumps(name)
+    data['name']=json_name
+    data['c']=c
+    data['d']=d
+    return render(request,'coanalyse.html',data)
