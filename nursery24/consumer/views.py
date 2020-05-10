@@ -344,10 +344,18 @@ def confirmorder(request):
         delivery = 0.25*total
     else:
         delivery = 0.50*total
+    
+    if total>1500:
+        int_h = 0
+    elif total>1000:
+        int_h = 0.20*total
+    else:
+        int_h = 0.40*total
+
     data['total'] = total
     data['delivery'] = int(delivery)
-    data['int_handling'] = 10
-    data['grand_total'] = total+int(delivery)+10
+    data['int_handling'] = int(int_h)
+    data['grand_total'] = total+int(delivery)+int(int_h)
     data['length']=range(len(data['names']))
     request.session['grand_total'] = data['grand_total']
     request.session['available']=data['available']
@@ -423,6 +431,7 @@ def charge(request):
 
 def successfulorder(request):
     today = datetime.datetime.now()
+    current_time = datetime.datetime.now()
     
     expected_delivery = today + timedelta(days=2)
     day_name= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday']
@@ -444,7 +453,7 @@ def successfulorder(request):
     
     grand_total = request.session['grand_total']
     cust_addr = request.session['cust_addr']
-    cust_pt=Consumer_Address.objects.get(consumer_id= consumer.id).point
+    cust_pt=Consumer_Address.objects.get(addr=cust_addr).point
     
     order=Order(total_price = grand_total,
     secondary_id = unique_id,

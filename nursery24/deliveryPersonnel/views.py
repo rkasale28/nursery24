@@ -82,7 +82,7 @@ def updatecurrentlocation(request):
         return redirect('../delivery/home')
 
 def assigned(request):
-    pio=request.user.deliverypersonnel.productinorder_set.first()
+    pio=request.user.deliverypersonnel.productinorder_set.order_by('last_tracked_on').reverse().first()
     return render(request,'dassigned.html',{'pio':pio})
 
 def deliver(request):
