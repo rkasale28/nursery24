@@ -68,16 +68,16 @@
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: {{ name|safe }},
+                labels: JSON.parse('{{ name | escapejs }}'),
                 datasets: [
                     {
                         label: "Delivered",
                         backgroundColor: "green",
-                        data: {{d}},
+                        data: JSON.parse('{{ d }}'),
                     }, {
                         label: "Cancelled",
                         backgroundColor: "red",
-                        data: {{c}},
+                        data: JSON.parse('{{ c }}'),
                     },
                 ]
             },

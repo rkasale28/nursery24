@@ -230,8 +230,7 @@ def analyse(request):
         d.append(pio.filter(status='D').count())
         c.append(pio.filter(Q(status='C') | Q(status='I')).count())
         
-    json_name = json.dumps(name)
-    data['name']=json_name
-    data['c']=c
-    data['d']=d
+    data['name']=json.dumps(name)
+    data['c']=json.dumps(c)
+    data['d']=json.dumps(d)
     return render(request,'coanalyse.html',data)
