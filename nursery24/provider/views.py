@@ -274,10 +274,25 @@ def viewsummary(request):
     for i in obj:
         c={}
         c['name']=i.name
-        c['D']=ProductInOrder.objects.filter(product=i,provider=request.user.provider,status='D').count()
-        cnt=ProductInOrder.objects.filter(product=i,provider=request.user.provider,status='C').count()
-        cnt+=ProductInOrder.objects.filter(product=i,provider=request.user.provider,status='I').count()
-        c['C']=cnt
-        c['N']=ProductInOrder.objects.filter(product=i,provider=request.user.provider,status='N').count()
+        
+        pio=ProductInOrder.objects.filter(product=i,provider=request.user.provider,status='D')
+        c['D']=0
+        for j in pio:
+            c['D']+=j.quantity
+        
+        c['C']=0
+        pio=ProductInOrder.objects.filter(product=i,provider=request.user.provider,status='C')
+        for j in pio:
+            c['C']+=j.quantity
+
+        pio=ProductInOrder.objects.filter(product=i,provider=request.user.provider,status='I')
+        for j in pio:
+            c['C']+=j.quantity
+        
+        c['N']=0
+        pio=ProductInOrder.objects.filter(product=i,provider=request.user.provider,status='N')
+        for j in pio:
+            c['N']+=j.quantity
+        
         array.append(c)
     return render(request,'psummary.html',{'array':array})
