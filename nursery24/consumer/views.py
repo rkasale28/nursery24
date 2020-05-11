@@ -495,14 +495,6 @@ def successfulorder(request):
             expected_delivery_date = expected_delivery,
             last_tracked_on=today).save()
     
-    to = [current_user.email]
-    #send_mail('Test Mail','Practice for project',settings.EMAIL_HOST_USER,to,fail_silently=True)
-    pdf = render_to_pdf('invoice.html',data)
-    email = EmailMessage(
-    'Order Confirmation', 'Invoice attatched as pdf', 'settings.EMAIL_HOST_USER',to)
-    if pdf:
-        email.attach('invoice2.pdf',pdf ,'application/pdf')
-        email.send()
     data['length'] = range(len(names))
     data['total_price']=t_price
     data['per_price']=p
@@ -511,6 +503,15 @@ def successfulorder(request):
     data['expected_delivery']=expected_delivery
     data['grand_total']=grand_total
     data['unique_id']=unique_id
+
+    to = [current_user.email]
+    #send_mail('Test Mail','Practice for project',settings.EMAIL_HOST_USER,to,fail_silently=True)
+    pdf = render_to_pdf('invoice.html',data)
+    email = EmailMessage(
+    'Order Confirmation', 'Invoice attatched as pdf', 'settings.EMAIL_HOST_USER',to)
+    if pdf:
+        email.attach('invoice2.pdf',pdf ,'application/pdf')
+        email.send()
     return render(request,'csuccessfulorder.html',data)
 
 
