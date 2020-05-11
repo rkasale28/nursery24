@@ -31,5 +31,5 @@ urlpatterns=[
     path('updatepricesubmit',views.updatepricesubmit,name="updatepricesubmit"),
     path('viewsummary',views.viewsummary,name="summary"),
     path('analyse',views.analyse,name="analyse"),
-    path('pwanalyse',views.pwanalyse,name="pwanalyse")
+    path('danalyse',views.danalyse,name="danalyse")
 ]
