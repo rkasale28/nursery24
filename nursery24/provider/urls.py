@@ -30,5 +30,6 @@ urlpatterns=[
     path('updateprice',views.updateprice,name="updateprice"),
     path('updatepricesubmit',views.updatepricesubmit,name="updatepricesubmit"),
     path('viewsummary',views.viewsummary,name="summary"),
-    path('analyse',views.analyse,name="analyse")
+    path('analyse',views.analyse,name="analyse"),
+    path('pwanalyse',views.pwanalyse,name="pwanalyse")
 ]

@@ -42,24 +42,35 @@
 
     <ul class="nav nav-pills nav-fill bg-light">
         <li class="nav-item">
-            <a class="nav-link active" href="analyse">Overall Analysis</a>
+            <a class="nav-link" href="analyse">Overall Analysis</a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="pwanalyse">Product wise analysis</a>
+            <a class="nav-link active" href="pwanalyse">Product wise analysis</a>
         </li>
     </ul>
 
     <div class="d-flex justify-content-center" style="border-bottom: 1px solid black; padding-bottom:5px">
-        <form class="row mt-2" style="width: 100%;" method="POST" action="analyse">
+        <form class="row mt-2" style="width: 100%;" method="POST" action="pwanalyse">
             {% csrf_token %}
             <div class="col-md-1">From:</div>
-            <div class="col-md-3"><input type="date" name="from" value="{{start_date}}"></div>
+            <div class="col-md-2"><input type="date" name="from" value="{{start_date}}"></div>
             <div class="col-md-1">To:</div>
-            <div class="col-md-3"><input type="date" name="to" value="{{end_date}}"></div>
-            <div class="col-md-3"><input type="submit"></div>
+            <div class="col-md-2"><input type="date" name="to" value="{{end_date}}"></div>
+            <div class="col-md-2">Product Name:</div>
+            <div class="col-md-2">
+                <select name="name">
+                    <option value="{{selected}}" selected>{{selected}}</option>
+                    {% for i in product %}
+                    <option value="{{i.name}}">{{i.name}}</option>
+                    {% endfor %}
+                  </select>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-1"><input type="submit"></div>
         </form>
     </div>
+
     <canvas id="myChart" width="400" height="120"></canvas>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
@@ -76,22 +87,34 @@
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
-                labels: JSON.parse('{{ name | escapejs }}'),
+                labels: JSON.parse('{{ dates | escapejs }}'),
                 datasets: [
                     {
-                        label: "Delivered Items",
-                        backgroundColor: "green",
-                        data: JSON.parse('{{ d }}'),
+                        label: "Yours",
+                        borderColor: "green",
+                        data: JSON.parse('{{ yours }}'),
+                        fill:false,
+                        lineTension:0
                     }, {
-                        label: "Cancelled Items",
-                        backgroundColor: "red",
-                        data: JSON.parse('{{ c }}'),
+                        label: "Highest",
+                        borderColor: "red",
+                        data: JSON.parse('{{ highest }}'),
+                        fill:false,
+                        lineTension:0
                     },{
-                        label: "Not Yet Returned Items",
-                        backgroundColor: "yellow",
-                        data: JSON.parse('{{ n }}'),
+                        label: "Lowest",
+                        borderColor: "yellow",
+                        data: JSON.parse('{{ lowest }}'),
+                        fill:false,
+                        lineTension:0
+                    },{
+                        label: "Average",
+                        borderColor: "blue",
+                        data: JSON.parse('{{ average }}'),
+                        fill:false,
+                        lineTension:0
                     },
                 ]
             },

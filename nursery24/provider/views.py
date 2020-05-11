@@ -14,6 +14,7 @@ from django.contrib.gis.db.models.functions import Distance
 from django.db.models import Q
 import datetime
 import json
+from django.db.models import Count,Max,Avg,Min,Sum
 
 # Create your views here.
 def signup(request):
@@ -322,12 +323,12 @@ def analyse(request):
     for i in obj:
         name.append(i.name)
 
-        pio=i.productinorder_set.filter(last_tracked_on__range=(start_date,end_date),product=i,provider=request.user.provider,status='D') 
+        pio=i.productinorder_set.filter(last_tracked_on__range=(start_date,end_date),provider=request.user.provider,status='D',product=i)
         temp_d=0
         for j in pio:
             temp_d+=j.quantity               
         d.append(temp_d)
-
+        
         pio=i.productinorder_set.filter(last_tracked_on__range=(start_date,end_date),product=i,provider=request.user.provider, status='C') 
         temp_c=0
         for j in pio:
@@ -349,3 +350,73 @@ def analyse(request):
     data['d']=json.dumps(d)
     data['n']=json.dumps(n)
     return render(request,'panalyse.html',data)
+
+def convert(list):
+    res=[0 if i is None else i for i in list ]
+    return (res)
+
+def pwanalyse(request):
+    data={}
+    if request.method=='POST':
+        fr=request.POST['from']
+        t=request.POST['to']
+        name=request.POST['name']
+    else:
+        fr=(datetime.datetime.now() + datetime.timedelta(-5)).strftime("%Y-%m-%d")
+        t=datetime.datetime.now().strftime("%Y-%m-%d")
+        name=request.user.provider.product_set.all().order_by('name').first().name
+    
+    to = (datetime.datetime.strptime(t, "%Y-%m-%d")+datetime.timedelta(1)).strftime("%Y-%m-%d")
+
+    data['start_date']=fr
+    data['end_date']=t
+
+    start_date=datetime.datetime.strptime(fr, "%Y-%m-%d")
+    end_date=datetime.datetime.strptime(t, "%Y-%m-%d")
+    d=(end_date-start_date).days
+
+    obj=request.user.provider.product_set.all().order_by('name').exclude(name=name)
+    data['product']=obj
+    data['selected']=name 
+     
+    pro=Product.objects.get(name=name)
+    
+    dates=[]
+    highest=[]
+    lowest=[]
+    mean=[]
+    yours=[]
+
+    for i in range(d+1):
+        temp=start_date+datetime.timedelta(i)
+        dates.append(temp.strftime("%Y-%m-%d"))
+
+        pio=ProductInOrder.objects.filter(last_tracked_on__date=temp.date(),product=pro,status='D').values('provider').order_by('provider')
+        pio=pio.annotate(total=Sum('quantity'))
+        print (pio)
+        pio=pio.aggregate(Avg('total'),Max('total'),Min('total'))
+        highest.append(pio['total__max'])
+        lowest.append(pio['total__min'])
+        mean.append(pio['total__avg'])
+
+        pio=ProductInOrder.objects.filter(last_tracked_on__date=temp.date(),status='D',product=pro,provider=request.user.provider)
+        if not pio:
+            yours.append(0)
+        else:
+            temp_y=0
+            for j in pio:
+                temp_y+=j.quantity
+            yours.append(temp_y)
+        
+
+    highest=convert(highest)
+    lowest=convert(lowest)
+    mean=convert(mean)
+
+    data['dates']=json.dumps(dates)
+    data['highest']=json.dumps(highest)
+    data['lowest']=json.dumps(lowest)
+    data['average']=json.dumps(mean)
+    data['yours']=json.dumps(yours)
+    
+    return render(request,'ppwanalyse.html',data)
