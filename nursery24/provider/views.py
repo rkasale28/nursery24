@@ -392,6 +392,7 @@ def pwanalyse(request):
         dates.append(temp.strftime("%Y-%m-%d"))
 
         pio=ProductInOrder.objects.filter(last_tracked_on__date=temp.date(),product=pro,status='D').values('provider').order_by('provider')
+        print (pio)
         pio=pio.annotate(total=Sum('quantity'))
         print (pio)
         pio=pio.aggregate(Avg('total'),Max('total'),Min('total'))
