@@ -71,13 +71,17 @@
                 labels: JSON.parse('{{ name | escapejs }}'),
                 datasets: [
                     {
-                        label: "Delivered",
+                        label: "Delivered Items",
                         backgroundColor: "green",
                         data: JSON.parse('{{ d }}'),
                     }, {
-                        label: "Cancelled",
+                        label: "Cancelled Items",
                         backgroundColor: "red",
                         data: JSON.parse('{{ c }}'),
+                    },{
+                        label: "Not Yet Returned Items",
+                        backgroundColor: "yellow",
+                        data: JSON.parse('{{ n }}'),
                     },
                 ]
             },

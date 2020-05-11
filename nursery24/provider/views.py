@@ -13,6 +13,7 @@ from deliveryPersonnel.models import DeliveryPersonnel
 from django.contrib.gis.db.models.functions import Distance
 from django.db.models import Q
 import datetime
+import json
 
 # Create your views here.
 def signup(request):
@@ -296,3 +297,55 @@ def viewsummary(request):
         
         array.append(c)
     return render(request,'psummary.html',{'array':array})
+
+def analyse(request):
+    data={}
+    if request.method=='POST':
+        start_date=request.POST['from']
+        t=request.POST['to']
+    else:
+        start_date=(datetime.datetime.now() + datetime.timedelta(-5)).strftime("%Y-%m-%d")
+        t=datetime.datetime.now().strftime("%Y-%m-%d")
+    
+    end_date = (datetime.datetime.strptime(t, "%Y-%m-%d")+datetime.timedelta(1)).strftime("%Y-%m-%d")
+
+    data['start_date']=start_date
+    data['end_date']=t
+
+    name=[]
+    c=[]
+    d=[]
+    n=[]
+
+    obj=request.user.provider.product_set.all().order_by('name')
+
+    for i in obj:
+        name.append(i.name)
+
+        pio=i.productinorder_set.filter(last_tracked_on__range=(start_date,end_date),product=i,provider=request.user.provider,status='D') 
+        temp_d=0
+        for j in pio:
+            temp_d+=j.quantity               
+        d.append(temp_d)
+
+        pio=i.productinorder_set.filter(last_tracked_on__range=(start_date,end_date),product=i,provider=request.user.provider, status='C') 
+        temp_c=0
+        for j in pio:
+            temp_c+=j.quantity               
+        
+        pio=i.productinorder_set.filter(last_tracked_on__range=(start_date,end_date),product=i,provider=request.user.provider, status='I') 
+        for j in pio:
+            temp_c+=j.quantity               
+        c.append(temp_c)
+
+        pio=i.productinorder_set.filter(last_tracked_on__range=(start_date,end_date),product=i,provider=request.user.provider,status='N') 
+        temp_n=0
+        for j in pio:
+            temp_n+=j.quantity               
+        n.append(temp_n)
+      
+    data['name']=json.dumps(name)
+    data['c']=json.dumps(c)
+    data['d']=json.dumps(d)
+    data['n']=json.dumps(n)
+    return render(request,'panalyse.html',data)
