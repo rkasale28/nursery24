@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse,HttpResponseRedirect
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
-from .models import Consumer,Product,Provider,Order,ProductInOrder
+from .models import Consumer,Product,Provider,Order,ProductInOrder,Review
 from .models import Address as Consumer_Address
 from provider.models import Address as Provider_Address
 from django.core.exceptions import ObjectDoesNotExist
@@ -576,3 +576,19 @@ def cancel(request):
 
 def sample(request):
     return render(request,'sample.html')
+
+def rate(request):
+    if request.method=='POST':
+        string=request.POST["stars"]
+        stars,pro_id=string.split('?')
+        product=Product.objects.get(pk=pro_id)
+        try:
+            review=Review.objects.get(consumer=request.user.consumer,product=product)
+            review.rating=stars
+            review.save()
+        except ObjectDoesNotExist as d:
+            Review(rating=stars,
+            consumer=request.user.consumer,
+            product=product).save()
+            
+        return HttpResponse(stars)

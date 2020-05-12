@@ -48,5 +48,5 @@ class ProductInOrder(models.Model):
     
 class Review(models.Model):
     rating=models.FloatField()
-    consumer=models.OneToOneField(Consumer,on_delete=models.CASCADE)
+    consumer=models.ForeignKey(Consumer,on_delete=models.CASCADE,null=True)
     product=models.ForeignKey(Product,on_delete=models.CASCADE,null=True) 
