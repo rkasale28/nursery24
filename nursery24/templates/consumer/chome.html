@@ -151,8 +151,19 @@
     <script src="{% static 'js/compare_price_item_card.js'%}"></script>
     <script>
         
-       
-        
+        //document.cookie = "home=" + JSON.stringify('0');
+        var prevCount = 0;
+        let decodedCookie = decodeURIComponent(document.cookie).split(';');
+        if(decodedCookie.find(item => item.includes("home="))){
+            let countString = decodedCookie.find(item => item.includes("home="));
+            let countStringSplit = countString.split('=');
+            prevCount = JSON.parse(countStringSplit[1]);
+        }
+        else{
+            document.cookie = "home=" + JSON.stringify(prevCount);
+        }
+
+
         let run = () => {
             
             let countDiv = document.querySelector('#count');
@@ -180,7 +191,18 @@
                 
                 if(count){
                     countDiv.innerHTML = ` (${count})` ;
+                    console.log(prevCount,count)
+                    if(prevCount != count){
+                        prevCount = count;
+                        document.cookie = "home="+JSON.stringify(prevCount);
+                        (()=>location.reload(true))()
+                        console.log(prevCount,count)
+                    }
+                   // (()=>location.reload(true))();
                 }
+
+                
+                
                 //cartItems.appendChild(child);
                // console.log(count);
             }
@@ -190,10 +212,15 @@
                 // heading3.appendChild(textnode);
                 // cartItems.appendChild(heading3);
                 countDiv.innerHTML = ``;
+                prevCount = 0;
+                document.cookie = "home=" + JSON.stringify(prevCount);
             }
             }
             else{
                 countDiv.innerHTML = ``;
+                prevCount = 0;
+                document.cookie = "home=" + JSON.stringify(prevCount);
+
             }
 
         }
