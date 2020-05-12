@@ -14,7 +14,7 @@ from django.contrib.gis.db.models.functions import Distance
 from django.db.models import Q
 import datetime
 import json
-from django.db.models import Sum
+from django.db.models import Sum,Avg,Max,Min
 
 # Create your views here.
 def signup(request):
@@ -382,12 +382,38 @@ def danalyse(request):
     pro=Product.objects.get(name=name)
     
     dates=[]
+    highest=[]
+    lowest=[]
+    mean=[]
     yours=[]
 
     for i in range(d+1):
         temp=start_date+datetime.timedelta(i)
         dates.append(temp.strftime("%Y-%m-%d"))
+
+        pio=ProductInOrder.objects.filter(last_tracked_on__date=temp.date(),product=pro,status='D').values('provider').order_by('provider')
+        pio=pio.annotate(total=Sum('quantity'))
+        tot=pio.count()
+
+        prov=pro.providers.all().count()
+
+        pio=pio.aggregate(Max('total'),Min('total'))
         
+        highest.append(pio['total__max'])
+        if (prov!=tot):
+            lowest.append(0)
+        else:
+            lowest.append(pio['total__min'])
+        
+        pio=ProductInOrder.objects.filter(last_tracked_on__date=temp.date(),product=pro,status='D').values('last_tracked_on__date').order_by('last_tracked_on__date')
+        pio=pio.annotate(total=Sum('quantity'))
+        if not pio:
+            mean.append(0)
+        else:
+            temp_y=0
+            for j in pio:
+                mean.append (j['total']/prov)
+       
         pio=ProductInOrder.objects.filter(last_tracked_on__date=temp.date(),status='D',product=pro,provider=request.user.provider)
         if not pio:
             yours.append(0)
@@ -396,8 +422,15 @@ def danalyse(request):
             for j in pio:
                 temp_y+=j.quantity
             yours.append(temp_y)
+      
+    highest=convert(highest)
+    lowest=convert(lowest)
+    mean=convert(mean)
 
     data['dates']=json.dumps(dates)
+    data['highest']=json.dumps(highest)
+    data['lowest']=json.dumps(lowest)
+    data['average']=json.dumps(mean)
     data['yours']=json.dumps(yours)
     
     return render(request,'pdanalyse.html',data)

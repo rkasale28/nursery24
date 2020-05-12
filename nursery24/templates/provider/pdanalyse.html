@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Analysis</title>
+    <title>Overall Analysis</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -46,7 +46,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link active" href="danalyse">Daily Analysis</a>
+            <a class="nav-link active" href="danalyse">Product wise analysis</a>
         </li>
     </ul>
 
@@ -95,15 +95,25 @@
                         label: "Yours",
                         borderColor: "blue",
                         data: JSON.parse('{{ yours }}'),
-                        fill:false,
-                    }
+                        fill: false,
+                    }, {
+                        label: "Highest",
+                        borderColor: "green",
+                        data: JSON.parse('{{ highest }}'),
+                        fill: false,
+                    },{
+                        label: "Lowest",
+                        borderColor: "red",
+                        data: JSON.parse('{{ lowest }}'),
+                        fill: false,
+                    },{
+                        label: "Average",
+                        borderColor: "yellow",
+                        data: JSON.parse('{{ average }}'),
+                        fill: false,
+                    },
                 ]
             },
-            options: {
-                legend: {
-                    display: false,
-                },
-            }            
         });
     </script>
 </body>
