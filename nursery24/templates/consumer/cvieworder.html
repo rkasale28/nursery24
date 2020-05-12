@@ -89,7 +89,7 @@
       text-shadow: 0 0 5px #DE9E0C;
     }
   </style>
-  
+
 </head>
 
 <body>
@@ -117,6 +117,7 @@
         </div>
       </div>
       {% for j in i.productinorder_set.all|dictsortreversed:"last_tracked_on" %}
+
       <div class="row">
         <div class="col-md-1">
           <img class="rounded border border-dark" src="{{j.product.image.url}}" width="120px" height="120px" />
@@ -157,47 +158,78 @@
 
             {% if j.status == "D" %}
             <div class="col-md-6 text-center">
-              <!-- {{j.product.review_set.all | by_consumer:user.consumer}} -->
               <!-- <form action="rate" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="id" value="{{j.id}}">
                                 <input type="submit" value="Rate Product" style="width: 200px;" class="btn btn-warning">
                             </form> -->
-              
-                <form class="rating">
-                  <label>
-                    <input type="radio" name="stars" value="1?{{j.product.id}}" />
-                    <span class="icon">★</span>
-                  </label>
-                  <label>
-                    <input type="radio" name="stars" value="2?{{j.product.id}}"/>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                  </label>
-                  <label>
-                    <input type="radio" name="stars" value="3?{{j.product.id}}" />
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                  </label>
-                  <label>
-                    <input type="radio" name="stars" value="4?{{j.product.id}}" />
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                  </label>
-                  <label>
-                    <input type="radio" name="stars" value="5?{{j.product.id}}" />
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                    <span class="icon">★</span>
-                  </label>
-              
-                </form>
-                
+
+              <form class="rating">
+                <label>
+                  {% for r in ratings|by_product:j.product %}
+                  {% if r.rating == 1.0 %}
+                  <input type="radio" name="stars" value="1?{{j.product.id}}" checked />
+                  {% else %}
+                  <input type="radio" name="stars" value="1?{{j.product.id}}" />
+                  {%endif%}
+                  {% endfor %}
+
+                  <span class="icon">★</span>
+                </label>
+                <label>
+                  {% for r in ratings|by_product:j.product %}
+                  {% if r.rating == 2.0 %}
+                  <input type="radio" name="stars" value="2?{{j.product.id}}" checked />
+                  {% else %}
+                  <input type="radio" name="stars" value="2?{{j.product.id}}" />
+                  {%endif%}
+                  {% endfor %}
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                </label>
+                <label>
+
+                  {% for r in ratings|by_product:j.product %}
+                  {% if r.rating == 3.0 %}
+                  <input type="radio" name="stars" value="3?{{j.product.id}}" checked />
+                  {% else %}
+                  <input type="radio" name="stars" value="3?{{j.product.id}}" />
+                  {%endif%}
+                  {% endfor %}
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                </label>
+                <label>
+                  {% for r in ratings|by_product:j.product %}
+                  {% if r.rating == 4.0 %}
+                  <input type="radio" name="stars" value="4?{{j.product.id}}" checked />
+                  {% else %}
+                  <input type="radio" name="stars" value="4?{{j.product.id}}" />
+                  {%endif%}
+                  {% endfor %}
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                </label>
+                <label>
+                  {% for r in ratings|by_product:j.product %}
+                  {% if r.rating == 5.0 %}
+                  <input type="radio" name="stars" value="5?{{j.product.id}}" checked />
+                  {% else %}
+                  <input type="radio" name="stars" value="5?{{j.product.id}}" />
+                  {%endif%}
+                  {% endfor %}
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                </label>
+
+              </form>
+
             </div>
             {% endif %}
           </div>
@@ -246,9 +278,9 @@
         url: "../consumer/rate",
         type: "POST",
         dataType: "json",
-        data:{
-          csrfmiddlewaretoken:'{{csrf_token}}',
-          stars : x,
+        data: {
+          csrfmiddlewaretoken: '{{csrf_token}}',
+          stars: x,
         },
       });
     });

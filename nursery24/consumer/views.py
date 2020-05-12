@@ -26,6 +26,7 @@ from .utils import render_to_pdf
 from django.contrib.gis.geos import Point
 from django.contrib.gis.geos import *
 from django.contrib.gis.db.models.functions import Distance
+from django.forms.models import model_to_dict
 
 # from app import app
 import datetime
@@ -548,6 +549,19 @@ def vieworders(request):
     order=Order.objects.filter(consumer=request.user.consumer).order_by('-date_placed')
     data={}
     data['order']=order
+    data['ratings']=request.user.consumer.review_set.all()
+    dict={}
+
+    # for r in request.user.consumer.review_set.all():
+    #     dict[r.product]=r.rating
+        
+    # for i in order:
+    #     for j in i.productinorder_set.all():
+    #         if j.product in dict:
+    #             j.rating=dict[j.product]
+    #         else:
+    #             j.rating=0
+    
     return render(request,'cvieworder.html',data)
 
 def track(request):

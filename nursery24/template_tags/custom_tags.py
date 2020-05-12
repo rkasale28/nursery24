@@ -9,5 +9,5 @@ def get_item(dictionary, key):
 def index(indexable, i):
     return indexable[i]
 @register.filter
-def by_consumer(reviews, consumer):
-    return reviews.filter(consumer=consumer)
+def by_product(reviews, pro):
+    return reviews.filter(product=pro)
