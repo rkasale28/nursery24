@@ -33,6 +33,9 @@ import json
 from datetime import date,timedelta
 from django.utils.crypto import get_random_string
 from django.contrib.gis.measure import D
+from weasyprint import HTML, CSS
+from django.template.loader import get_template
+from django.template.loader import render_to_string
 
 import os
 
@@ -47,6 +50,13 @@ publishable_key = 'pk_test_1VWTyC4sr1TtRWpXMhMMWa6U00jagFandz'
 
 
 # Create your views here.
+def pdf_generation(request):
+            html_template = get_template('templates/home_page.html')
+            pdf_file = HTML(string=html_template).write_pdf()
+            response = HttpResponse(pdf_file, content_type='application/pdf')
+            response['Content-Disposition'] = 'filename="home_page.pdf"'
+            return response
+
 def signup(request):
     return render(request,'csignup.html')
 
@@ -453,7 +463,7 @@ def successfulorder(request):
     
     grand_total = request.session['grand_total']
     cust_addr = request.session['cust_addr']
-    cust_pt=Consumer_Address.objects.get(addr=cust_addr).point
+    cust_pt=Consumer_Address.objects.get(consumer_id = consumer.id).point
     
     order=Order(total_price = grand_total,
     secondary_id = unique_id,
@@ -503,14 +513,17 @@ def successfulorder(request):
     data['expected_delivery']=expected_delivery
     data['grand_total']=grand_total
     data['unique_id']=unique_id
+    html_string = render_to_string('invoice.html', data)
+    html = HTML(string=html_string)
+    result = html.write_pdf()
 
     to = [current_user.email]
     #send_mail('Test Mail','Practice for project',settings.EMAIL_HOST_USER,to,fail_silently=True)
-    pdf = render_to_pdf('invoice.html',data)
+    #pdf = render_to_pdf('invoice.html',data)
     email = EmailMessage(
     'Order Confirmation', 'Invoice attatched as pdf', 'settings.EMAIL_HOST_USER',to)
-    if pdf:
-        email.attach('invoice2.pdf',pdf ,'application/pdf')
+    if result:
+        email.attach('invoice2.pdf',result ,'application/pdf')
         email.send()
     return render(request,'csuccessfulorder.html',data)
 
