@@ -478,6 +478,9 @@ def successfulorder(request):
     data = {}
     data['names']= request.session['names']
     data['qty']=request.session['qty']
+    data['addr']=cust_addr
+    data['username']=request.user.first_name+' '+request.user.last_name
+    data['email']=request.user.email
     providers=request.session['provider']
     available=request.session['available']
     names=[]
@@ -514,7 +517,7 @@ def successfulorder(request):
     data['grand_total']=grand_total
     data['unique_id']=unique_id
     html_string = render_to_string('invoice.html', data)
-    html = HTML(string=html_string)
+    html = HTML(string=html_string,base_url=request.build_absolute_uri())
     result = html.write_pdf()
 
     to = [current_user.email]
@@ -525,6 +528,7 @@ def successfulorder(request):
     if result:
         email.attach('invoice2.pdf',result ,'application/pdf')
         email.send()
+    
     return render(request,'csuccessfulorder.html',data)
 
 

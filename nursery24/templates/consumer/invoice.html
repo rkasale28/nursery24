@@ -1,30 +1,35 @@
 {% load custom_tags %}
 {% load static %}
 <html>
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Order Successful</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<style>
-    .active {
-        color: #0275d8;
-        border-bottom: #0275d8 solid 2px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Successful</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        .active {
+            color: #0275d8;
+            border-bottom: #0275d8 solid 2px;
+        }
 
-    .success {
-        background-color: #28a745;
-        border-bottom: #28a745 solid 2px;
-        border-right: #d3d3d3 solid 2px;
-        color: white;
-    }
+        .success {
+            background-color: #28a745;
+            border-bottom: #28a745 solid 2px;
+            border-right: #d3d3d3 solid 2px;
+            color: white;
+        }
 
-    hr.new1 {
-        border-top: 1px solid #320D05;
-    }
-</style>
+        hr.new1 {
+            border-top: 1px solid #320D05;
+        }
+
+        .equal-width td {
+            width: 50%;
+        }
+    </style>
 </head>
 
 <body>
@@ -33,69 +38,60 @@
 
     <div class="row d-flex justify-content-center">
         <div class="shadow-lg p-3 mb-3 bg-white rounded" style="width: 95%;">
-            <div class="row border-bottom mb-3 pb-1">
-                <div class="col-md-12 mr-3
-                 text-right h5">
-                    <span>Order Id: </span>
-                    <span class="text-muted">{{unique_id}}</span>
-                </div>
-            </div>
-            
-            {% for i in length %}
-            <div class="row pl-2">
-                <div class="col-md-6">
-                    <p class="h5">{{ names|index:i }}</p>
-                </div>
-
-                <div class="col-md-3 text-right">
-                    <p class="h5"> <span class="font-weight-bold"> Price: </span>
-                </div>
-
-                <div class="col-md-2 text-left">
-                    <p class="h5"> Rs. {{ per_price|index:i }}
-                </div>
-            </div>
-            <div class="row pb-4 pl-2">
-                <div class="col-md-6">
-                    <p class="h5"> <span class="font-weight-bold"> Quantity: </span> {{ qty|index:i }}
-                </div>
-
-                <div class="col-md-3 text-right">
-                    <p class="h5"> <span class="font-weight-bold"> Subtotal: </span>
-                </div>
-
-                <div class="col-md-2 text-left">
-                    <p class="h5"> Rs. {{ total_price|index:i }}
-                </div>
-            </div>
-            {% if forloop.last %}
-            <div style="border-bottom: 1px solid black;"></div>
-            {% endif %}
-            {% endfor %}
-            <div class="row pt-4">
-                <div class="col-md-6"></div>
-                
-                <div class="col-md-3 text-right">
-                    <p class="h5"> <span class="font-weight-bold"> Delivery By: </span>
-                </div>
-
-                <div class="col-md-2">
-                    <p class="h5"> {{ expected_delivery | date }}
-                </div>
+            <div class="container pb-3" style="width:40%">
+                <h6 class="text-dark font-weight-bold border-bottom">BILL TO</h6>
+                {{username}}<br>
+                {{email}}<br><br>
             </div>
 
-            <div class="row">
-                <div class="col-md-6"></div>
-
-                <div class="col-md-3 text-right">
-                    <p class="h5"> <span class="font-weight-bold"> Grand Total: </span>
-                </div>
-
-                <div class="col-md-2">
-                    <p class="h5"> Rs. {{ grand_total }}
-                </div>
+            <div class="container pb-3" style="width:40%">
+                <h6 class="text-dark font-weight-bold border-bottom">SHIP TO</h6>
+                {{username}}<br>
+                {{addr}}<br>
             </div>
         </div>
     </div>
+    <div class="row d-flex justify-content-center">
+        <div class="shadow-lg p-3 mb-3 bg-white rounded" style="width: 95%;">
+            <div class="row border-bottom mb-3 pb-1">
+                <div class="col-md-12 mr-3
+                 text-right h5">
+                    <span class="font-weight-bold">Order Id: </span>
+                    <span class="text-muted">{{unique_id}}</span>
+                </div>
+            </div>
+
+            <table class="table border-bottom" width="100%">
+                <tr>
+                    <th>#</th>
+                    <th>Product Name</th>
+                    <th class="text-center">Quantity</th>
+                    <th>Subtotal</th>
+                </tr>
+
+                {% for i in length %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{ names|index:i }}</td>
+                    <td class="text-center">{{ qty|index:i }}</td>
+                    <td>Rs. {{ total_price|index:i }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="2"></td>
+                    <th class="text-right">Grand Total:</th>
+                    <td>Rs. {{ grand_total }}</td>
+                </tr>
+            </table>
+            <br>
+
+            <div class="row mb-3 pb-1">
+                <div class="col-md-12 mr-3
+                 text-right h5">
+                    <span class="font-weight-bold">Expected on: </span>
+                    <span class="text-muted">{{ expected_delivery | date }}</span>
+                </div>
+            </div>
 </body>
+
 </html>
