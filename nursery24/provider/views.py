@@ -198,13 +198,17 @@ def readytoshipsubmit(request):
         product.provider_addr=addr
         product.provider_point=address.point
         
-        dp=DeliveryPersonnel.objects.filter(assigned=False).filter(available=True).annotate(distance=Distance('existing_location_point', address.point)).order_by('distance').first()
-        dp.assigned=True
-        dp.save()
+        try:
+            dp=DeliveryPersonnel.objects.filter(assigned=False).filter(available=True).annotate(distance=Distance('existing_location_point', address.point)).order_by('distance').first()
+            dp.assigned=True
+            dp.save()
+            
+            product.last_tracked_by=dp
+            product.save()
+            return redirect('../provider/home')
+        except:
+            return HttpResponse('No Delivery Personnel is available')
         
-        product.last_tracked_by=dp
-        product.save()
-        return redirect('../provider/home')
 
 def ready(request):
     list=request.user.provider.productinorder_set.all().filter(status='R').order_by('order__date_placed')
