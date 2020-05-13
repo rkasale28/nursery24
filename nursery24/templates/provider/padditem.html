@@ -10,7 +10,73 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="js/Bootstrap.js">
+    <link rel="stylesheet" type="text/css" href="js/Bootstrap.css">
 </head>
+
+<style>
+
+*{
+margin : 0px;
+padding : 0px;
+}
+label{
+    color: antiquewhite;
+    font: 600px;
+}
+.group label {
+  font-size: 800px;
+}
+body
+{
+    background-image : url("{%static 'images/back1.jpg'%}");
+    background-size : cover;
+    background-attachment : fixed;
+    
+}
+
+h1
+{
+    font-size : 40px;
+    color:whitesmoke;
+    margin-top : 250px
+}
+
+p{
+    font-size:17px;
+    color:whitesmoke;
+}
+h3{
+    font-size: 25px;
+    color:whitesmoke;
+}
+.fa-plus{
+    font-size: 35px;
+    float : right;
+    margin-top: 20px;
+}
+.col-md-5{
+    margin-top: 80px;
+    box-shadow: -1px 1px 60px 10px black;
+    background: rgba(0,0,0,0.4);
+}
+.label{
+    font-weight:normal;
+    margin-top:3px;
+    color : white;
+    font-size: 15px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.form-control{
+
+    opacity: 0.5;
+    border-radius:0px;
+    border:0px;
+    border-bottom:1px solid white;
+    height:40px;
+    color:black;
+    }   
+</style>
 
 <body>
     {% if not user.is_authenticated%}
@@ -19,14 +85,108 @@
     <authenticated-header></authenticated-header>
     {% endif %}
     
+<form method = "post" enctype="multipart/form-data" action="additemsubmit"> 
 
-    <form method = "post" enctype="multipart/form-data" action="additemsubmit"> 
-        {% csrf_token %} 
-        {{ productform.as_p }} 
-        {{ priceform.as_p}}
-        <input type="hidden" name="provider" value="{{user.provider.id}}">
-        <button type="submit">Submit</button> 
-    </form> 
+<input type="hidden" name="csrfmiddlewaretoken" value="83iScF5mfDQtFDtxkBSQ1Gr0GjAguuYqScdmWTdqDvA69sIWsw7QBDpfaL4R0noj"> 
+        
+
+<div class = "container">
+    <div class ="row">
+        <div class="col-md-7">
+            <h1 class="text-left">Add item</h1>
+            <p class="text-left">Fill in the details to add the item of your choice</p>
+        </div>
+        <div class="col-md-5">
+            <div class="row">
+                <div class= "col-md-6">
+                    <h3 class="text-left">Add item form</h3>
+                </div>
+                <div class="col-md-6">
+                    <span  class="fa fa-plus" ></span> </div>
+            </div>
+            <hr>
+            <div class="row">
+                <label for="id_name"  class="label col-md-2 control-label">Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control " name="name" maxlength="100" placeholder="Name" required id="id_name"> 
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <label for="id_image" class="label col-md-2 control-label">Image:</label> 
+                <div class="col-md-10">
+                <input type="file" class="form-control" name="image" accept="image/*" required id="id_image">    
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <label for="id_category"  class="label col-md-2 control-label">Category:</label> 
+                <div class="col-md-10">
+                    <select class="form-control" name="category" required id="id_category">
+                        <option value="" selected>Select</option>
+                
+                        <option value="P">Plants</option>
+                
+                        <option value="S">Seeds</option>
+                
+                        <option value="F">Soils and Fertilizers</option>
+                
+                        <option value="D">Decor</option>
+                
+                        <option value="A">Accessories</option>
+                
+                     </select>
+                    
+                </div>
+            </div>
+            <br >
+            <div class="row">
+                <label for="id_price" class="label col-md-2 control-label">Price:</label> 
+                <div class="col-md-10">
+                    <input type="number"class="form-control" name="price" required id="id_price">    
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                
+                <div class="col-md-10">
+                    <button type="button" class="btn btn-secondary btn-sm" style="float: right;">Submit</button>    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
