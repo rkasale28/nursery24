@@ -1,13 +1,91 @@
-<html>
-<body>
+{% load static %}
 {% load custom_tags %}
-{% for i in length %}
-<h3>Name = {{ names|index:i }} </h3>
-<h3>Quantity = {{ qty|index:i }} </h3> 
-<h3>Total Price = {{ prices|index:i }}</h3><br>
-{% endfor %}
-<form action = "selectaddress">
-    <input type = submit>
-</form>
+
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirm Order</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+    .active {
+        color: #0275d8;
+        border-bottom: #0275d8 solid 2px;
+    }
+
+    .success {
+        background-color: #28a745;
+        border-bottom: #28a745 solid 2px;
+        border-right:#d3d3d3 solid 2px;
+        color: white;
+    }
+</style>
+
+<body>
+    <header-profile></header-profile>
+
+    <ul class="nav nav-fill bg-light">
+        <li class="nav-item pl-4  pr-4 pt-2 active">
+            <p class="text-left h5">Step 1</p>
+            <p class="text-left h6">Confirm Order</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2">
+            <p class="text-left h5">Step 2</p>
+            <p class="text-left h6">Select Delivery Address</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2">
+            <p class="text-left h5">Step 3</p>
+            <p class="text-left h6">Place Order</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2">
+            <p class="text-left h5">Step 4</p>
+            <p class="text-left h6">Payments</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2">
+            <p class="text-left h5">Step 5</p>
+            <p class="text-left h6">Order Successful</p>
+        </li>
+    </ul>
+
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        Some items might not be delivered.
+    </div>
+    
+    <table class="table table-striped text-center">
+        <thead class="thead thead-dark">
+            <tr>
+                <th>Items</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for i in length %}
+            <tr>
+                <td>{{ names|index:i }}</td>
+                <td>{{ individual_price|index:i }}</td>
+                <td>{{ qty|index:i }}</td>
+                <td>Rs. {{ prices|index:i }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="2"></td>
+                <th scope="row">Total Price</th>
+                <td>Rs. {{sum}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <form action="selectaddress" class="row justify-content-end" style="margin-right: 90px; margin-top:20px;margin-bottom:20px">
+        <input type="submit" class="btn btn-primary" style="padding:10px" value="Confirm Order">
+    </form>
+
+
+    <script src="{% static 'js/header_profile.js'%}"></script>
 </body>
+
 </html>

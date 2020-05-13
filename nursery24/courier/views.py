@@ -5,7 +5,17 @@ from django.contrib.auth.models import User,auth
 from .models import Courier,Address
 from http import cookies
 from .forms import UserForm,AddressForm,CourierForm
+from deliveryPersonnel.forms import UserForm as DForm
+from deliveryPersonnel.forms import DeliveryPersonnelForm,UpdateForm
 from django.core.exceptions import ObjectDoesNotExist
+from geopy.geocoders import Nominatim
+from django.contrib.gis.geos import Point
+from deliveryPersonnel.models import DeliveryPersonnel
+from django.db.models import Q
+import datetime
+from datetime import timedelta
+from consumer.models import ProductInOrder
+import json
 
 # Create your views here.
 def home(request):
@@ -26,7 +36,10 @@ def signup_submit(request):
             user=User.objects.create_user(email=email,username=uname,password=pwd)    
             courier=Courier(user=user,phone_number=phone,service_name=sname)
             courier.save()
-            address=Address(addr=addr,courier=courier)
+            
+            geolocator = Nominatim(user_agent="courier")
+            location = geolocator.geocode(addr)
+            address=Address(addr=addr,courier=courier,point=Point(location.latitude, location.longitude))
             address.save()
             user=auth.authenticate(username=uname,password=pwd)
             auth.login(request,user)
@@ -105,7 +118,10 @@ def addaddresssubmit(request):
         courier_id=request.POST['courier']
         addr=request.POST['addr']
         courier=Courier.objects.get(pk=courier_id)
-        address=Address(addr=addr,courier=courier)
+
+        geolocator = Nominatim(user_agent="courier")
+        location = geolocator.geocode(addr)
+        address=Address(addr=addr,courier=courier,point=Point(location.latitude, location.longitude))
         address.save()
         return redirect('../courier/addresses')
 
@@ -114,3 +130,107 @@ def removeaddresssubmit(request):
         address_id=request.POST['id']
         Address.objects.get(pk=address_id).delete()
         return redirect('../courier/addresses')
+
+def adddp(request):
+    userform=DForm()
+    delform=DeliveryPersonnelForm()
+    return render(request,'coadddp.html',{'userform':userform,'delform':delform})
+
+def adddpsubmit(request):
+    if request.method=='POST':
+        username=request.POST['username']
+        fname=request.POST['first_name']
+        lname=request.POST['last_name']
+        email=request.POST['email']
+        user=User.objects.create_user(email=email,username=username,password='abc',first_name=fname,last_name=lname) 
+        courier=request.user.courier   
+        phone=request.POST['phone_number']
+        profile_pic=request.FILES['profile_pic']
+        dp=DeliveryPersonnel(user=user,courier=courier,phone_number=phone,profile_pic=profile_pic)
+        dp.save()            
+        return redirect('../courier/home')
+
+def viewdp(request):
+    if request.method=='POST':
+        id=request.POST['id']
+        dp=DeliveryPersonnel.objects.get(pk=id)
+        return render(request,'coview.html',{'dp':dp})
+
+def updatedp(request):
+    if request.method=='POST':
+        id=request.POST['id']
+        dp=DeliveryPersonnel.objects.get(pk=id)
+        updateform=UpdateForm()
+        updateform.fields['first_name'].initial=dp.user.first_name
+        updateform.fields['last_name'].initial=dp.user.last_name
+        updateform.fields['email'].initial=dp.user.email
+        delform=DeliveryPersonnelForm()
+        delform.fields['phone_number'].initial=dp.phone_number
+        return render(request,'coupdateprofile.html',{'updateform':updateform,'delform':delform,'id':id})
+
+def updatedpsubmit(request):
+    if request.method=='POST':
+        id=request.POST['id']
+        dp=DeliveryPersonnel.objects.get(pk=id)
+        first_name=request.POST['first_name']
+        last_name=request.POST['last_name']
+        email=request.POST['email']
+        phone_number=request.POST['phone_number']
+        initial_profile_pic=dp.profile_pic.url
+        initial_profile_pic=initial_profile_pic.replace('/media/', '')
+        profile_pic=request.FILES['profile_pic'] if 'profile_pic' in request.FILES else initial_profile_pic
+        dp.user.first_name=first_name
+        dp.user.last_name=last_name
+        dp.user.email=email
+        dp.user.save()
+        dp.phone_number=phone_number
+        dp.profile_pic = profile_pic
+        dp.save()     
+        return redirect('../courier/home')  
+
+def removedpsubmit(request):
+    if request.method=='POST':
+        user_id=request.POST['user_id']
+        User.objects.filter(pk=user_id).delete()
+        return redirect('../courier/home') 
+
+def viewsummary(request):
+    array=[]
+    obj=request.user.courier.deliverypersonnel_set.all()
+    for i in obj:
+        c={}
+        c['name']=i.user.first_name+' '+i.user.last_name
+        c['D']=i.productinorder_set.filter(status='D').count()
+        c['C']=i.productinorder_set.filter(Q(status='C') | Q(status='I') | Q(status='N')).count()
+        array.append(c)
+    return render(request,'cosummary.html',{'array':array})
+
+def analyse(request):
+    data={}
+    if request.method=='POST':
+        start_date=request.POST['from']
+        t=request.POST['to']
+    else:
+        start_date=(datetime.datetime.now() + datetime.timedelta(-5)).strftime("%Y-%m-%d")
+        t=datetime.datetime.now().strftime("%Y-%m-%d")
+    
+    end_date = (datetime.datetime.strptime(t, "%Y-%m-%d")+datetime.timedelta(1)).strftime("%Y-%m-%d")
+
+    data['start_date']=start_date
+    data['end_date']=t
+
+    name=[]
+    c=[]
+    d=[]
+    
+    obj=request.user.courier.deliverypersonnel_set.all().order_by('user__first_name','user__last_name')
+    for i in obj:
+        name.append(i.user.first_name+' '+i.user.last_name)
+        pio=i.productinorder_set.filter(last_tracked_on__range=(start_date,end_date))
+        d.append(pio.filter(status='D').count())
+        c.append(pio.filter(Q(status='C') | Q(status='I') | Q(status='N')).count())
+        
+    data['name']=json.dumps(name)
+    data['c']=json.dumps(c)
+    data['d']=json.dumps(d)
+    return render(request,'coanalyse.html',data)

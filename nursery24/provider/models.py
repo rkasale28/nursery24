@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.gis.db import models as gismodel
 
 # Create your models here.
 class Provider(models.Model):
@@ -11,6 +12,7 @@ class Provider(models.Model):
 class Address(models.Model):
     addr=models.TextField(max_length=100,null=True)
     provider=models.ForeignKey(Provider,on_delete=models.CASCADE)
+    point = gismodel.PointField(null=True)
 
 class Product(models.Model):
     CATEGORY_CHOICES=[

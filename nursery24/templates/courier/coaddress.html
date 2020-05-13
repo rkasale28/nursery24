@@ -34,20 +34,16 @@
 </head>
 
 <body>
-    {% if not user.is_authenticated%}
-    <header-bar></header-bar>
-    {% else %}
-    <authenticated-header></authenticated-header>
-    {% endif %}
+    <header-profile></header-profile>
 
     <ul class="nav nav-pills nav-fill bg-light">
         <li class="nav-item">
-          <a class="nav-link" href="myprofile">Profile</a>
+            <a class="nav-link" href="myprofile">Profile</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="addresses">Address</a>
+            <a class="nav-link active" href="addresses">Address</a>
         </li>
-      </ul>
+    </ul>
 
     {% if user.courier.address_set.all.values_list|length > 1 %}
     <div class="d-flex justify-content-start ml-3 mt-3">
@@ -57,9 +53,9 @@
                 <p class="card-text">{{i.addr}}</p>
 
                 <form action="removeaddresssubmit" method="post" class="ml-auto" style="margin-top:150px">
-                {% csrf_token %}
-                <input name="id" type="hidden" value="{{i.id}}">
-                <input type="submit" class=" btn btn-danger" value="Delete">
+                    {% csrf_token %}
+                    <input name="id" type="hidden" value="{{i.id}}">
+                    <input type="submit" class=" btn btn-danger" value="Delete">
                 </form>
             </div>
         </div>
@@ -88,7 +84,7 @@
             <div class="card-body d-flex flex-column">
                 <p class="card-text">{{i.addr}}</p>
 
-                <form action="removebranchsubmit" method="post" class="ml-auto"  style="margin-top:150px">
+                <form action="removebranchsubmit" method="post" class="ml-auto" style="margin-top:150px">
                     {% csrf_token %}
                     <input name="id" type="hidden" value="{{i.id}}">
                     <input type="submit" class=" btn btn-danger" value="Delete" disabled>
@@ -118,8 +114,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-    <script src="{% static 'js/header.js'%}"></script>
-    <script src="{% static 'js/header_authenticated.js'%}"></script>
+
+    <script src="{% static 'js/header_profile.js'%}"></script>
 </body>
 
 </html>

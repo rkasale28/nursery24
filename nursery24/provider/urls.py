@@ -19,4 +19,17 @@ urlpatterns=[
     path('myprofile',views.myprofile,name="myprofile"),
     path('edit',views.edit,name="edit"),
     path('editsubmit',views.editsubmit,name="editsubmit"),
+    path('readytoship',views.readytoship,name="readytoship"),
+    path('readytoshipsubmit',views.readytoshipsubmit,name="readytoshipsubmit"),
+    path('ready',views.ready,name="ready"),
+    path('ship',views.ship,name="ship"),
+    path('cancelled',views.cancelled,name="cancelled"),
+    path('returned',views.returned,name="returned"),
+    path('notreturned',views.notreturned,name="notreturned"),
+    path('track',views.track,name="track"),
+    path('updateprice',views.updateprice,name="updateprice"),
+    path('updatepricesubmit',views.updatepricesubmit,name="updatepricesubmit"),
+    path('viewsummary',views.viewsummary,name="summary"),
+    path('analyse',views.analyse,name="analyse"),
+    path('danalyse',views.danalyse,name="danalyse")
 ]

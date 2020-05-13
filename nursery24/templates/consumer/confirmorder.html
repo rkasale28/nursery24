@@ -1,24 +1,161 @@
-<html>
-<body>
+{% load static %}
 {% load custom_tags %}
-{% for i in length %}
-{% if prices|index:i != 0 %}
-<h3>Name = {{ names|index:i }} </h3>
-{% if changed|index:i == 'No' %}
-<h3>Quantity = {{ qty|index:i }} </h3>
-<h3>Price = {{ prices|index:i }} </h3> 
-<h3>Final Price = {{ finalprices|index:i }}</h3> <br>
-{% else %}
-<h3>Prices may have changed bcoz the selected provider couldnt deliver to your location</h3>
-<h3>Quantity = {{ qty|index:i }} </h3>
-<h3>Price = {{ prices|index:i }} </h3> 
-<h3>Final Price = {{ finalprices|index:i }}</h3> <br>
-{% endif %}
-{% else %}
-<h3>{{ names|index:i }} cannot be delivered at your location </h3>
-<br>
-{% endif %}
-{% endfor %}
-<h3>Total = {{ total }}</h3>
+
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmed</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+    .active {
+        color: #0275d8;
+        border-bottom: #0275d8 solid 2px;
+    }
+
+    .success {
+        background-color: #28a745;
+        border-bottom: #28a745 solid 2px;
+        border-right: #d3d3d3 solid 2px;
+        color: white;
+    }
+
+    hr.new1 {
+        border-top: 1px solid #320D05;
+    }
+</style>
+
+<body>
+    <header-profile></header-profile>
+
+    <ul class="nav nav-fill bg-light">
+        <li class="nav-item pl-4  pr-4 pt-2 success">
+            <p class="text-left h5">Step 1</p>
+            <p class="text-left h6">Confirm Order</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2 success">
+            <p class="text-left h5">Step 2</p>
+            <p class="text-left h6">Select Delivery Address</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2 active">
+            <p class="text-left h5">Step 3</p>
+            <p class="text-left h6">Place Order</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2">
+            <p class="text-left h5">Step 4</p>
+            <p class="text-left h6">Payments</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2">
+            <p class="text-left h5">Step 5</p>
+            <p class="text-left h6">Order Successful</p>
+        </li>
+    </ul>
+
+    <div class="pt-2"></div>
+
+
+    <div class="row d-flex justify-content-center">
+        <div class="shadow-lg p-3 mb-3 bg-white rounded" style="width: 95%;">
+            {% for i in length %}
+            {% if available|index:i %}
+            <div class="row pl-2">
+                <div class="col-md-6">
+                    <p class="h5">{{ names|index:i }}</p>
+                </div>
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Price: </span>
+                </div>
+
+                <div class="col-md-2 text-left">
+                    <p class="h5"> Rs. {{ per_price|index:i }}
+                </div>
+            </div>
+            <div class="row pb-4 pl-2">
+                <div class="col-md-6">
+                    <p class="h5"> <span class="font-weight-bold"> Quantity: </span> {{ qty|index:i }}
+                </div>
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Subtotal: </span>
+                </div>
+
+                <div class="col-md-2 text-left">
+                    <p class="h5"> Rs. {{ total_price|index:i }}
+                </div>
+            </div>
+
+            {% else %}
+            <div class="alert alert-danger mb-4" role="alert" style="width: 95%;">
+                {{names|index:i}} can't be delivered.
+            </div>
+            
+            {% endif %}
+            {% endfor %}
+            <div class="row pt-2" style="border-top: 1px solid black;">
+                <div class="col-md-6"></div>
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Subtotal: </span>
+                </div>
+
+                <div class="col-md-2">
+                    <p class="h5"> Rs. {{ total }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"></div>
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Shipping Cost: </span>
+                </div>
+
+                <div class="col-md-2">
+                    <p class="h5"> Rs. {{ delivery }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"></div>
+
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Internet Handling Fees: </span>
+                </div>
+
+                <div class="col-md-2">
+                    <p class="h5"> Rs. {{ int_handling }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"></div>
+
+                <div class="col-md-3 text-right">
+                    <p class="h5"> <span class="font-weight-bold"> Total: </span>
+                </div>
+
+                <div class="col-md-2">
+                    <p class="h5"> Rs. {{ grand_total }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row d-flex justify-content-end mb-3">
+        <button class="btn btn-primary p-3" style="margin-right: 50px;" onclick="proceed()">Place Order</button>
+    </div>
+
+    <script src="{% static 'js/header_profile.js'%}"></script>
+    <script>
+        let proceed = () => {
+            window.location.href = "payments";
+        }
+    </script>
 </body>
+
 </html>

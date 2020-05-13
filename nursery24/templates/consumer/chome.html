@@ -22,7 +22,7 @@
         }
 
         .d-block {
-            height: 20vw;
+            height: 30vw;
             object-fit: cover;
         }
     </style>
@@ -72,14 +72,14 @@
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img class="d-block w-80 mx-auto" src="{%static 'images/banner1.jpg'%}" alt="First slide">
+                <img class="d-block mx-auto" src="{%static 'images/banner1.png'%}" alt="First slide">
             </div>
             <div class="carousel-item">
-                <img class="d-block w-80 mx-auto" src="{%static 'images/banner2.jpg'%}" alt="Second slide">
+                <img class="d-block w-80 mx-auto" src="{%static 'images/banner2.png'%}" alt="Second slide">
             </div>
 
             <div class="carousel-item">
-                <img class="d-block w-80 mx-auto" src="{%static 'images/banner4.jpg'%}" alt="Second slide">
+                <img class="d-block w-80 mx-auto" src="{%static 'images/banner3.png'%}" alt="Second slide">
             </div>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -91,84 +91,6 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-    <h5 class="text-center" style="margin-top: 10px;margin-bottom:15px;">Trending</h5>
-    <div class="d-flex justify-content-center ml-3 mt-3">
-        <!-- <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card1.jpg'%}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Vertical Nursery</h5>
-                <p class="card-text">Rs. 500</p>
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-            </div>
-        </div> -->
-        <div class="card mr-4" style="width: 20rem;">
-            <item-card name = 'Vertical Nursery' price = '500' image="{%static 'images/card1.jpg'%}" ></item-card>
-        </div>
-        <!-- <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card2.jpg'%}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Plants Decor</h5>
-                <p class="card-text">Rs. 250</p>
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-            </div>
-        </div> -->
-        <div class="card mr-4" style="width: 20rem;">
-            <item-card name = 'Plants Decor' price = '250' image="{%static 'images/card2.jpg'%}" ></item-card>
-        </div>
-        <!-- <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card3.jpg'%}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Hanging Plants</h5>
-                <p class="card-text">Rs. 300</p>
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-            </div>
-        </div> -->
-        <div class="card mr-4" style="width: 20rem;">
-            <item-card name = 'Hanging Plants' price = '300' image="{%static 'images/card3.jpg'%}" ></item-card>
-        </div>
-        <!-- <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card4.jpg'%}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Water Plants</h5>
-                <p class="card-text">Rs. 350</p>
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-            </div>
-        </div> -->
-        <div class="card mr-4" style="width: 20rem;">
-            <item-card name = 'Water Plants' price = '350' image="{%static 'images/card4.jpg'%}" ></item-card>
-        </div>
-        <!-- <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card5.jpg'%}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Pebbles</h5>
-                <p class="card-text">Rs. 250</p>
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-            </div>
-        </div> -->
-        <div class="card mr-4" style="width: 20rem;">
-            <item-card name = 'Pebbles' price = '250' image="{%static 'images/card5.jpg'%}" ></item-card>
-        </div>
-    </div>
     <hr>
     <h5 class="text-center" style="margin-bottom:15px;">New Arrivals</h5>
     <div class="d-flex justify-content-start ml-3 mt-3">
@@ -176,95 +98,45 @@
         <div class="card mr-3" style="width: 255px;">
             {%if i.price_set.all.values_list|length > 1%}
             
-            <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}></compare-price-item-card>
+            <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}  provider = "{{i.providers.all.0.shop_name}}" rating="{{i.rating}}"></compare-price-item-card>
             {% else %}
-            <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}}></item-card>
+            <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} provider = "{{i.providers.all.0.shop_name}}" rating="{{i.rating}}"></item-card>
             {% endif %}
         </div>
         {% endfor %}
     </div>
-
     <hr>
+    
     <h5 class="text-center" style="margin-bottom:15px;">Top Rated</h5>
-    <div class="d-flex justify-content-center ml-3 mt-3">
-         <!-- <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card1.jpg'%}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Vertical Nursery</h5>
-                <p class="card-text">Rs. 500</p>
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-            </div>
-        </div> -->
-        <div class="card mr-4" style="width: 20rem;">
-            <item-card name = 'Vertical Nursery' price = '500' image="{%static 'images/card1.jpg'%}" ></item-card>
+    <div class="d-flex justify-content-start ml-3 mt-3">
+        {% for i in ratings %}
+        <div class="card mr-3" style="width: 255px;">
+            {%if i.price_set.all.values_list|length > 1%}
+            
+            <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}  provider = "{{i.providers.all.0.shop_name}}" rating="{{i.rating}}"></compare-price-item-card>
+            {% else %}
+            <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id ={{i.id}} provider = "{{i.providers.all.0.shop_name}}" rating="{{i.rating}}"></item-card>
+            {% endif %}
         </div>
-        <!-- <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card2.jpg'%}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Plants Decor</h5>
-                <p class="card-text">Rs. 250</p>
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-            </div>
-        </div> -->
-        <div class="card mr-4" style="width: 20rem;">
-            <item-card name = 'Plants Decor' price = '250' image="{%static 'images/card2.jpg'%}" ></item-card>
-        </div>
-        <!-- <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card3.jpg'%}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Hanging Plants</h5>
-                <p class="card-text">Rs. 300</p>
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-            </div>
-        </div> -->
-        <div class="card mr-4" style="width: 20rem;">
-            <item-card name = 'Hanging Plants' price = '300' image="{%static 'images/card3.jpg'%}" ></item-card>
-        </div>
-        <!-- <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card4.jpg'%}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Water Plants</h5>
-                <p class="card-text">Rs. 350</p>
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-            </div>
-        </div> -->
-        <div class="card mr-4" style="width: 20rem;">
-            <item-card name = 'Water Plants' price = '350' image="{%static 'images/card4.jpg'%}" ></item-card>
-        </div>
-        <!-- <div class="card mr-4" style="width: 20rem;">
-            <img class="card-img-top" src="{% static 'images/card5.jpg'%}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Pebbles</h5>
-                <p class="card-text">Rs. 250</p>
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-secondary">+</button>
-                <button type="button" class="btn btn-outline-secondary">0</button>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-            </div>
-        </div> -->
-        <div class="card mr-4" style="width: 20rem;">
-            <item-card name = 'Pebbles' price = '250' image="{%static 'images/card5.jpg'%}" ></item-card>
-        </div>
+        {% endfor %}
     </div>
     <hr>
-    <!-- <div>Count:<span id = 'count'></span></div> -->
+
+    <h5 class="text-center" style="margin-bottom:15px;">Trending</h5>
+    <div class="d-flex justify-content-start ml-3 mt-3">
+        {% for i in trending %}
+        <div class="card mr-3" style="width: 255px;">
+            {%if i.price_set.all.values_list|length > 1%}
+            
+            <compare-price-item-card name="{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} id={{i.id}}  provider = "{{i.providers.all.0.shop_name}}" rating="{{i.rating}}"></compare-price-item-card>
+            {% else %}
+            <item-card name= "{{i.name}}" price={{i.price_set.all.0.price}} image={{i.image.url}} provider = "{{i.providers.all.0.shop_name}}" rating="{{i.rating}}"></item-card>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    <hr>
+     
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
@@ -280,8 +152,19 @@
     <script src="{% static 'js/compare_price_item_card.js'%}"></script>
     <script>
         
-       
-        
+        //document.cookie = "home=" + JSON.stringify('0');
+        var prevCount = 0;
+        let decodedCookie = decodeURIComponent(document.cookie).split(';');
+        if(decodedCookie.find(item => item.includes("home="))){
+            let countString = decodedCookie.find(item => item.includes("home="));
+            let countStringSplit = countString.split('=');
+            prevCount = JSON.parse(countStringSplit[1]);
+        }
+        else{
+            document.cookie = "home=" + JSON.stringify(prevCount);
+        }
+
+
         let run = () => {
             
             let countDiv = document.querySelector('#count');
@@ -309,7 +192,18 @@
                 
                 if(count){
                     countDiv.innerHTML = ` (${count})` ;
+                    console.log(prevCount,count)
+                    if(prevCount != count){
+                        prevCount = count;
+                        document.cookie = "home="+JSON.stringify(prevCount);
+                        (()=>location.reload(true))()
+                        console.log(prevCount,count)
+                    }
+                   // (()=>location.reload(true))();
                 }
+
+                
+                
                 //cartItems.appendChild(child);
                // console.log(count);
             }
@@ -319,10 +213,15 @@
                 // heading3.appendChild(textnode);
                 // cartItems.appendChild(heading3);
                 countDiv.innerHTML = ``;
+                prevCount = 0;
+                document.cookie = "home=" + JSON.stringify(prevCount);
             }
             }
             else{
                 countDiv.innerHTML = ``;
+                prevCount = 0;
+                document.cookie = "home=" + JSON.stringify(prevCount);
+
             }
 
         }

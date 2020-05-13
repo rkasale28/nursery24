@@ -1,0 +1,2 @@
+*.js linguist-detectable=true
+leaflet-routing-machine.js linguist-detectable=false

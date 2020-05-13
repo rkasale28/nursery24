@@ -76,13 +76,14 @@ class CartCard extends HTMLElement{
         let name = this.shadowRoot.querySelector('h5').innerHTML;
         let price = this.shadowRoot.querySelector('#price').innerHTML;
         let img = this.shadowRoot.querySelector('#image').src;
+        let provider = this.getAttribute('provider');
         //increments product in cookie
         this.shadowRoot.querySelector("#inc").addEventListener('click',()=>{
             
             let decodedCookie = decodeURIComponent(document.cookie).split(';');
             console.log(decodedCookie);
             if(!decodedCookie.find(item => item.includes("product="))){
-                let product = [{name: name, quantity: 1,perPrice: price,price: price,img: img}]
+                let product = [{name: name, quantity: 1,perPrice: price,price: price,img: img,provider: provider}]
                 //console.log(product);
                 document.cookie = 'product=' + JSON.stringify(product);
                 //console.log(document.cookie);
@@ -97,7 +98,7 @@ class CartCard extends HTMLElement{
                 let product = JSON.parse(productStringSplit[1]);
                // console.log(product);// success
                 if(!product.find(item=> item.name == name)){
-                    let newProduct = {name: name,quantity: 1, perPrice: price, price: price, img: img};
+                    let newProduct = {name: name,quantity: 1, perPrice: price, price: price, img: img,provider:provider};
                     this.shadowRoot.querySelector("#result").innerHTML = price;
                     this.shadowRoot.querySelector("#quantity").innerHTML = newProduct.quantity;
                     product = [...product,newProduct];

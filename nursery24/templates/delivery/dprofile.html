@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/Profile.css'%}">
+</head>
+
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+  }
+
+  body {
+    background-color: #f3f3f3;
+  }
+
+  .wrapper {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 650px;
+    display: flex;
+    box-shadow: 0 1px 20px 0 rgba(69, 90, 100, .08);
+  }
+
+  .wrapper .left {
+    width: 40%;
+    padding: 30px 25px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    text-align: center;
+    color: #fff;
+  }
+
+  .wrapper .left img {
+    border-radius: 5px;
+    margin-bottom: 10px;
+    object-fit: cover;
+  }
+
+  .wrapper .left h4 {
+    margin-bottom: 10px;
+  }
+
+  .wrapper .left p {
+    font-size: 12px;
+  }
+
+  .wrapper .right {
+    width: 65%;
+    background: #fff;
+    padding: 30px 25px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  .wrapper .right .info {
+    margin-bottom: 25px;
+  }
+
+  .wrapper .right .info h3 {
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #353c4e;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+  }
+
+  .wrapper .right .info_data {
+
+    justify-content: space-between;
+  }
+
+  .wrapper .right .info_data .data {
+    width: 45%;
+  }
+
+  .wrapper .right .info_data .data h4 {
+    color: #353c4e;
+    margin-bottom: 5px;
+  }
+
+  .wrapper .right .info_data .data p {
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: #919aa3;
+  }
+
+  .wrapper .social_media ul {
+    display: flex;
+  }
+</style>
+
+<body>
+  <header-profile></header-profile>
+
+  <div class="wrapper shadow-lg mb-5 bg-white rounded">
+
+    <div class="left bg-warning">
+      <img class="d-block w-80 mx-auto" src="{{user.deliverypersonnel.profile_pic.url}}" width="100">
+      <h4 class="font-weight-bold"> Name </h4>{{user.first_name}} {{user.last_name}}<br>
+    </div>
+
+    <div class="right border border-warning">
+      <div class="info">
+        <h3>User profile</h3>
+        <div class="info_data">
+          <div class="data">
+            <h4>Email </h4>{{user.email}}<br>
+          </div>
+
+          <div class="data">
+            <h4>User Name </h4>{{user.username}}<br>
+          </div>
+
+          <div class="data">
+            <h4>Phone No. </h4>{{user.deliverypersonnel.phone_number}}
+          </div>
+
+        </div>
+
+      </div>
+      <div class="btn">
+        <form class="ml-auto">
+          <button formaction="changePassword" class="btn btn-warning">Change Password</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="{% static 'js/header_profile.js'%}"></script>
+</body>
+
+</html>

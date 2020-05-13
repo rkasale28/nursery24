@@ -1,0 +1,250 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assigned Orders</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
+    <script type='text/javascript' src='http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js'></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="{% static 'css/leaflet-routing-machine.css' %} " />
+    <style>
+        .card {
+            display: inline-block;
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 15vw;
+            object-fit: cover;
+        }
+
+        .d-block {
+            height: 20vw;
+            object-fit: cover;
+        }
+
+        .bookmarkRibbon {
+            width: 300px;
+            height: 0;
+            border-bottom: 22px solid #800080;
+            border-top: 22px solid #800080;
+            border-right: 15px solid transparent;
+            font-weight: 700;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    {% if not user.is_authenticated%}
+    <header-bar></header-bar>
+    {% else %}
+    <authenticated-header></authenticated-header>
+    {% endif %}
+    
+    <ul class="nav nav-pills nav-fill bg-light">
+        <li class="nav-item">
+            <a class="nav-link" href="home">My Details</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link active" href="assigned">Assigned Orders</a>
+        </li>
+
+    </ul>
+    {% if pio.status == "R" %}
+    <div class="row h5 align-items-center" style="height:50px">
+        <div class="col-3 align-middle text-center">
+            <div class="bookmarkRibbon">
+                <span style="color:white;position: relative;top: -12px;text-align: center;right: -10px;"
+                    class="h4">Provider</span>
+            </div>
+        </div>
+
+        <div class="col-3 align-middle text-center">{{pio.provider.user.first_name}} {{pio.provider.user.last_name}}
+        </div>
+        <div class="col-3 align-middle text-center">{{pio.provider.shop_name}}</div>
+        <div class="col-3 align-middle text-center">{{pio.provider.phone_number}}</div>
+    </div>
+
+    <div class="row d-flex justify-content-center">
+        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:400px;">
+            <div id="map" style="height: 100%;border-radius: 10px;"></div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if pio.status == "N" %}
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        Order has been cancelled. Please return to Provider
+    </div>
+    <div class="row h5 align-items-center" style="height:50px">
+        <div class="col-3 align-middle text-center">
+            <div class="bookmarkRibbon">
+                <span style="color:white;position: relative;top: -12px;text-align: center;right: -10px;"
+                    class="h4">Provider</span>
+            </div>
+        </div>
+
+        <div class="col-3 align-middle text-center">{{pio.provider.user.first_name}} {{pio.provider.user.last_name}}
+        </div>
+        <div class="col-3 align-middle text-center">{{pio.provider.shop_name}}</div>
+        <div class="col-3 align-middle text-center">{{pio.provider.phone_number}}</div>
+    </div>
+{% endif %}
+
+    {% if pio.status == "I" %}
+    <div class="alert alert-danger" role="alert">
+        Sorry to inform you that order has been cancelled.
+    </div>
+    <form action="read" method="post" class="float-right">
+        {% csrf_token %}
+        <input name="id" type="hidden" value="{{pio.id}}">
+        <button type="submit" class="btn btn-primary mr-2 mb-2">
+            <i class="fa fa-check"></i>
+            Mark as read</button>
+    </form>
+    {% endif %}
+
+    {% if pio.status == "S" %}
+    <div class="row h5 align-items-center" style="height:50px">
+        <div class="col-3 align-middle text-center">
+            <div class="bookmarkRibbon">
+                <span style="color:white;position: relative;top: -12px;text-align: center;right: -10px;"
+                    class="h4">Consumer</span>
+            </div>
+        </div>
+
+        <div class="col-3 align-middle text-center">{{pio.order.consumer.user.first_name}}
+            {{pio.order.consumer.user.last_name}}
+        </div>
+        <div class="col-3 align-middle text-center">{{pio.order.consumer.phone_number}}</div>
+        <div class="col-3 align-middle text-center">
+            <form method="POST" action="deliver">
+                {% csrf_token %}
+                <input name="id" type="hidden" value="{{pio.id}}">
+                <button type="submit" class="btn btn-primary mr-2 mb-2">
+                    <i class="fa fa-check"></i>
+                    Delivered</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row d-flex justify-content-center">
+        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:400px;">
+            <div id="map" style="height: 100%;border-radius: 10px;"></div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if pio.status == "N" %}
+    <div class="row d-flex justify-content-center">
+        <div class="bgwhite text-center" style="border:dashed 1px black; border-radius: 10px;width:95%;height:400px;">
+            <div id="map" style="height: 100%;border-radius: 10px;"></div>
+        </div>
+    </div>
+    {% endif %}
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="{% static 'js/leaflet-routing-machine.js'%}"></script>
+    <script src="{% static 'js/header.js'%}"></script>
+    <script src="{% static 'js/header_authenticated.js'%}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var status = "{{pio.status}}"
+            if (status == "R" | status=="N") {
+                var map = L.map('map').setView(["{{pio.last_tracked_by.existing_location_point.x}}", "{{pio.last_tracked_by.existing_location_point.y}}"], 12)
+
+                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                    subdomains: ['a', 'b', 'c']
+                }).addTo(map);
+
+                var i = L.divIcon({
+                    html: '<i class="fa fa-motorcycle fa-2x" style="color: blue;"></i>',
+                    //iconSize: [100, 100],
+                    className: 'myDivIcon'
+                })
+
+                var i1 = L.divIcon({
+                    html: '<i class="fa fa-map-marker fa-2x" style="color: blue;"></i>',
+                    //iconSize: [100, 100],
+                    className: 'myDivIcon'
+                })
+
+                var marker = L.marker([0, 0], { icon: i }).addTo(map).bindPopup("{{pio.last_tracked_by.existing_location_addr}}");
+                marker.setLatLng(["{{pio.last_tracked_by.existing_location_point.x}}", "{{pio.last_tracked_by.existing_location_point.y}}"]);
+
+                var marker1 = L.marker([0, 0], { icon: i1 }).addTo(map).bindPopup("{{pio.provider_addr}}");
+                marker1.setLatLng(["{{pio.provider_point.x}}", "{{pio.provider_point.y}}"]);
+                marker1.openPopup()
+
+                L.Routing.control({
+                    waypoints: [
+                        L.latLng("{{pio.last_tracked_by.existing_location_point.x}}", "{{pio.last_tracked_by.existing_location_point.y}}"),
+                        L.latLng("{{pio.provider_point.x}}", "{{pio.provider_point.y}}")
+                    ],
+                    createMarker: function () { return null; }
+                }).addTo(map);
+            }
+            else if (status == "S") {
+                var map = L.map('map').setView(["{{pio.last_tracked_by.existing_location_point.x}}", "{{pio.last_tracked_by.existing_location_point.y}}"], 12)
+
+                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                    subdomains: ['a', 'b', 'c']
+                }).addTo(map);
+
+                var i = L.divIcon({
+                    html: '<i class="fa fa-motorcycle fa-3x" style="color: blue;"></i>',
+                    //iconSize: [100, 100],
+                    className: 'myDivIcon'
+                })
+
+                var i1 = L.divIcon({
+                    html: '<i class="fa fa-user fa-3x" style="color: blue;"></i>',
+                    //iconSize: [100, 100],
+                    className: 'myDivIcon'
+                })
+
+                var marker = L.marker([0, 0], { icon: i }).addTo(map).bindPopup("{{pio.last_tracked_by.existing_location_addr}}");
+                marker.setLatLng(["{{pio.last_tracked_by.existing_location_point.x}}", "{{pio.last_tracked_by.existing_location_point.y}}"]);
+
+                var marker1 = L.marker([0, 0], { icon: i1 }).addTo(map).bindPopup("{{pio.order.delivery_addr}}");
+                marker1.setLatLng(["{{pio.order.delivery_point.x}}", "{{pio.order.delivery_point.y}}"]);
+                marker1.openPopup()
+
+                L.Routing.control({
+                    waypoints: [
+                        L.latLng("{{pio.last_tracked_by.existing_location_point.x}}", "{{pio.last_tracked_by.existing_location_point.y}}"),
+                        L.latLng("{{pio.order.delivery_point.x}}", "{{pio.order.delivery_point.y}}")
+                    ],
+                    createMarker: function () { return null; }
+                }).addTo(map);
+            }
+        });
+
+    </script>
+</body>
+
+</html>

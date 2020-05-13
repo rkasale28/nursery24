@@ -1,19 +1,95 @@
-<h2>Select one address or enter a new one</h2>
+{% load static %}
+{% load custom_tags %}
 
-<form action = 'confirmorder' method = 'POST'  >
-{% csrf_token %}
-{% for add in addr %}
-<h3>{{ add }}</h3>
-<input type = 'hidden' value = {{add}} name = 'address'> 
-<input type = 'submit'>
-{% endfor %}
-<br>
-</form>
-<form action = 'confirmorder' method = 'POST'  >
-{% csrf_token %}
-<h3>Enter delivery address:
-<input type = 'text' name = 'address'> 
-<br>
-<input type = 'submit'>
-</h3>
-</form>
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Address</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+    .active {
+        color: #0275d8;
+        border-bottom: #0275d8 solid 2px;
+    }
+
+    .success {
+        background-color: #28a745;
+        border-bottom: #28a745 solid 2px;
+        color: white;
+        border-right:#d3d3d3 solid 2px;
+    }
+
+    a:hover {
+        text-decoration: none;
+        color: black;
+    }
+</style>
+
+<body>
+    <header-profile></header-profile>
+
+    <ul class="nav nav-fill bg-light">
+        <li class="nav-item pl-4  pr-4 pt-2 success">
+            <p class="text-left h5">Step 1</p>
+            <p class="text-left h6">Confirm Order</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2 active">
+            <p class="text-left h5">Step 2</p>
+            <p class="text-left h6">Select Delivery Address</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2">
+            <p class="text-left h5">Step 3</p>
+            <p class="text-left h6">Place Order</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2">
+            <p class="text-left h5">Step 4</p>
+            <p class="text-left h6">Payments</p>
+        </li>
+        <li class="nav-item pl-4 pr-4 pt-2">
+            <p class="text-left h5">Step 5</p>
+            <p class="text-left h6">Order Successful</p>
+        </li>
+    </ul>
+
+    <div class="d-flex justify-content-start ml-3 mt-3">
+        {% for i in user.consumer.address_set.all%}
+        <div class="card mr-3" style="width: 255px;height:255px">
+            <div class="card-body d-flex flex-column">
+                <p class="card-text">{{i.addr}}</p>
+
+                <form action="confirmorder" method="post" class="ml-auto mt-auto">
+                {% csrf_token %}
+                <input type = 'hidden' value = '{{i.addr}}' name = 'address'> 
+                <input type = 'submit' class=" btn btn-primary" value="Select">
+                </form>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:5 %}
+    </div>
+    <div class="d-flex justify-content-left ml-3 mt-3">
+
+        {%endif%}
+
+        {% endfor%}
+
+        {% if user.consumer.address_set.all|length|divisibleby:5 %}
+    </div>
+    <div class="d-flex justify-content-left ml-3 mt-3">
+    {% endif %}
+        <a href="displayaddaddressformtoconfirmorder">
+            <div class="d-flex justify-content-start">
+                <div class="card mr-3 bg-light" style="width: 255px;height:255px;border: 5px dashed black">
+                    <div class="card-title">
+                        <p class="card-text text-center" style="font-size: 100px;margin-top:40px;">+</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+<script src="{% static 'js/header_profile.js'%}"></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.gis.db import models as gismodel
 
 # Create your models here.
 class Courier(models.Model):
@@ -10,4 +11,5 @@ class Courier(models.Model):
 
 class Address(models.Model):
     addr=models.TextField(max_length=100,null=True)
+    point = gismodel.PointField(null=True)
     courier=models.ForeignKey(Courier,on_delete=models.CASCADE)

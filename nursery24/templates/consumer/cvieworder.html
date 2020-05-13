@@ -1,0 +1,291 @@
+{%load static%}
+{% load custom_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Order</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <style>
+    a:hover {
+      text-decoration: none;
+      color: black;
+    }
+
+    img {
+      object-fit: cover;
+    }
+
+    .rating {
+      display: inline-block;
+      position: relative;
+      height: 20px;
+      line-height: 20px;
+      font-size: 50px;
+    }
+
+    .rating label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .rating label:last-child {
+      position: static;
+    }
+
+    .rating label:nth-child(1) {
+      z-index: 5;
+    }
+
+    .rating label:nth-child(2) {
+      z-index: 4;
+    }
+
+    .rating label:nth-child(3) {
+      z-index: 3;
+    }
+
+    .rating label:nth-child(4) {
+      z-index: 2;
+    }
+
+    .rating label:nth-child(5) {
+      z-index: 1;
+    }
+
+    .rating label input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+    }
+
+    .rating label .icon {
+      float: left;
+      color: transparent;
+    }
+
+    .rating label:last-child .icon {
+      color: #000;
+    }
+
+    .rating:not(:hover) label input:checked~.icon,
+    .rating:hover label:hover input~.icon {
+      color: #DE9E0C;
+    }
+
+    .rating label input:focus:not(:checked)~.icon:last-child {
+      color: #000;
+      text-shadow: 0 0 5px #DE9E0C;
+    }
+  </style>
+
+</head>
+
+<body>
+  <header-profile></header-profile>
+
+  <ul class="nav nav-pills nav-fill bg-light">
+    <li class="nav-item">
+      <a class="nav-link" href="myprofile">Profile</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="vieworders">Order</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="addresses">Address</a>
+    </li>
+  </ul>
+
+  <div class="row d-flex justify-content-center">
+    {% for i in order %}
+    <div class="shadow-lg p-3 m-3 bg-white rounded" style="width: 95%;">
+      <div class="row border-bottom mb-3 pb-1">
+        <div class="col-md-12 mr-3 text-right h5">
+          <span>Order Id: </span>
+          <span class="text-muted">{{i.secondary_id}}</span>
+        </div>
+      </div>
+      {% for j in i.productinorder_set.all|dictsortreversed:"last_tracked_on" %}
+
+      <div class="row">
+        <div class="col-md-1">
+          <img class="rounded border border-dark" src="{{j.product.image.url}}" width="120px" height="120px" />
+        </div>
+        <div class="col-md-11">
+          <div class="row mb-3 ml-1">
+            <div class="col-md-6 h5 font-weight-bold">{{j.product.name}}</div>
+
+            {% if j.status == "P" or j.status == "R" or j.status == "S" %}
+            <div class="col-md-3 h5 text-right">Expected on: </div>
+            <div class="col-md-3 h5 text-muted">{{j.expected_delivery_date | date }}</div>
+            {% endif %}
+
+            {% if j.status == "D" %}
+            <div class="col-md-3 h5 text-right">Delivered on: </div>
+            <div class="col-md-3 h5 text-muted">{{j.date_delivered | date}}</div>
+            {% endif %}
+
+            {% if j.status == "C" or j.status == "I" or j.status == "N" %}
+            <div class="col-md-3 h5 text-right">Cancelled on: </div>
+            <div class="col-md-3 h5 text-muted">{{j.last_tracked_on | date}}</div>
+            {% endif %}
+          </div>
+          <div class="row ml-1">
+            <div class="col-md-1 h5">Quantity:</div>
+            <div class="col-md-2 h5 text-muted">{{j.quantity}}</div>
+            <div class="col-md-3"></div>
+
+            {% if j.status == "P" or j.status == "R" or j.status == "S" %}
+            <div class="col-md-6 h5 text-center">
+              <form action="track" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{j.id}}">
+                <input type="submit" value="Track Order" style="width: 200px;" class="btn btn-warning">
+              </form>
+            </div>
+            {% endif %}
+
+            {% if j.status == "D" %}
+            <div class="col-md-6 text-center">
+              <!-- <form action="rate" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{j.id}}">
+                                <input type="submit" value="Rate Product" style="width: 200px;" class="btn btn-warning">
+                            </form> -->
+
+              <form class="rating">
+                <label>
+                  {% for r in ratings|by_product:j.product %}
+                  {% if r.rating == 1.0 %}
+                  <input type="radio" name="stars" value="1?{{j.product.id}}" checked />
+                  {% else %}
+                  <input type="radio" name="stars" value="1?{{j.product.id}}" />
+                  {%endif%}
+                  {% endfor %}
+
+                  <span class="icon">★</span>
+                </label>
+                <label>
+                  {% for r in ratings|by_product:j.product %}
+                  {% if r.rating == 2.0 %}
+                  <input type="radio" name="stars" value="2?{{j.product.id}}" checked />
+                  {% else %}
+                  <input type="radio" name="stars" value="2?{{j.product.id}}" />
+                  {%endif%}
+                  {% endfor %}
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                </label>
+                <label>
+
+                  {% for r in ratings|by_product:j.product %}
+                  {% if r.rating == 3.0 %}
+                  <input type="radio" name="stars" value="3?{{j.product.id}}" checked />
+                  {% else %}
+                  <input type="radio" name="stars" value="3?{{j.product.id}}" />
+                  {%endif%}
+                  {% endfor %}
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                </label>
+                <label>
+                  {% for r in ratings|by_product:j.product %}
+                  {% if r.rating == 4.0 %}
+                  <input type="radio" name="stars" value="4?{{j.product.id}}" checked />
+                  {% else %}
+                  <input type="radio" name="stars" value="4?{{j.product.id}}" />
+                  {%endif%}
+                  {% endfor %}
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                </label>
+                <label>
+                  {% for r in ratings|by_product:j.product %}
+                  {% if r.rating == 5.0 %}
+                  <input type="radio" name="stars" value="5?{{j.product.id}}" checked />
+                  {% else %}
+                  <input type="radio" name="stars" value="5?{{j.product.id}}" />
+                  {%endif%}
+                  {% endfor %}
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                  <span class="icon">★</span>
+                </label>
+
+              </form>
+
+            </div>
+            {% endif %}
+          </div>
+          <div class="row ml-1">
+            <div class="col-md-1 h5">Price:</div>
+            <div class="col-md-2 h5 text-muted">{{j.total_price}}</div>
+            <div class="col-md-3"></div>
+
+
+            {% if j.status == "P" or j.status == "R" or j.status == "S" %}
+            <div class="col-md-6 h5 text-center">
+              <form action="cancel" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{j.id}}">
+                <input type="submit" value="Cancel Order" style="width: 200px;" class="btn btn-danger">
+              </form>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% if not forloop.last %}
+      <hr>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="mb-3"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+
+  <script src="{% static 'js/header_profile.js'%}"></script>
+
+  <script>
+    $(':radio').change(function () {
+      var x = this.value;
+      console.log('New star rating: ' + x);
+      $.ajax({
+        url: "../consumer/rate",
+        type: "POST",
+        dataType: "json",
+        data: {
+          csrfmiddlewaretoken: '{{csrf_token}}',
+          stars: x,
+        },
+      });
+    });
+  </script>
+
+</body>
+
+</html>
