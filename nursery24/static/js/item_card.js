@@ -39,7 +39,11 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
             <button type="button" class="btn btn-success" id = "dec">-</button>
         </div>
     </div>
-            
+    
+    <div class="progress" style="height: 20px;">
+        <div class="progress-bar bg-warning" id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <span style="display:inline;" id="label"></span>
+    </div>
 </div>`
         
 class ItemCard extends HTMLElement{
@@ -50,6 +54,15 @@ class ItemCard extends HTMLElement{
         this.shadowRoot.querySelector('h5').innerText= `${this.getAttribute('name')}`
         this.shadowRoot.querySelector('#price').innerText=this.getAttribute('price')
         this.shadowRoot.querySelector('#image').src=this.getAttribute('image')
+
+        var avg_rating=this.getAttribute('rating')
+        console.log(this.getAttribute('name'))
+        console.log(avg_rating)
+        
+        this.shadowRoot.querySelector('#progress').style.width=avg_rating+'%'
+        this.shadowRoot.querySelector('#progress').setAttribute('aria-valuenow',avg_rating)
+        this.shadowRoot.querySelector('#label').innerText = avg_rating+' %'
+        
         this.innerHTML=`${this.getAttribute('name')}`
         let decodedCookie = decodeURIComponent(document.cookie).split(';');
         if(decodedCookie.find(item => item.includes("product="))){
