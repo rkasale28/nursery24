@@ -463,7 +463,7 @@ def successfulorder(request):
     
     grand_total = request.session['grand_total']
     cust_addr = request.session['cust_addr']
-    cust_pt=Consumer_Address.objects.get(consumer_id = consumer.id).point
+    cust_pt=Consumer_Address.objects.get(consumer_id = consumer.id,addr=cust_addr).point
     
     order=Order(total_price = grand_total,
     secondary_id = unique_id,
