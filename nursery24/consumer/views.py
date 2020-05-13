@@ -351,16 +351,16 @@ def confirmorder(request):
     if total>1500:
         delivery = 0
     elif total>1000:
-        delivery = 0.25*total
+        delivery = 0.07*total
     else:
-        delivery = 0.50*total
+        delivery = 0.15*total
     
     if total>1500:
         int_h = 0
     elif total>1000:
-        int_h = 0.20*total
+        delivery = 0.03*total
     else:
-        int_h = 0.40*total
+        int_h = 0.05*total
 
     data['total'] = total
     data['delivery'] = int(delivery)
