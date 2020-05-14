@@ -56,8 +56,6 @@ class ItemCard extends HTMLElement{
         this.shadowRoot.querySelector('#image').src=this.getAttribute('image')
 
         var avg_rating=this.getAttribute('rating')
-        console.log(this.getAttribute('name'))
-        console.log(avg_rating)
         
         this.shadowRoot.querySelector('#progress').style.width=avg_rating+'%'
         this.shadowRoot.querySelector('#progress').setAttribute('aria-valuenow',avg_rating)
