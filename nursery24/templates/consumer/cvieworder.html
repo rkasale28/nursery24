@@ -158,69 +158,56 @@
 
             {% if j.status == "D" %}
             <div class="col-md-6 text-center">
-              <!-- <form action="rate" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="id" value="{{j.id}}">
-                                <input type="submit" value="Rate Product" style="width: 200px;" class="btn btn-warning">
-                            </form> -->
-
               <form class="rating">
                 <label>
-                  {% for r in ratings|by_product:j.product %}
-                  {% if r.rating == 1.0 %}
+                  {% if rate|get_item:j.product.name == 1.0 %}
                   <input type="radio" name="stars" value="1?{{j.product.id}}" checked />
                   {% else %}
                   <input type="radio" name="stars" value="1?{{j.product.id}}" />
                   {%endif%}
-                  {% endfor %}
 
                   <span class="icon">★</span>
                 </label>
                 <label>
-                  {% for r in ratings|by_product:j.product %}
-                  {% if r.rating == 2.0 %}
+                  {% if rate|get_item:j.product.name == 2.0 %}
                   <input type="radio" name="stars" value="2?{{j.product.id}}" checked />
                   {% else %}
                   <input type="radio" name="stars" value="2?{{j.product.id}}" />
                   {%endif%}
-                  {% endfor %}
+
                   <span class="icon">★</span>
                   <span class="icon">★</span>
                 </label>
                 <label>
 
-                  {% for r in ratings|by_product:j.product %}
-                  {% if r.rating == 3.0 %}
+                  {% if rate|get_item:j.product.name == 3.0 %}
                   <input type="radio" name="stars" value="3?{{j.product.id}}" checked />
                   {% else %}
                   <input type="radio" name="stars" value="3?{{j.product.id}}" />
                   {%endif%}
-                  {% endfor %}
+
                   <span class="icon">★</span>
                   <span class="icon">★</span>
                   <span class="icon">★</span>
                 </label>
                 <label>
-                  {% for r in ratings|by_product:j.product %}
-                  {% if r.rating == 4.0 %}
+                  
+                  {% if rate|get_item:j.product.name == 4.0 %}
                   <input type="radio" name="stars" value="4?{{j.product.id}}" checked />
                   {% else %}
                   <input type="radio" name="stars" value="4?{{j.product.id}}" />
                   {%endif%}
-                  {% endfor %}
                   <span class="icon">★</span>
                   <span class="icon">★</span>
                   <span class="icon">★</span>
                   <span class="icon">★</span>
                 </label>
                 <label>
-                  {% for r in ratings|by_product:j.product %}
-                  {% if r.rating == 5.0 %}
+                  {% if rate|get_item:j.product.name == 5.0 %}
                   <input type="radio" name="stars" value="5?{{j.product.id}}" checked />
                   {% else %}
                   <input type="radio" name="stars" value="5?{{j.product.id}}" />
                   {%endif%}
-                  {% endfor %}
                   <span class="icon">★</span>
                   <span class="icon">★</span>
                   <span class="icon">★</span>

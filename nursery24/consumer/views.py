@@ -564,8 +564,18 @@ def orderlogin_submit(request):
 def vieworders(request):
     order=Order.objects.filter(consumer=request.user.consumer).order_by('-date_placed')
     data={}
+    dict={}
     data['order']=order
-    data['ratings']=request.user.consumer.review_set.all()
+    pio=ProductInOrder.objects.filter(order__consumer=request.user.consumer).distinct('product__name')
+
+    for i in pio:
+        r=Review.objects.filter(consumer=request.user.consumer,product=i.product)
+        if not r:
+            dict[i.product.name]=0
+        else:
+            dict[i.product.name]=r.first().rating
+    
+    data['rate']=dict
     
     return render(request,'cvieworder.html',data)
 
