@@ -160,6 +160,7 @@
             <div class="col-md-6 text-center">
               <form class="rating">
                 <label>
+
                   {% if rate|get_item:j.product.name == 1.0 %}
                   <input type="radio" name="stars" value="1?{{j.product.id}}" checked />
                   {% else %}
@@ -167,8 +168,11 @@
                   {%endif%}
 
                   <span class="icon">★</span>
+
                 </label>
+
                 <label>
+
                   {% if rate|get_item:j.product.name == 2.0 %}
                   <input type="radio" name="stars" value="2?{{j.product.id}}" checked />
                   {% else %}
@@ -177,7 +181,9 @@
 
                   <span class="icon">★</span>
                   <span class="icon">★</span>
+
                 </label>
+
                 <label>
 
                   {% if rate|get_item:j.product.name == 3.0 %}
@@ -189,7 +195,9 @@
                   <span class="icon">★</span>
                   <span class="icon">★</span>
                   <span class="icon">★</span>
+
                 </label>
+
                 <label>
                   
                   {% if rate|get_item:j.product.name == 4.0 %}
@@ -197,22 +205,28 @@
                   {% else %}
                   <input type="radio" name="stars" value="4?{{j.product.id}}" />
                   {%endif%}
+
                   <span class="icon">★</span>
                   <span class="icon">★</span>
                   <span class="icon">★</span>
                   <span class="icon">★</span>
+
                 </label>
+
                 <label>
+
                   {% if rate|get_item:j.product.name == 5.0 %}
                   <input type="radio" name="stars" value="5?{{j.product.id}}" checked />
                   {% else %}
                   <input type="radio" name="stars" value="5?{{j.product.id}}" />
                   {%endif%}
+
                   <span class="icon">★</span>
                   <span class="icon">★</span>
                   <span class="icon">★</span>
                   <span class="icon">★</span>
                   <span class="icon">★</span>
+
                 </label>
 
               </form>
