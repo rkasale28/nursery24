@@ -72,7 +72,14 @@
             {% for i in array %}
             <tr>
                 <td class="text-center">{{forloop.counter}}</td>
-                <td>{{i.name}}</td>
+                <td>
+                    {% if i.N %}
+                    <span style="color: red;">{{i.name}}</span>
+                    {% else %}
+                    {{i.name}}
+                    {% endif %}
+                    
+                </td>
                 <td class="text-center">{{i.D}}</td>
                 <td class="text-center">{{i.C}}</td>
             </tr>

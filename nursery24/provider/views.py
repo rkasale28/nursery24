@@ -379,7 +379,6 @@ def analyse(request):
     data['n']=json.dumps(n)
     return render(request,'panalyse.html',data)
 
-@login_required(login_url='../provider/login')
 def convert(list):
     res=[0 if i is None else i for i in list ]
     return (res)
@@ -452,7 +451,7 @@ def danalyse(request):
             for j in pio:
                 temp_y+=j.quantity
             yours.append(temp_y)
-      
+
     highest=convert(highest)
     lowest=convert(lowest)
     mean=convert(mean)

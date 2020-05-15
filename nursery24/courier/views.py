@@ -224,6 +224,10 @@ def viewsummary(request):
         c['name']=i.user.first_name+' '+i.user.last_name
         c['D']=i.productinorder_set.filter(status='D').count()
         c['C']=i.productinorder_set.filter(Q(status='C') | Q(status='I') | Q(status='N')).count()
+        if (i.productinorder_set.filter(status='N').count()==1):
+            c['N']=True
+        else:
+            c['N']=False
         array.append(c)
     return render(request,'cosummary.html',{'array':array})
 

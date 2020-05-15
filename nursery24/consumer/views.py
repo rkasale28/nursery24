@@ -373,7 +373,7 @@ def confirmorder(request):
     if total>1500:
         int_h = 0
     elif total>1000:
-        delivery = 0.03*total
+        int_h = 0.03*total
     else:
         int_h = 0.05*total
 
