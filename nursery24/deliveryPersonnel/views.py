@@ -1,5 +1,4 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
 from django.core.exceptions import ObjectDoesNotExist
@@ -26,12 +25,16 @@ def login_submit(request):
             try:
                 dp=DeliveryPersonnel.objects.get(user=user)
             except ObjectDoesNotExist as d:
-                return HttpResponse('User does not exist')
+                data={}
+                data['msg']='User does not exist'
+                return render(request,'dlogin.html',data)
             else:
                 auth.login(request,user)
                 return redirect('../delivery/home')
         else:
-            return HttpResponse('Invalid Credentials')
+            data={}
+            data['msg']='Invalid Credentials'
+            return render(request,'dlogin.html',data)
     else:
         return render(request,'login')
 
@@ -53,11 +56,17 @@ def changepasswordsubmit(request):
         new=request.POST["new"]
         cnf=request.POST["cnf"]
         if (uname!=request.user.username):
-            return HttpResponse("Wrong Username")
+            data={}
+            data['msg']='Wrong Username'
+            return render(request,'dchange.html',data)
         elif not (request.user.check_password(prev)):
-            return HttpResponse("Wrong Password")
+            data={}
+            data['msg']='Wrong Password'
+            return render(request,'dchange.html',data)
         elif (new!=cnf):
-            return HttpResponse("Passwords don't match")
+            data={}
+            data['msg']="Passwords do not match"
+            return render(request,'dchange.html',data)
         else:
             request.user.set_password(new)
             request.user.save()

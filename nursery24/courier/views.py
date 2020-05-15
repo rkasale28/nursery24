@@ -1,5 +1,4 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse,HttpResponseRedirect
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
 from .models import Courier,Address
@@ -45,7 +44,10 @@ def signup_submit(request):
             auth.login(request,user)
             return redirect('../courier/home')
     except IntegrityError as e:
-        return HttpResponse ('Username already exists')
+        print('Username already exists')
+        data={}
+        data['msg']='Username already exists'
+        return render(request,'cosignup.html',data)
 
 def login(request):
     return render(request,'cologin.html')
@@ -59,7 +61,9 @@ def login_submit(request):
             try:
                 courier=Courier.objects.get(user=user)
             except ObjectDoesNotExist as d:
-                return HttpResponse('User does not exist')
+                data={}
+                data['msg']='User does not exist'
+                return render(request,'cologin.html',data)
             else:
                 auth.login(request,user)
                 U = cookies.SimpleCookie()
@@ -67,7 +71,9 @@ def login_submit(request):
                 
                 return redirect('../courier/home')
         else:
-            return HttpResponse('Invalid Credentials')
+            data={}
+            data['msg']='Invalid Credentials'
+            return render(request,'cologin.html',data)
     else:
         return render(request,'cologin.html')
 

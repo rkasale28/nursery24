@@ -27,7 +27,7 @@
     </style>
 </head>
 
-<body>
+<body onload="myFunction()">
     <header-profile></header-profile>
 
     <form action="changePasswordsubmit" method="POST">
@@ -49,6 +49,15 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>    
     <script src="{% static 'js/header_profile.js'%}"></script>
+
+    <script>
+        function myFunction() {
+            if ("{{msg}}"){
+                alert("{{msg}}");
+                window.location.replace("../delivery/changePassword")
+            }
+          }
+    </script>
 </body>
 
 </html>

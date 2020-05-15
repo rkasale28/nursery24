@@ -76,8 +76,10 @@ def signup_submit(request):
             auth.login(request,user)
             return redirect('../consumer/home')
     except IntegrityError as e:
-        return HttpResponse ('Username already exists')
-
+        data={}
+        data['msg']='Username already exists'
+        return render(request,'csignup.html',data)
+        
 def login(request):
     return render(request,'clogin.html')
 
@@ -90,7 +92,9 @@ def login_submit(request):
             try:
                 consumer=Consumer.objects.get(user=user)
             except ObjectDoesNotExist as d:
-                return HttpResponse('User does not exist')
+                data={}
+                data['msg']='User does not exist'
+                return render(request,'clogin.html',data)        
             else:
                 auth.login(request,user)
                 U = cookies.SimpleCookie()
@@ -98,7 +102,9 @@ def login_submit(request):
                 
                 return redirect('../consumer/home')
         else:
-            return HttpResponse('Invalid Credentials')
+            data={}
+            data['msg']='Invalid Credentials'
+            return render(request,'clogin.html',data)
     else:
         return render(request,'login')
 
@@ -549,7 +555,9 @@ def orderlogin_submit(request):
             try:
                 consumer=Consumer.objects.get(user=user)
             except ObjectDoesNotExist as d:
-                return HttpResponse('User does not exist')
+                data={}
+                data['msg']='User does not exist'
+                return render(request,'clogin.html',data)        
             else:
                 auth.login(request,user)
                 U = cookies.SimpleCookie()
@@ -557,7 +565,9 @@ def orderlogin_submit(request):
                 
                 return redirect('../consumer/cart')
         else:
-            return HttpResponse('Invalid Credentials')
+            data={}
+            data['msg']='Invalid Credentials'
+            return render(request,'clogin.html',data)        
     else:
         return render(request,'login')
 

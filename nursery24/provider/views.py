@@ -1,5 +1,4 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
 from .models import Address,Provider,Product,Price
@@ -44,8 +43,10 @@ def signup_submit(request):
             auth.login(request,user)
             return redirect('../provider/home')
     except IntegrityError as e:
-        return HttpResponse ('Username already exists')
-
+        data={}
+        data['msg']='Username already exists'
+        return render(request,'psignup.html',data)
+        
 def login(request):
     return render(request,'plogin.html')
 
@@ -58,12 +59,16 @@ def login_submit(request):
             try:
                 provider=Provider.objects.get(user=user)
             except ObjectDoesNotExist as d:
-                return HttpResponse('User does not exist')
+                data={}
+                data['msg']='User does not exist'
+                return render(request,'plogin.html',data)
             else:
                 auth.login(request,user)
                 return redirect('../provider/home')
         else:
-            return HttpResponse('Invalid Credentials')
+            data={}
+            data['msg']='Invalid Credentials'
+            return render(request,'plogin.html',data)
     else:
         return render(request,'login')
 
@@ -206,10 +211,11 @@ def readytoshipsubmit(request):
             product.last_tracked_by=dp
             product.save()
             return redirect('../provider/home')
-        except:
-            return HttpResponse('No Delivery Personnel is available')
+        except:            
+            data={}
+            data['msg']='No Delivery Personnel is available'
+            return render(request,'phome.html',data)
         
-
 def ready(request):
     list=request.user.provider.productinorder_set.all().filter(status='R').order_by('order__date_placed')
     return render(request,'pready.html',{'list':list})
