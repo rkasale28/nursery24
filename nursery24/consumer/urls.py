@@ -36,6 +36,5 @@ urlpatterns=[
     path('previousOrders', views.successMsg, name="previousOrders"),
     path('track',views.track,name="track"),
     path('cancel',views.cancel,name="cancel"),
-    path('sample',views.sample,name="sample"),
     path('rate',views.rate,name="rate")
 ]

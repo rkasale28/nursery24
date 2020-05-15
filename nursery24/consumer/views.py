@@ -36,10 +36,8 @@ from django.contrib.gis.measure import D
 from weasyprint import HTML, CSS
 from django.template.loader import get_template
 from django.template.loader import render_to_string
-
+from django.contrib.auth.decorators import login_required
 import os
-
-
 import stripe
 
 # Stripe's Secret API Key 🤫
@@ -50,6 +48,7 @@ publishable_key = 'pk_test_1VWTyC4sr1TtRWpXMhMMWa6U00jagFandz'
 
 
 # Create your views here.
+@login_required(login_url='../consumer/login')
 def pdf_generation(request):
             html_template = get_template('templates/home_page.html')
             pdf_file = HTML(string=html_template).write_pdf()
@@ -112,9 +111,11 @@ def logout(request):
     auth.logout(request)
     return redirect('../consumer/home')
 
+@login_required(login_url='../consumer/login')
 def myprofile(request):
     return render(request,'cprofile.html')
 
+@login_required(login_url='../consumer/login')
 def edit(request):
     userform=UserForm()
     userform.fields['first_name'].initial=request.user.first_name
@@ -124,6 +125,7 @@ def edit(request):
     consumerform.fields['phone_number'].initial=Consumer.objects.get(user=request.user).phone_number
     return render(request,'ceditprofile.html',{'userform':userform,'consumerform':consumerform})
 
+@login_required(login_url='../consumer/login')
 def editsubmit(request):
     if request.method=='POST':
         first_name=request.POST['first_name']
@@ -145,13 +147,16 @@ def editsubmit(request):
     else: 
         return render(request,'cprofile.html')        
 
+@login_required(login_url='../consumer/login')
 def addresses(request):
     return render(request,'caddress.html')
 
+@login_required(login_url='../consumer/login')
 def addaddress(request):
     form=AddressForm()
     return render(request,'caddaddress.html',{'form':form})
 
+@login_required(login_url='../consumer/login')
 def addaddresssubmit(request):
     if request.method=='POST':
         consumer_id=request.POST['consumer']
@@ -163,6 +168,7 @@ def addaddresssubmit(request):
         address.save()
         return redirect('../consumer/addresses')
 
+@login_required(login_url='../consumer/login')
 def deleteaddresssubmit(request):
     if request.method=='POST':
         address_id=request.POST['id']
@@ -293,12 +299,15 @@ def checkout(request):
         request.session['provider'] = provnames
     return render(request,'corderpage.html',data) 
 
+@login_required(login_url='../consumer/login')
 def selectaddress(request):
     return render(request,'cselectaddress.html') 
 
+@login_required(login_url='../consumer/login')
 def displayaddaddressformtoconfirmorder(request):
     return render(request,'cdisplayaddaddressformtoconfirmorder.html')
 
+@login_required(login_url='../consumer/login')
 def confirmorder(request):
     consumer=request.user.consumer
     address = request.POST['address']
@@ -379,6 +388,7 @@ def confirmorder(request):
     request.session['provider']=providers
     return render(request,'confirmorder.html',data)
 
+@login_required(login_url='../consumer/login')
 def payments(request):
     api = {}
     cookies = request.COOKIES['product']
@@ -423,6 +433,7 @@ def payments(request):
     api['publishable_key'] = publishable_key
     return render(request,'payments.html',api)
 
+@login_required(login_url='../consumer/login')
 def charge(request):
     amount = 0
     if request.method == 'POST':
@@ -445,6 +456,7 @@ def charge(request):
     
     return redirect(reverse('success', args=[amount]))
 
+@login_required(login_url='../consumer/login')
 def successfulorder(request):
     today = datetime.datetime.now()
     current_time = datetime.datetime.now()
@@ -537,15 +549,16 @@ def successfulorder(request):
     
     return render(request,'csuccessfulorder.html',data)
 
-
+@login_required(login_url='../consumer/login')
 def successMsg(request):
     amount = args
     return render(request, 'previousOrders.html',{'amount':amount})
 
-
+@login_required(login_url='../consumer/login')
 def orderlogin(request):
     return render(request,'corderlogin.html')
 
+@login_required(login_url='../consumer/login')
 def orderlogin_submit(request):
     if request.method=='POST':
         uname=request.POST["uname"]
@@ -571,6 +584,7 @@ def orderlogin_submit(request):
     else:
         return render(request,'login')
 
+@login_required(login_url='../consumer/login')
 def vieworders(request):
     order=Order.objects.filter(consumer=request.user.consumer).order_by('-date_placed')
     data={}
@@ -589,12 +603,14 @@ def vieworders(request):
     
     return render(request,'cvieworder.html',data)
 
+@login_required(login_url='../consumer/login')
 def track(request):
     if request.method=='POST':
         id=request.POST["id"]
         pio=ProductInOrder.objects.get(pk=id)
         return render(request,'ctrack.html',{'pio':pio})
 
+@login_required(login_url='../consumer/login')
 def cancel(request):
     if request.method=='POST':
         id=request.POST["id"]
@@ -613,9 +629,7 @@ def cancel(request):
             pio.save()
         return redirect('../consumer/vieworders')
 
-def sample(request):
-    return render(request,'sample.html')
-
+@login_required(login_url='../consumer/login')
 def rate(request):
     if request.method=='POST':
         string=request.POST["stars"]

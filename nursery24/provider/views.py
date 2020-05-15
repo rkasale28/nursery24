@@ -14,6 +14,7 @@ from django.db.models import Q
 import datetime
 import json
 from django.db.models import Sum,Avg,Max,Min
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def signup(request):
@@ -76,15 +77,18 @@ def logout(request):
     auth.logout(request)
     return redirect ('../provider/login')
 
+@login_required(login_url='../provider/login')
 def home(request):
     list=request.user.provider.productinorder_set.all().filter(status='P').order_by('order__date_placed')
     return render(request,'phome.html',{'list':list})
 
+@login_required(login_url='../provider/login')
 def additem(request):
     productform=ProductForm()
     priceform=PriceForm()
     return render(request,'padditem.html',{'productform':productform,'priceform':priceform})
 
+@login_required(login_url='../provider/login')
 def additemsubmit(request):
     if request.method=='POST':
         provider_id=request.POST['provider']
@@ -103,9 +107,11 @@ def additemsubmit(request):
             check_product.providers.add(provider,through_defaults={'price':price})
         return redirect('../provider/removeitem')
 
+@login_required(login_url='../provider/login')
 def removeitem(request):
     return render(request,'premoveitem.html')
 
+@login_required(login_url='../provider/login')
 def removeitemsubmit(request):
     if (request.method=='POST'):
         product_id=request.POST['id']
@@ -115,13 +121,16 @@ def removeitemsubmit(request):
         provider.product_set.remove(product)
         return redirect('../provider/removeitem')
 
+@login_required(login_url='../provider/login')
 def addbranch(request):
     form=AddressForm()
     return render(request,'paddbranch.html',{'form':form})
 
+@login_required(login_url='../provider/login')
 def myprofile(request):
     return render(request,'pprofile.html')
 
+@login_required(login_url='../provider/login')
 def addbranchsubmit(request):
     if request.method=='POST':
         provider_id=request.POST['provider']
@@ -133,15 +142,18 @@ def addbranchsubmit(request):
         address.save()
         return redirect('../provider/removebranch')
 
+@login_required(login_url='../provider/login')
 def removebranch(request):
     return render(request,'premovebranch.html')
 
+@login_required(login_url='../provider/login')
 def removebranchsubmit(request):
     if request.method=='POST':
         address_id=request.POST['id']
         Address.objects.get(pk=address_id).delete()
         return redirect('../provider/removebranch')
 
+@login_required(login_url='../provider/login')
 def edit(request):
     userform=UserForm()
     userform.fields['first_name'].initial=request.user.first_name
@@ -152,6 +164,7 @@ def edit(request):
     providerform.fields['shop_name'].initial=Provider.objects.get(user=request.user).shop_name
     return render(request,'peditprofile.html',{'userform':userform,'providerform':providerform})
 
+@login_required(login_url='../provider/login')
 def editsubmit(request):
     if request.method=='POST':
         first_name=request.POST['first_name']
@@ -175,6 +188,7 @@ def editsubmit(request):
     else: 
         return render(request,'pprofile.html')  
 
+@login_required(login_url='../provider/login')
 def readytoship(request):
     address=[]
     if request.method=='POST':
@@ -190,6 +204,7 @@ def readytoship(request):
                 break
         return render(request,'pselectaddress.html',{'address':address,'productinorderid':id})
 
+@login_required(login_url='../provider/login')
 def readytoshipsubmit(request):
     if request.method=='POST':
         id=request.POST['id']
@@ -215,11 +230,13 @@ def readytoshipsubmit(request):
             data={}
             data['msg']='No Delivery Personnel is available'
             return render(request,'phome.html',data)
-        
+
+@login_required(login_url='../provider/login')
 def ready(request):
     list=request.user.provider.productinorder_set.all().filter(status='R').order_by('order__date_placed')
     return render(request,'pready.html',{'list':list})
 
+@login_required(login_url='../provider/login')
 def ship(request):
     if request.method=='POST':
       id=request.POST['id']
@@ -230,14 +247,17 @@ def ship(request):
       pio.save()
       return redirect('../provider/ready')
 
+@login_required(login_url='../provider/login')
 def cancelled(request):
     list=request.user.provider.productinorder_set.all().filter(Q(status='I') | Q(status='C')).order_by('-last_tracked_on')
     return render(request,'pcancelled.html',{'list':list})
 
+@login_required(login_url='../provider/login')
 def notreturned(request):
     list=request.user.provider.productinorder_set.all().filter(status='N').order_by('last_tracked_on')
     return render(request,'pnotreturned.html',{'list':list})
 
+@login_required(login_url='../provider/login')
 def returned(request):
     if request.method=='POST':
       id=request.POST['id']
@@ -249,25 +269,21 @@ def returned(request):
       dp.save()
       return redirect('../provider/cancelled')
 
+@login_required(login_url='../provider/login')
 def track(request):
     if request.method=='POST':
       id=request.POST['id']
       pio=ProductInOrder.objects.get(pk=id)
       return render(request,'ptrack.html',{'pio':pio})
 
-def track(request):
-    if request.method=='POST':
-      id=request.POST['id']
-      pio=ProductInOrder.objects.get(pk=id)
-      return render(request,'ptrack.html',{'pio':pio})
-
+@login_required(login_url='../provider/login')
 def updateprice(request):        
     if request.method=='POST':
       id=request.POST['id']
       proid=request.POST['proid']
       return render(request,'pupdatepriceform.html',{'id':id,'proid':proid})
 
-
+@login_required(login_url='../provider/login')
 def updatepricesubmit(request):        
     if request.method=='POST':
       id=request.POST['id']
@@ -280,6 +296,7 @@ def updatepricesubmit(request):
       p.save()
       return redirect('../provider/removeitem')
 
+@login_required(login_url='../provider/login')
 def viewsummary(request):
     array=[]
     obj=request.user.provider.product_set.all()
@@ -309,6 +326,7 @@ def viewsummary(request):
         array.append(c)
     return render(request,'psummary.html',{'array':array})
 
+@login_required(login_url='../provider/login')
 def analyse(request):
     data={}
     if request.method=='POST':
@@ -361,10 +379,12 @@ def analyse(request):
     data['n']=json.dumps(n)
     return render(request,'panalyse.html',data)
 
+@login_required(login_url='../provider/login')
 def convert(list):
     res=[0 if i is None else i for i in list ]
     return (res)
 
+@login_required(login_url='../provider/login')
 def danalyse(request):
     data={}
     if request.method=='POST':
