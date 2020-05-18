@@ -50,6 +50,11 @@
         </li>
     </ul>
 
+    <div class="alert alert-info alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        The graph shows <strong>no. of items</strong>, not no. of orders.
+    </div>
+
     <div class="d-flex justify-content-center" style="border-bottom: 1px solid black; padding-bottom:5px">
         <form class="row mt-2" style="width: 100%;" method="POST" action="analyse">
             {% csrf_token %}
