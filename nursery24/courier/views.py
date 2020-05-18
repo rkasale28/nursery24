@@ -228,6 +228,7 @@ def viewsummary(request):
             c['N']=True
         else:
             c['N']=False
+        c['status']=i.assigned
         array.append(c)
     return render(request,'cosummary.html',{'array':array})
 
