@@ -109,7 +109,8 @@ def additemsubmit(request):
 
 @login_required(login_url='../provider/login')
 def removeitem(request):
-    return render(request,'premoveitem.html')
+    objects=request.user.provider.price_set.all().order_by('product__name')
+    return render(request,'premoveitem.html',{'objects':objects})
 
 @login_required(login_url='../provider/login')
 def removeitemsubmit(request):
@@ -118,7 +119,9 @@ def removeitemsubmit(request):
         provider_id=request.POST['proid']
         product=Product.objects.get(pk=product_id)
         provider=Provider.objects.get(pk=provider_id)
-        provider.product_set.remove(product)
+        Price.objects.get(provider=provider,product=product).delete()
+        if (product.providers.all().count()==0):
+            product.delete()
         return redirect('../provider/removeitem')
 
 @login_required(login_url='../provider/login')

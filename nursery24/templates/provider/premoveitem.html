@@ -67,7 +67,7 @@
 
     
     <div class="d-flex justify-content-start ml-3 mt-3">
-        {% for i in user.provider.price_set.all%}
+        {% for i in objects%}
         <provider-item-card name='{{i.product.name}}' price='{{i.price}}' image='{{i.product.image.url}}'
         id='{{i.product.id}}' proid='{{user.provider.id}}' token='{{csrf_token}}'></provider-item-card>
         
