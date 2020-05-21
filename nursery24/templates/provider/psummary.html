@@ -60,6 +60,7 @@
                 <th scope="col">Product Name</th>
                 <th scope="col">Delivered Items</th>
                 <th scope="col">Cancelled Items</th>
+                <th scope="col">Shipped (Not Yet Delivered)</th>
                 <th scope="col">Not Yet Returned</th>
             </tr>
         </thead>
@@ -70,6 +71,7 @@
                 <td>{{i.name}}</td>
                 <td class="text-center">{{i.D}}</td>
                 <td class="text-center">{{i.C}}</td>
+                <td class="text-center">{{i.S}}</td>
                 <td class="text-center">{{i.N}}</td>
             </tr>
             {% endfor %}

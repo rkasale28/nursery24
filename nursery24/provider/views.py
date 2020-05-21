@@ -326,6 +326,11 @@ def viewsummary(request):
         for j in pio:
             c['N']+=j.quantity
         
+        c['S']=0
+        pio=ProductInOrder.objects.filter(product=i,provider=request.user.provider,status='S')
+        for j in pio:
+            c['S']+=j.quantity
+        
         array.append(c)
     return render(request,'psummary.html',{'array':array})
 
@@ -348,6 +353,7 @@ def analyse(request):
     c=[]
     d=[]
     n=[]
+    s=[]
 
     obj=request.user.provider.product_set.all().order_by('name')
 
@@ -375,11 +381,18 @@ def analyse(request):
         for j in pio:
             temp_n+=j.quantity               
         n.append(temp_n)
+
+        pio=i.productinorder_set.filter(last_tracked_on__range=(start_date,end_date),product=i,provider=request.user.provider,status='S') 
+        temp_s=0
+        for j in pio:
+            temp_s+=j.quantity               
+        s.append(temp_s)
       
     data['name']=json.dumps(name)
     data['c']=json.dumps(c)
     data['d']=json.dumps(d)
     data['n']=json.dumps(n)
+    data['s']=json.dumps(s)
     return render(request,'panalyse.html',data)
 
 def convert(list):
