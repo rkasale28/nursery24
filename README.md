@@ -10,7 +10,7 @@
 
 > Similarly, the courier services could monitor their delivery personnels, sitting at one place. Also, they can visualize the performance of their delivery personnels.
 
-<br /><br />
+<br />
 
 **Significance:**
 * There are four types of users:
@@ -44,7 +44,7 @@
   - Can update their location
   - Can view consumers' as well as providers' location on map with routing controls.
 
-<br /><br />
+<br />
 
 **Important Features:**
 * This web application is being designed using Django Framework
