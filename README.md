@@ -2,11 +2,15 @@
 
 #### Currently, developing this web application. This application will provide the freedom to users to buy all nursery related products anytime from anywhere.
 
+![Image description](https://github.com/rkasale28/nursery24/blob/master/nursery24/static/images/banner1.png)
+
 > The consumers can shop with ease at their own comfort.
 
 > This app will prove beneficial to providers as well as courier services. Not only, the providers could reach to their customer easily, but can view the summary of all products sold within certain time period. This summary is supported by visualization in terms of bar graphs and line graphs. These graphs represent the daily analysis of sales of a product as well as overall analyis. 
 
 > Similarly, the courier services could monitor their delivery personnels, sitting at one place. Also, they can visualize the performance of their delivery personnels.
+
+<br /><br />
 
 **Significance:**
 * There are four types of users:
@@ -40,6 +44,7 @@
   - Can update their location
   - Can view consumers' as well as providers' location on map with routing controls.
 
+<br /><br />
 
 **Important Features:**
 * This web application is being designed using Django Framework
