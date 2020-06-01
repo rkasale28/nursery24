@@ -23,6 +23,12 @@
             height: 20vw;
             object-fit: cover;
         }
+
+        #cartItemsTwo{
+            text-decoration: none;
+        }
+
+       
     </style>
     <script src="{% static 'js/cart.js'%}"></script>
     <script src="{% static 'js/cartTwo.js'%}"></script>
@@ -137,13 +143,44 @@
         let type1 = product.filter(item=> !item.id);
         let type2 = product.filter(item=> item.id);
 
-        (type1) ? 
+        if(type1){
         cartItems.innerHTML = type1.map(item=> `<cart-card name="${item.name}" price=${item.perPrice} quantity=${item.quantity} image=${item.img} provider="${item.provider}"></cart-card>`)
-        : ifEmpty.innerHTML = ``;
+
+        for(let i = 0;i < cartItems.childNodes.length;i++){
+                if(i!=0 || i%2 != 0)
+                cartItems.removeChild(cartItems.childNodes[i]);
+            }
+
+         }
+         else ifEmpty.innerHTML = ``;
 
         if(type2){
             let toPrint = type2.filter(item=> item.providers[0].quantity != 0);
-            cartItemsTwo.innerHTML = toPrint.map(item=> `<cart-two name="${item.name}" price=${item.providers[0].perPrice}  image=${item.img} id = ${item.id}></cart-two>`)
+
+            // for(let i = 0; i < toPrint.length;i++){
+            //     let item = toPrint[i];
+            //     let ele = <cart-two name="item.name" price="item.providers[0].perPrice"  image="item.img" id = "item.id"></cart-two>;
+            //     cartItemsTwo.appendChild(ele);
+            // }
+
+           cartItemsTwo.innerHTML 
+            // let toAppend
+            = toPrint.map(item=> `<cart-two name="${item.name}" price=${item.providers[0].perPrice}  image=${item.img} id = ${item.id}></cart-two>`);
+            
+            for(let i = 0;i < cartItemsTwo.childNodes.length;i++){
+                if(i!=0 || i%2 != 0)
+                cartItemsTwo.removeChild(cartItemsTwo.childNodes[i]);
+            }
+            
+            console.log(cartItemsTwo);
+            console.log(cartItemsTwo.childNodes);
+            //console.log(document.querySelector('#10'));
+            // for(let i = 0;i < toAppend.length;i++){
+            //     cartItemsTwo.append(toAppend[i]);
+            // }
+            console.log(toPrint.map(item=> `<cart-two name="${item.name}" price=${item.providers[0].perPrice}  image=${item.img} id = ${item.id}></cart-two>`));
+            
+        }else{
             ifEmpty.innerHTML = ``;
         }
         
