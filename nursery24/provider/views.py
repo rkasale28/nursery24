@@ -221,7 +221,7 @@ def readytoshipsubmit(request):
         address=Address.objects.filter(provider=request.user.provider).get(addr=addr)      
 
         product.status='R'
-        product.last_tracked_on=datetime.datetime.now()()
+        product.last_tracked_on=datetime.datetime.now()
       
         product.provider_addr=addr
         product.provider_point=address.point
@@ -250,7 +250,7 @@ def ship(request):
       id=request.POST['id']
       pio=ProductInOrder.objects.get(pk=id)
       pio.status='S'
-      pio.last_tracked_on=datetime.datetime.now()()
+      pio.last_tracked_on=datetime.datetime.now()
 
       pio.save()
       return redirect('../provider/ready')
@@ -346,8 +346,8 @@ def analyse(request):
         start_date=request.POST['from']
         t=request.POST['to']
     else:
-        start_date=(datetime.datetime.now()() + datetime.timedelta(-5)).strftime("%Y-%m-%d")
-        t=datetime.datetime.now()().strftime("%Y-%m-%d")
+        start_date=(datetime.datetime.now() + datetime.timedelta(-5)).strftime("%Y-%m-%d")
+        t=datetime.datetime.now().strftime("%Y-%m-%d")
     
     end_date = (datetime.datetime.strptime(t, "%Y-%m-%d")+datetime.timedelta(1)).strftime("%Y-%m-%d")
 
@@ -412,8 +412,8 @@ def danalyse(request):
         t=request.POST['to']
         name=request.POST['name']
     else:
-        fr=(datetime.datetime.now()() + datetime.timedelta(-5)).strftime("%Y-%m-%d")
-        t=datetime.datetime.now()().strftime("%Y-%m-%d")
+        fr=(datetime.datetime.now() + datetime.timedelta(-5)).strftime("%Y-%m-%d")
+        t=datetime.datetime.now().strftime("%Y-%m-%d")
         name=request.user.provider.product_set.all().order_by('name').first().name
     
     to = (datetime.datetime.strptime(t, "%Y-%m-%d")+datetime.timedelta(1)).strftime("%Y-%m-%d")

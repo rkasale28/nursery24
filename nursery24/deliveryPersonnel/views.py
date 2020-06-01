@@ -109,8 +109,8 @@ def deliver(request):
         id=request.POST["id"]
         pio=ProductInOrder.objects.get(pk=id)
         pio.status='D'
-        pio.date_delivered=datetime.datetime.now()()
-        pio.last_tracked_on=datetime.datetime.now()()
+        pio.date_delivered=datetime.datetime.now()
+        pio.last_tracked_on=datetime.datetime.now()
         pio.save()
         dp=pio.last_tracked_by
         dp.assigned=False
