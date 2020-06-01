@@ -20,27 +20,41 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
             list-style-type: none;
         }
     </style>
-<div class="card mr-3" style="width: 255px;">
-    <img class="card-img-top" id='image' style="{width: 100%,height: 15vw,object-fit: cover;}">
-    <div class="card-body">
-        <h5 class="card-title"><span id='name'></span></h5>
-        <h6 class="card-subtitle text-muted">Rs. <span id='price'></span></h6>
+    <div class="row p-2">
+    <div class="col-md-1 text-center">
+    <img id="image" height="50px" width="50px" style="border:2px solid black;border-radius:10px;object-fit:cover">
     </div>
+
+    <div class="col-md-3 text-start my-auto">
+    <h5 class="font-weight-bold"><span id='name'></span></h5>
+    </div>
+
+    <div class="col-md-2 my-auto text-center">
+    <h5>Rs. <span id='price'></span></h5>
+    </div>
+  
+    <div class="col-md-2 my-auto">
     <div class="btn-toolbar ml-1 mb-2" role="toolbar" aria-label="Toolbar with button groups">
-         
-    <div class="btn-group mr-2" role="group" aria-label="Second group">
-    <button type="button" id="compare" class="btn btn-primary">Compare Price</button>
-</div>
         
-        <div class="btn-group mr-2" role="group" aria-label="First group">
+        <div class="btn-group ml-auto mr-2" role="group" aria-label="First group">
             <button type="button" class="btn btn-success" id = "inc">+</button>
             <button type="button" class="btn btn-outline-secondary disabled" id = "result">0</button>
             <button type="button" class="btn btn-success" id = "dec">-</button>
+            
         </div>
     </div>
-    <div>Total = <span id = "total"></span>
     </div>
-</div>`
+
+    <div class="col-md-2 text-center">
+    <h5>Rs. <span id="tot"> </span></h6>
+    </div>
+        
+    <div class="col-md-2 text-center">
+    <div class="btn-group" role="group" aria-label="Second group">
+    <button type="button" id="compare" class="btn btn-primary">Compare Price</button>
+    </div>
+    </div>  
+    </div>`
         
 class CartTwo extends HTMLElement{
     constructor(){
@@ -72,9 +86,9 @@ class CartTwo extends HTMLElement{
                     let thisProduct = product.find(item=> item.id == this.getAttribute('id'));
                     this.shadowRoot.querySelector('#result').innerHTML = thisProduct.providers[0].quantity;
                     this.shadowRoot.querySelector('#price').innerHTML = thisProduct.providers[0].perPrice;
-                    this.shadowRoot.querySelector('#total').innerHTML = thisProduct.providers[0].price;
+                    this.shadowRoot.querySelector('#tot').innerHTML = thisProduct.providers[0].price;
 
-                    console.log(thisProduct);
+                    console.log(thisProduct.providers[0].price);
                 }
                 else{
                     let newProduct = {name: this.getAttribute('name'), img: this.getAttribute('image'), id: this.getAttribute('id'),
@@ -141,7 +155,7 @@ class CartTwo extends HTMLElement{
                    thisProduct.providers[0].quantity += 1;
                    thisProduct.providers[0].price = thisProduct.providers[0].quantity * price;
                    this.shadowRoot.querySelector('#result').innerHTML = thisProduct.providers[0].quantity;
-                   this.shadowRoot.querySelector('#total').innerHTML = thisProduct.providers[0].price;
+                   this.shadowRoot.querySelector('#tot').innerHTML = thisProduct.providers[0].price;
 
                    product = [...product,thisProduct];console.log(product)
                 document.cookie = "product=" + JSON.stringify(product);
@@ -185,7 +199,7 @@ class CartTwo extends HTMLElement{
                         thisProduct.providers[0].quantity -= 1;
                         thisProduct.providers[0].price = thisProduct.providers[0].perPrice * thisProduct.providers[0].quantity;
                         this.shadowRoot.querySelector('#result').innerHTML = thisProduct.providers[0].quantity;
-                        this.shadowRoot.querySelector('#total').innerHTML = thisProduct.providers[0].price;
+                        this.shadowRoot.querySelector('#tot').innerHTML = thisProduct.providers[0].price;
 
                         if(thisProduct.providers[0].quantity!= 0){
                             product = [...product,thisProduct];
