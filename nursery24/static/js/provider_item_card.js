@@ -44,9 +44,9 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
 
     <div class="sticky-bottom float-right mr-2 mb-2">
         <form action="removeitemsubmit" method="post">
-        <input name="csrfmiddlewaretoken" type="hidden">
-        <input name="id" type="hidden">
-        <input name="proid" type="hidden">
+        <input name="csrfmiddlewaretoken" id="csrf" type="hidden">
+        <input name="id" id="id" type="hidden">
+        <input name="proid" id="proid" type="hidden">
         <button type="submit" class="btn btn-danger ml-1">Delete</button>            
     </form>
     </div>
@@ -76,6 +76,12 @@ class ProviderItemCard extends HTMLElement{
         this.shadowRoot.querySelector('input[name="csrfmiddlewaretoken"]').value=this.getAttribute('token')
         this.shadowRoot.querySelector('input[name="id"]').value=this.getAttribute('id')
         this.shadowRoot.querySelector('input[name="proid"]').value=this.getAttribute('proid')
+
+        this.shadowRoot.querySelector('#csrf').value=this.getAttribute('token')
+        this.shadowRoot.querySelector('#id').value=this.getAttribute('id')
+        this.shadowRoot.querySelector('#proid').value=this.getAttribute('proid')
+
+        
     }
 
 }

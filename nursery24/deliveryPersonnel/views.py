@@ -1,5 +1,4 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
 from django.core.exceptions import ObjectDoesNotExist
@@ -9,9 +8,11 @@ from django.contrib.gis.geos import Point
 from datetime import date
 from consumer.models import ProductInOrder
 import datetime
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+@login_required(login_url='../delivery/login')
 def home(request):
     return render(request,'dhome.html')
 
@@ -27,12 +28,16 @@ def login_submit(request):
             try:
                 dp=DeliveryPersonnel.objects.get(user=user)
             except ObjectDoesNotExist as d:
-                return HttpResponse('User does not exist')
+                data={}
+                data['msg']='User does not exist'
+                return render(request,'dlogin.html',data)
             else:
                 auth.login(request,user)
                 return redirect('../delivery/home')
         else:
-            return HttpResponse('Invalid Credentials')
+            data={}
+            data['msg']='Invalid Credentials'
+            return render(request,'dlogin.html',data)
     else:
         return render(request,'login')
 
@@ -41,12 +46,15 @@ def logout(request):
     print("Reached here")
     return redirect('../delivery/login')
 
+@login_required(login_url='../delivery/login')
 def myprofile(request):
     return render(request,'dprofile.html')
 
+@login_required(login_url='../delivery/login')
 def changepassword(request):
     return render(request,'dchange.html')
 
+@login_required(login_url='../delivery/login')
 def changepasswordsubmit(request):
     if request.method=='POST':
         uname=request.POST["user"]
@@ -54,11 +62,17 @@ def changepasswordsubmit(request):
         new=request.POST["new"]
         cnf=request.POST["cnf"]
         if (uname!=request.user.username):
-            return HttpResponse("Wrong Username")
+            data={}
+            data['msg']='Wrong Username'
+            return render(request,'dchange.html',data)
         elif not (request.user.check_password(prev)):
-            return HttpResponse("Wrong Password")
+            data={}
+            data['msg']='Wrong Password'
+            return render(request,'dchange.html',data)
         elif (new!=cnf):
-            return HttpResponse("Passwords don't match")
+            data={}
+            data['msg']="Passwords do not match"
+            return render(request,'dchange.html',data)
         else:
             request.user.set_password(new)
             request.user.save()
@@ -66,11 +80,13 @@ def changepasswordsubmit(request):
             auth.login(request,user)
             return redirect('../delivery/home')
 
+@login_required(login_url='../delivery/login')
 def toggle(request):
     request.user.deliverypersonnel.available=not request.user.deliverypersonnel.available
     request.user.deliverypersonnel.save()
     return redirect ('../delivery/home')
 
+@login_required(login_url='../delivery/login')
 def updatecurrentlocation(request):
     if request.method=='POST':
         current=request.POST["current"]
@@ -82,10 +98,12 @@ def updatecurrentlocation(request):
         dp.save()
         return redirect('../delivery/home')
 
+@login_required(login_url='../delivery/login')
 def assigned(request):
     pio=request.user.deliverypersonnel.productinorder_set.order_by('last_tracked_on').reverse().first()
     return render(request,'dassigned.html',{'pio':pio})
 
+@login_required(login_url='../delivery/login')
 def deliver(request):
     if request.method=='POST':
         id=request.POST["id"]
@@ -99,6 +117,7 @@ def deliver(request):
         dp.save()
         return redirect('../delivery/home')
 
+@login_required(login_url='../delivery/login')
 def read(request):
     if request.method=='POST':
       id=request.POST['id']

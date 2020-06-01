@@ -9,8 +9,8 @@
 
   <script src="https://js.stripe.com/v3/"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
   <style>
     html,
@@ -119,44 +119,102 @@
     .active {
       color: #0275d8;
       border-bottom: #0275d8 solid 2px;
-  }
+    }
 
-  .success {
+    .success {
       background-color: #28a745;
       border-bottom: #28a745 solid 2px;
       color: white;
-      border-right:#d3d3d3 solid 2px;
-  }
-
+      border-right: #d3d3d3 solid 2px;
+    }
   </style>
 </head>
+
+{% ifequal sum 0 %}
 
 <body>
   <header-profile></header-profile>
 
   <ul class="nav nav-fill bg-light">
     <li class="nav-item pl-4  pr-4 pt-2 success">
-        <p class="text-left h5">Step 1</p>
-        <p class="text-left h6">Confirm Order</p>
+      <p class="text-left h5">Step 1</p>
+      <p class="text-left h6">Confirm Order</p>
     </li>
     <li class="nav-item pl-4 pr-4 pt-2 success">
-        <p class="text-left h5">Step 2</p>
-        <p class="text-left h6">Select Delivery Address</p>
+      <p class="text-left h5">Step 2</p>
+      <p class="text-left h6">Select Delivery Address</p>
     </li>
     <li class="nav-item pl-4 pr-4 pt-2 success">
-        <p class="text-left h5">Step 3</p>
-        <p class="text-left h6">Place Order</p>
+      <p class="text-left h5">Step 3</p>
+      <p class="text-left h6">Place Order</p>
     </li>
     <li class="nav-item pl-4 pr-4 pt-2 active">
-        <p class="text-left h5">Step 4</p>
-        <p class="text-left h6">Payments</p>
+      <p class="text-left h5">Step 4</p>
+      <p class="text-left h6">Payments</p>
     </li>
     <li class="nav-item pl-4 pr-4 pt-2">
-        <p class="text-left h5">Step 5</p>
-        <p class="text-left h6">Order Successful</p>
+      <p class="text-left h5">Step 5</p>
+      <p class="text-left h6">Order Successful</p>
     </li>
-</ul>
+  </ul>
 
+  <div class="row d-flex justify-content-center">
+    <p class="h5 mb-3">Total Sum : Rs. 0</p><br>
+  </div>
+  <div class="row d-flex justify-content-center">
+    <p class="h5 mb-3">Nothing to Order</p><br>
+  </div>
+
+  <div class="row d-flex justify-content-center">
+    <p class="h5 mb-3">Redirecting to Home Page...</p><br>
+  </div>
+
+  <div class="row d-flex justify-content-center">
+    <p class="h5 mb-3">Please Wait</p>
+  </div>
+
+  <script src="{% static 'js/header_profile.js'%}"></script>
+</body>
+<script>
+  var cookies = document.cookie.split(";");
+  for (var i = 0; i < cookies.length; i++) {
+    var spcook = cookies[i].split("=");
+    document.cookie = spcook[0] + "=;expires=Thu, 21 Sep 1979 00:00:01 UTC;";
+    console.log(spcook)
+  }
+
+  window.setTimeout(function () {
+    window.location.replace('../consumer/home');
+  }, 5000);
+
+</script>
+{% else %}
+
+<body>
+  <header-profile></header-profile>
+
+  <ul class="nav nav-fill bg-light">
+    <li class="nav-item pl-4  pr-4 pt-2 success">
+      <p class="text-left h5">Step 1</p>
+      <p class="text-left h6">Confirm Order</p>
+    </li>
+    <li class="nav-item pl-4 pr-4 pt-2 success">
+      <p class="text-left h5">Step 2</p>
+      <p class="text-left h6">Select Delivery Address</p>
+    </li>
+    <li class="nav-item pl-4 pr-4 pt-2 success">
+      <p class="text-left h5">Step 3</p>
+      <p class="text-left h6">Place Order</p>
+    </li>
+    <li class="nav-item pl-4 pr-4 pt-2 active">
+      <p class="text-left h5">Step 4</p>
+      <p class="text-left h6">Payments</p>
+    </li>
+    <li class="nav-item pl-4 pr-4 pt-2">
+      <p class="text-left h5">Step 5</p>
+      <p class="text-left h6">Order Successful</p>
+    </li>
+  </ul>
   <article class="main-content">
 
     <!--  -->
@@ -165,7 +223,7 @@
       <div>
         {% load mathfilters %}
         {% csrf_token %}
-        <h3>Amount Payable Rs. <span name="amount">{{sum}}</span></h3>
+        <h3>Amount Payable: Rs. <span name="amount">{{sum}}</span></h3>
       </div>
       <div class="form-group">
         <label>First Name</label>
@@ -208,8 +266,8 @@
     </form>
     <div id="err"></div>
   </article>
-  
-<script src="{% static 'js/header_profile.js'%}"></script>
+
+  <script src="{% static 'js/header_profile.js'%}"></script>
 </body>
 <script>
   // Create a Stripe client.
@@ -288,5 +346,6 @@
 
 
 </script>
+{% endifequal %}
 
 </html>

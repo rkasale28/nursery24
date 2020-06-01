@@ -22,7 +22,7 @@
     <title>Sign Up</title>
 </head>
 
-<body>
+<body onload="myFunction()">
     <div class="wrapper">
 
         <div class="container register bg-white my-auto">
@@ -73,6 +73,15 @@
 
         </div>
     </div>
+
+    <script>
+        function myFunction() {
+            if ("{{msg}}"){
+                alert("{{msg}}");
+                window.location.replace("../consumer/signup")
+            }
+          }
+    </script>
 </body>
 
 </html>

@@ -1,5 +1,4 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse,HttpResponseRedirect
 from django.db import IntegrityError
 from django.contrib.auth.models import User,auth
 from .models import Courier,Address
@@ -16,10 +15,12 @@ import datetime
 from datetime import timedelta
 from consumer.models import ProductInOrder
 import json
+from django.contrib.auth.decorators import login_required
 
 
 
 # Create your views here.
+@login_required(login_url='../courier/login')
 def home(request):
     return render(request,'cohome.html')
 
@@ -47,7 +48,10 @@ def signup_submit(request):
             auth.login(request,user)
             return redirect('../courier/home')
     except IntegrityError as e:
-        return HttpResponse ('Username already exists')
+        print('Username already exists')
+        data={}
+        data['msg']='Username already exists'
+        return render(request,'cosignup.html',data)
 
 def login(request):
     return render(request,'cologin.html')
@@ -61,7 +65,9 @@ def login_submit(request):
             try:
                 courier=Courier.objects.get(user=user)
             except ObjectDoesNotExist as d:
-                return HttpResponse('User does not exist')
+                data={}
+                data['msg']='User does not exist'
+                return render(request,'cologin.html',data)
             else:
                 auth.login(request,user)
                 U = cookies.SimpleCookie()
@@ -69,7 +75,9 @@ def login_submit(request):
                 
                 return redirect('../courier/home')
         else:
-            return HttpResponse('Invalid Credentials')
+            data={}
+            data['msg']='Invalid Credentials'
+            return render(request,'cologin.html',data)
     else:
         return render(request,'cologin.html')
 
@@ -78,9 +86,11 @@ def logout(request):
     print("Reached here")
     return redirect('../courier/login')
 
+@login_required(login_url='../courier/login')
 def myprofile(request):
     return render(request,'coprofile.html')
 
+@login_required(login_url='../courier/login')
 def edit(request):
     userform=UserForm()
     userform.fields['email'].initial=request.user.email
@@ -89,6 +99,7 @@ def edit(request):
     courierform.fields['service_name'].initial=Courier.objects.get(user=request.user).service_name
     return render(request,'coeditprofile.html',{'userform':userform,'courierform':courierform})
 
+@login_required(login_url='../courier/login')
 def editsubmit(request):
     if request.method=='POST':
         service_name=request.POST['service_name']
@@ -108,13 +119,16 @@ def editsubmit(request):
     else: 
         return render(request,'coprofile.html')
 
+@login_required(login_url='../courier/login')
 def addresses(request):
     return render(request,'coaddress.html')
 
+@login_required(login_url='../courier/login')
 def addaddress(request):
     form=AddressForm()
     return render(request,'coaddaddress.html',{'form':form})
 
+@login_required(login_url='../courier/login')
 def addaddresssubmit(request):
     if request.method=='POST':
         courier_id=request.POST['courier']
@@ -127,17 +141,20 @@ def addaddresssubmit(request):
         address.save()
         return redirect('../courier/addresses')
 
+@login_required(login_url='../courier/login')
 def removeaddresssubmit(request):
     if request.method=='POST':
         address_id=request.POST['id']
         Address.objects.get(pk=address_id).delete()
         return redirect('../courier/addresses')
 
+@login_required(login_url='../courier/login')
 def adddp(request):
     userform=DForm()
     delform=DeliveryPersonnelForm()
     return render(request,'coadddp.html',{'userform':userform,'delform':delform})
 
+@login_required(login_url='../courier/login')
 def adddpsubmit(request):
     if request.method=='POST':
         username=request.POST['username']
@@ -152,12 +169,14 @@ def adddpsubmit(request):
         dp.save()            
         return redirect('../courier/home')
 
+@login_required(login_url='../courier/login')
 def viewdp(request):
     if request.method=='POST':
         id=request.POST['id']
         dp=DeliveryPersonnel.objects.get(pk=id)
         return render(request,'coview.html',{'dp':dp})
 
+@login_required(login_url='../courier/login')
 def updatedp(request):
     if request.method=='POST':
         id=request.POST['id']
@@ -170,6 +189,7 @@ def updatedp(request):
         delform.fields['phone_number'].initial=dp.phone_number
         return render(request,'coupdateprofile.html',{'updateform':updateform,'delform':delform,'id':id})
 
+@login_required(login_url='../courier/login')
 def updatedpsubmit(request):
     if request.method=='POST':
         id=request.POST['id']
@@ -190,12 +210,14 @@ def updatedpsubmit(request):
         dp.save()     
         return redirect('../courier/home')  
 
+@login_required(login_url='../courier/login')
 def removedpsubmit(request):
     if request.method=='POST':
         user_id=request.POST['user_id']
         User.objects.filter(pk=user_id).delete()
         return redirect('../courier/home') 
 
+@login_required(login_url='../courier/login')
 def viewsummary(request):
     array=[]
     obj=request.user.courier.deliverypersonnel_set.all()
@@ -204,9 +226,15 @@ def viewsummary(request):
         c['name']=i.user.first_name+' '+i.user.last_name
         c['D']=i.productinorder_set.filter(status='D').count()
         c['C']=i.productinorder_set.filter(Q(status='C') | Q(status='I') | Q(status='N')).count()
+        if (i.productinorder_set.filter(status='N').count()==1):
+            c['N']=True
+        else:
+            c['N']=False
+        c['status']=i.assigned
         array.append(c)
     return render(request,'cosummary.html',{'array':array})
 
+@login_required(login_url='../courier/login')
 def analyse(request):
     data={}
     if request.method=='POST':

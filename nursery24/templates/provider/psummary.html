@@ -52,6 +52,10 @@
 
     </ul>
 
+    <div class="alert alert-info alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        The table shows <strong>no. of items</strong>, not no. of orders.
+    </div>
 
     <table id="myTable" class="table table-striped table-bordered">
         <thead class="thead-dark text-center">
@@ -60,6 +64,7 @@
                 <th scope="col">Product Name</th>
                 <th scope="col">Delivered Items</th>
                 <th scope="col">Cancelled Items</th>
+                <th scope="col">Shipped (Not Yet Delivered)</th>
                 <th scope="col">Not Yet Returned</th>
             </tr>
         </thead>
@@ -70,6 +75,7 @@
                 <td>{{i.name}}</td>
                 <td class="text-center">{{i.D}}</td>
                 <td class="text-center">{{i.C}}</td>
+                <td class="text-center">{{i.S}}</td>
                 <td class="text-center">{{i.N}}</td>
             </tr>
             {% endfor %}

@@ -62,8 +62,7 @@ class ComparePriceItemCard extends HTMLElement {
         this.shadowRoot.querySelector('#image').src = this.getAttribute('image')
         
         var avg_rating=this.getAttribute('rating')
-        console.log(avg_rating)
-
+        
         this.shadowRoot.querySelector('#progress').style.width=avg_rating+'%'
         this.shadowRoot.querySelector('#progress').setAttribute('aria-valuenow',avg_rating)
         this.shadowRoot.querySelector('#label').innerText = avg_rating+' %'

@@ -33,7 +33,7 @@
     <title>Login</title>
 </head>
 
-<body>
+<body onload="myFunction()">
     <div class="wrapper">
         <div class="container">
             <div class="d-flex justify-content-center">
@@ -67,6 +67,15 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function myFunction() {
+            if ("{{msg}}"){
+                alert("{{msg}}");
+                window.location.replace("../delivery/login")
+            }
+          }
+    </script>
 </body>
 
 </html>
