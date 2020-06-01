@@ -12,16 +12,112 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 
+<style>
+
+    *{
+    margin : 0px;
+    padding : 0px;
+    }
+    label{
+        color: antiquewhite;
+        font: 600px;
+    }
+    .group label {
+      font-size: 800px;
+    }
+    body
+    {
+        background-image : url("{%static 'images/back1.jpg'%}");
+        background-size : cover;
+        background-attachment : fixed;
+        
+    }
+    
+    h1
+    {
+        font-size : 40px;
+        color:whitesmoke;
+        margin-top : 250px;
+        margin-left: 100px;
+    }
+    
+    p{
+        font-size:17px;
+        color:whitesmoke;
+        margin-left: 100px;
+    }
+    h3{
+        font-size: 25px;
+        color:whitesmoke;
+    }
+    .fa-plus{
+        font-size: 35px;
+        float : right;
+        margin-top: 20px;
+    }
+    .col-md-5{
+        margin-top: 80px;
+        box-shadow: -1px 1px 60px 10px black;
+        background: rgba(0,0,0,0.4);
+        height: 900px   ;
+        
+    }
+    .label{
+        font-weight:normal;
+        margin-top:3px;
+        color : white;
+        font-size: 15px;
+        
+    }
+    .form-control{
+    
+        opacity: 0.5;
+        border-radius:0px;
+        border:0px;
+        border-bottom:1px solid white;
+        height:40px;
+        color:black;
+        }   
+    </style>
+
 <body>
     
   <header-profile></header-profile>    
 
-    <form action="addaddresssubmit" method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="hidden" name="courier" value="{{user.courier.id}}">
-        <button type="submit">Submit</button>
-    </form>
+  <form action="addaddresssubmit" method="POST">
+    <input type="hidden" name="csrfmiddlewaretoken" value="XBuj0HAEdLVGjNsnB1sKO5ckIfstrvyckukO507AdoAbV3mmqw8Z7FVLvw0yhGjk">
+           <div class ="row">
+               <div class="col-md-7">
+                   <h1 class="text-left">Add address</h1>
+                   <p class="text-left">Enter the address to add</p>
+               </div>
+               <div class="col-md-5">
+                   <div class="row">
+                       <div class= "col-md-6">
+                           <h3 class="text-left">Add address form</h3>
+                       </div>
+                       <div class="col-md-6">
+                           <span  class="fa fa-plus" ></span> </div>
+                   </div>
+                   <hr>
+                   <div class="row">
+                       <label for="id_addr" class="label col-md-2 control-label">Address</label>
+                       <div class="col-md-10">
+                       <textarea name="addr" cols="30" rows="10" maxlength="100" required id="id_addr"></textarea>
+                       </div>
+                   </div>
+                   <br>
+       
+                      <div class="row">
+                       <div class="col-md-10">
+                           <button type="button" class="btn btn-secondary btn-sm" style="float: right;">Update</button>    
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>  
+           </form>
+    
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"

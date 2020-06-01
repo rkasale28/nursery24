@@ -17,6 +17,8 @@ from datetime import timedelta
 from consumer.models import ProductInOrder
 import json
 
+
+
 # Create your views here.
 def home(request):
     return render(request,'cohome.html')
@@ -211,8 +213,8 @@ def analyse(request):
         start_date=request.POST['from']
         t=request.POST['to']
     else:
-        start_date=(datetime.datetime.now() + datetime.timedelta(-5)).strftime("%Y-%m-%d")
-        t=datetime.datetime.now().strftime("%Y-%m-%d")
+        start_date=(datetime.datetime.now()() + datetime.timedelta(-5)).strftime("%Y-%m-%d")
+        t=datetime.datetime.now()().strftime("%Y-%m-%d")
     
     end_date = (datetime.datetime.strptime(t, "%Y-%m-%d")+datetime.timedelta(1)).strftime("%Y-%m-%d")
 

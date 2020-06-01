@@ -12,16 +12,115 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 
+<style>
+
+    *{
+    margin : 0px;
+    padding : 0px;
+    }
+    label{
+        color: antiquewhite;
+        font: 600px;
+    }
+    .group label {
+      font-size: 800px;
+    }
+    body
+    {
+        background-image : url("{%static 'images/back1.jpg'%}");
+        background-size : cover;
+        background-attachment : fixed;
+        
+    }
+    
+    h1
+    {
+        font-size : 40px;
+        color:whitesmoke;
+        margin-top : 250px
+    }
+    
+    p{
+        font-size:17px;
+        color:whitesmoke;
+    }
+    h3{
+        font-size: 25px;
+        color:whitesmoke;
+    }
+    .fa-plus{
+        font-size: 35px;
+        float : right;
+        margin-top: 20px;
+    }
+    .col-md-5{
+        margin-top: 80px;
+        box-shadow: -1px 1px 60px 10px black;
+        background: rgba(0,0,0,0.4);
+        height: 900px   ;
+        
+    }
+    .label{
+        font-weight:normal;
+        margin-top:3px;
+        color : white;
+        font-size: 15px;
+        
+    }
+    .form-control{
+    
+        opacity: 0.5;
+        border-radius:0px;
+        border:0px;
+        border-bottom:1px solid white;
+        height:40px;
+        color:black;
+        }   
+    </style>
+
+
 <body>
     <header-profile></header-profile>
 
     <form action="updatepricesubmit" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="hidden" name="id" value="{{id}}">
-        <input type="hidden" name="proid" value="{{proid}}">
-        <input type="text" name="price">
-        <button type="submit">Update</button>
-    </form>
+        <input type="hidden" name="csrfmiddlewaretoken" value="kASIRAJ6EnQd9qLEdOvQIQ80AgztFSfPRTrTsrtKIH91heTYM458Dzoy5DlFL5P1">
+        <input type="hidden" name="id" value="4">
+        <input type="hidden" name="proid" value="2">
+    
+  <div class = "container">
+       <div class ="row">
+           <div class="col-md-7">
+               <h1 class="text-left">Update price : </h1>
+               <p class="text-left">Fill in he updated price</p>
+           </div>
+           <div class="col-md-5">
+               <div class="row">
+                   <div class= "col-md-6">
+                       <h3 class="text-left">Enter the price</h3>
+                   </div>
+                   <div class="col-md-6">
+                       <span  class="fa fa-plus" ></span> </div>
+               </div>
+               <hr>
+               <div class="row">
+                   <label   class="label col-md-2 control-label">Price</label>
+                   <div class="col-md-10">
+                   <input type="number" class="form-control " name="price" required></input>
+                   </div>
+               </div>
+
+               <br>
+
+               
+               <div class="row">
+                   <div class="col-md-10">
+                       <button type="button" class="btn btn-secondary btn-sm" style="float: right;">Update</button>    
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>  
+       </form>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"

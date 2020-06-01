@@ -85,23 +85,29 @@ def login_submit(request):
     if request.method=='POST':
         uname=request.POST["uname"]
         pwd=request.POST["pwd"]
+        print( uname,' ', pwd)
         user=auth.authenticate(username=uname,password=pwd)
+        print('authenticates')
         if user is not None:
+            print('if')
             try:
                 consumer=Consumer.objects.get(user=user)
+                print('try')
             except ObjectDoesNotExist as d:
                 return HttpResponse('User does not exist')
             else:
+                print('else')
                 auth.login(request,user)
+                print('login')
                 U = cookies.SimpleCookie()
                 U['username'] = user
-                
+                print('redirecting')
                 return redirect('../consumer/home')
         else:
             return HttpResponse('Invalid Credentials')
     else:
         return render(request,'login')
-
+    
 def logout(request):
     auth.logout(request)
     return redirect('../consumer/home')
