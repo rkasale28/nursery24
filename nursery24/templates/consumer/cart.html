@@ -28,7 +28,26 @@
     <script src="{% static 'js/cartTwo.js'%}"></script>
 </head>
 <body>
-   
+    <nav class="navbar navbar-expand-lg navbar-light bg-warning">
+        <a class="navbar-brand" href="#">
+        <img src='../static/images/logo.png' width="100"
+                style="margin-left:10"></a>
+
+        <form  class="form-inline my-2 my-lg-0" action = "search" style="margin-left: 100px;">
+            <input class="form-control mr-sm-2" size="80" type="search" placeholder="Search" aria-label="Search" name ="search">
+            <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        
+        
+        <form class="ml-auto">
+            <button formaction="myprofile" class="btn btn-primary">My Profile</button>
+        </form>
+
+        <form class="ml-auto mr-3">
+            <button formaction="logout" id = "logout" class="btn btn-primary">Logout</button>
+        </form>
+    </nav>
+
     <ul class="nav nav-pills nav-fill bg-light">
         <li class="nav-item">
             <a class="nav-link " href="home">Home</a>
@@ -66,11 +85,18 @@
     <div id = "ifEmpty">
 
     </div>
+    <div class="row">
+        <div class="col-md-10"></div>
+        <div class="col-md-2 text-center">
+            
     {% if user.is_authenticated %}
-    <button id="check">Proceed to Checkout</button>   
+    <button id="check" class="btn btn-primary">Proceed to Checkout</button>   
     {% else %}
-    <button id= "orderlogin" >Login/Signup to continue</button>
+    <button id= "orderlogin" class="btn btn-primary">Login/Signup to continue</button>
     {% endif %}
+        </div>
+    </div>
+    
 </body>
 
 <script>

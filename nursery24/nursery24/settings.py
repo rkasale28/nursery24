@@ -89,9 +89,9 @@ WSGI_APPLICATION = 'nursery24.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'n24',
+        'NAME': 'nursery24',
         'USER': 'postgres',
-        'PASSWORD': '1234',
+        'PASSWORD': 'postgres',
         'HOST':'localhost'
     }
 }
@@ -148,4 +148,4 @@ EMAIL_HOST_USER = 'nursery24somaiya@gmail.com'
 EMAIL_HOST_PASSWORD = 'Nursery24'
 EMAIL_PORT = 587
 
-GDAL_LIBRARY_PATH = r'C:\Users\Harshil\AppData\Local\Programs\Python\Python37\Lib\site-packages\osgeo\gdal300.dll'
+GDAL_LIBRARY_PATH = r'C:\Users\Rohit\AppData\Local\Programs\Python\Python38\Lib\site-packages\osgeo\gdal300.dll'
