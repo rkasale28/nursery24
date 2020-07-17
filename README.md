@@ -1,6 +1,6 @@
 # nursery24 Web Application
 
-#### Currently, developing this web application. This application will provide the freedom to users to buy all nursery related products anytime from anywhere.
+#### Developed a web application which will provide the freedom to users to buy all nursery related products anytime from anywhere.
 
 ![Image description](https://github.com/rkasale28/nursery24/blob/master/nursery24/static/images/banner1.png)
 
