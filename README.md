@@ -38,7 +38,7 @@
 * Courier Services
   - Can add delivery personnel
   - Can view records of the delivery personnels.
-  - Can visualize this summary based on 
+  - Can visualize this summary
   - Based on this analysis, they can provide salaries.
 * Delivery Personnels
   - Can update their location
