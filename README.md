@@ -47,8 +47,8 @@
 <br />
 
 **Important Features:**
-* This web application is being designed using Django Framework
-* This web application uses Postgres and postgis for database.
+* This web application is designed using Django Framework
+* This web application used Postgres and postgis for database.
 * Datatables API is used for display of summary.
 * This summary is visualized with the help of Charts API.
 * Leaflet API is used for display of maps.
