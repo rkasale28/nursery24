@@ -20,7 +20,7 @@
   - Delivery Personnel
 * Consumers 
   - Can order nursery related items from the site and track the order. 
-  - Receive invoice as mail. 
+  - Receive invoice via mail. 
   - Can cancel the order. 
   - Can rate a particular product.
 * Providers
@@ -42,6 +42,7 @@
   - Based on this analysis, they can provide salaries.
 * Delivery Personnels
   - Can update their location
+  - Can update their availability status
   - Can view consumers' as well as providers' location on map with routing controls.
 
 <br />
